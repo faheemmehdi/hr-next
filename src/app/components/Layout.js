@@ -4,7 +4,7 @@ import Sidebar from "./SideBar";
 
 export default function Layout({ children }) {
   return (
-    <div className="h-screen bg-white">
+    <div className="h-screen bg-gray-100">
       {/* Navbar */}
       <Navbar />
 

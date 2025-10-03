@@ -1,10 +1,9 @@
-import Layout from '../components/Layout';
-function Dashboard() {
-    return (
-      <Layout>
-        <h1 className="">Dashboard</h1>
-        
-      </Layout>
-    );
+import DashboardClient from "./DashboardClient";
+
+export const metadata = {
+  title: "Dashboard | HRM",
+};
+
+export default function Dashboard() {
+  return <DashboardClient />;
 }
-export default Dashboard;

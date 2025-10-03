@@ -73,7 +73,7 @@ const [notifications, setNotifications] = useState([
       className="fixed top-0 left-0 right-0 h-11 ml-1 shadow-md flex items-center justify-between border-b border-gray-600 pr-4 z-50"
     >
       {/* Left - Logo */}
-      <div className="relative w-40 h-9">
+      <div className="relative w-40 ml-1 h-9">
         <Image
           src="/images/logo1.png"
           alt="Logo"
@@ -100,7 +100,7 @@ const [notifications, setNotifications] = useState([
               height={32}
               className="rounded-full border border-gray-500"
             />
-            <span className="text-xs text-gray-200">John Doe</span>
+            <span className="text-xs text-gray-200">User Name</span>
           </div>
 
           {openProfile && (
@@ -160,7 +160,7 @@ const [notifications, setNotifications] = useState([
               setOpenNotif(!openNotif);
               setOpenProfile(false); // close profile if open
             }}
-            className="relative text-gray-200 hover:text-white mt-1"
+            className="relative text-gray-200 hover:text-white mt-1 cursor-pointer"
           >
             <FaRegBell className="text-lg mt-1" />
             {/* Notification badge */}

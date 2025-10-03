@@ -1,8 +1,9 @@
-import Layout from "../components/Layout";
+import EmployeesClient from "./EmployeesClient";
 
-function Employees() {
-    return (
-       <Layout><h1>Employees</h1></Layout>
-    )
+export const metadata = {
+  title: "Employees | HRM",
+};
+
+export default function Employees() {
+    return <EmployeesClient />;
 }
-export default Employees;
