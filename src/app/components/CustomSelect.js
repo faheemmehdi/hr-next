@@ -1,145 +1,109 @@
 import Select from "react-select";
 
-export default function CustomSelect(props) {
-  const {
-    label,
-    name,
-    value,
-    onChange,
-    options = [],
-    placeholder = "Select...",
-    isSearchable = true,
-    isMulti = false,
-    error,
-    setError, // 👈 expect a setter from parent
-    variant = "default", // 👈 new prop
-  } = props;
+export default function CustomSelect({
+  label,
+  name,
+  value,
+  onChange,
+  options = [],
+  placeholder = "Select...",
+  isSearchable = true,
+  isMulti = false,
+  error,
+  variant = "default", // "default", "auth", "wizard"
+}) {
+  const handleChange = (selected) => {
+    if (isMulti) {
+      onChange(selected ? selected.map((item) => item.value) : []);
+    } else {
+      onChange(selected ? selected.value : "");
+    }
+  };
 
   const getValue = () => {
     if (!value) return isMulti ? [] : null;
-    if (isMulti) {
-      return options.filter((option) => value.includes(option.value));
-    } else {
-      return options.find((option) => option.value === value) || null;
-    }
+    if (isMulti) return options.filter((opt) => value.includes(opt.value));
+    return options.find((opt) => opt.value === value) || null;
   };
 
-  const handleChange = (selected) => {
-    if (isMulti) {
-      const vals = selected.map((item) => item.value);
-      onChange(vals);
-      if (setError) setError(name, "");
-    } else {
-      const val = selected ? selected.value : "";
-      onChange(val);
-      if (setError) setError(name, "");
-    }
-  };
-
-  // ✅ Define variant-based styles
+  // ✅ Base styles (always applied)
   const baseStyles = {
     menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-    valueContainer: (base) => ({ ...base, paddingLeft: "0.5rem" }),
     placeholder: (base) => ({ ...base, color: "#9ca3af" }),
+    menu: (base) => ({
+      ...base,
+      borderRadius: "0.5rem",
+      overflow: "hidden",
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isSelected
+        ? "#2563eb"
+        : state.isFocused
+        ? "#f3f4f6"
+        : "#fff",
+      color: state.isSelected ? "#fff" : "#000",
+      fontSize: "0.875rem",
+    }),
   };
 
+  // ✅ Variant-based styles
   const variantStyles = {
     default: {
-      control: (base, state) => {
-        let borderColor = "#d1d5db"; // gray-300
-        if (error) borderColor = "#dc2626"; // red-600
-        else if (state.isFocused) borderColor = "#000000"; // black
-
-        return {
-          ...base,
-          borderRadius: "0.25rem",
-          borderWidth: "1px",
-          borderColor,
-          backgroundColor: "#ffffff",
-          color: "#111827",
-          boxShadow: "none",
-          padding: "2px",
-          fontSize: "0.875rem",
-          height: "2.75rem",
-          "&:hover": { borderColor },
-        };
-      },
+      control: (base, state) => ({
+        ...base,
+        borderColor: error ? "#dc2626" : state.isFocused ? "#000" : "#d1d5db",
+        backgroundColor: "#fff",
+        color: "#111827",
+        boxShadow: "none",
+        borderRadius: "0.375rem",
+        minHeight: "2.75rem",
+        fontSize: "0.875rem",
+        "&:hover": { borderColor: "#000" },
+      }),
+      singleValue: (base) => ({ ...base, color: "#111827" }),
+      input: (base) => ({ ...base, color: "#111827" }),
     },
+
     auth: {
-      control: (base, state) => {
-        let borderColor = "#4b5563"; // gray-600 default
-        if (error) borderColor = "#4b5563"; // red-600
-        else if (state.isFocused) borderColor = "#2563eb"; // blue-600
-
-        return {
-          ...base,
-          borderRadius: "0.5rem",
-          borderWidth: "1px",
-          borderColor,
-          backgroundColor: "transparent",
-          color: "#ffffff",
-          boxShadow: "none",
-          padding: "6px",
-          fontSize: "1rem",
-          height: "3.25rem",
-          "&:hover": { borderColor },
-        };
-      },
-      placeholder: (base) => ({ ...base, color: "#9ca3af" }),
-      singleValue: (base) => ({ ...base, color: "#ffffff" }),
-      input: (base) => ({ ...base, color: "#ffffff" }),
-      option: (base, state) => ({
+      control: (base, state) => ({
         ...base,
-        backgroundColor: state.isSelected
-          ? "#2563eb"
-          : state.isFocused
-          ? "#1e293b"
-          : "#ffffff",
-        color: state.isSelected ? "#ffffff" : "#000",
-        color: state.isFocused ? "#ffffff" : "#000",
+        borderColor: error ? "#ef4444" : state.isFocused ? "#2563eb" : "#4b5563",
+        backgroundColor: "rgba(255,255,255,0.1)",
+        color: "#fff",
+        borderRadius: "0.5rem",
+        minHeight: "3rem",
+        fontSize: "1rem",
+        boxShadow: "none",
+        "&:hover": { borderColor: "#2563eb" },
       }),
+      singleValue: (base) => ({ ...base, color: "#fff" }),
+      input: (base) => ({ ...base, color: "#fff" }),
+      placeholder: (base) => ({ ...base, color: "#9ca3af" }),
     },
+
     wizard: {
-      control: (base, state) => {
-        let borderColor = "#4b5563"; // gray-600 default
-        if (error) borderColor = "#4b5563"; // red-600
-        else if (state.isFocused) borderColor = "#2563eb"; // blue-600
-
-        return {
-          ...base,
-          borderRadius: "0.5rem",
-          borderWidth: "1px",
-          borderColor,
-          backgroundColor: "transparent",
-          color: "#ffffff",
-          boxShadow: "none",
-          padding: "6px",
-          fontSize: "0.75rem",
-          height: "2.82rem",
-          "&:hover": { borderColor },
-        };
-      },
-      indicatorsContainer: (base) => ({
+      control: (base, state) => ({
         ...base,
-        height: "100%", // take full height of control
-        display: "flex",
-        alignItems: "center", // vertical center
-      }),
-      placeholder: (base) => ({ ...base, color: "#9ca3af" }),
-      singleValue: (base) => ({ ...base, color: "#ffffff" }),
-      input: (base) => ({ ...base, color: "#ffffff" }),
-      option: (base, state) => ({
-        ...base,
-        backgroundColor: state.isSelected
-          ? "#2563eb"
-          : state.isFocused
-          ? "#1e293b"
-          : "#ffffff",
-        color: state.isSelected ? "#ffffff" : "#000",
-        color: state.isFocused ? "#ffffff" : "#000",
+        borderColor: error ? "#ef4444" : state.isFocused ? "#2563eb" : "#4b5563",
+        backgroundColor: "transparent",
+        color: "#fff",
+        borderRadius: "0.5rem",
+        minHeight: "2.5rem",
         fontSize: "0.75rem",
+        boxShadow: "none",
+        "&:hover": { borderColor: "#2563eb" },
       }),
+      singleValue: (base) => ({ ...base, color: "#fff" }),
+      input: (base) => ({ ...base, color: "#fff" }),
+      placeholder: (base) => ({ ...base, color: "#9ca3af" }),
     },
+  };
+
+  // ✅ Merge styles
+  const customStyles = {
+    ...baseStyles,
+    ...(variantStyles[variant] || variantStyles.default),
   };
 
   return (
@@ -147,13 +111,11 @@ export default function CustomSelect(props) {
       {label && (
         <label
           htmlFor={name}
-          className={
-            variant === "auth"
-              ? "block text-xxs font-medium text-white mb-2"
-              : variant === "wizard"
-              ? "text-xxs font-medium text-gray-200 mb-2"
-              : "block text-xxs font-medium text-gray-700 mb-1"
-          }
+          className={`block text-sm font-medium mb-1 ${
+            variant === "auth" || variant === "wizard"
+              ? "text-gray-200"
+              : "text-gray-700"
+          }`}
         >
           {label}
         </label>
@@ -165,24 +127,16 @@ export default function CustomSelect(props) {
         value={getValue()}
         onChange={handleChange}
         options={options}
-        placeholder={
-          variant !== "auth" || (variant !== "wizard" && placeholder)
-        }
+        placeholder={placeholder}
         isSearchable={isSearchable}
         isMulti={isMulti}
-        className="react-select-container"
-        classNamePrefix="react-select"
-        menuPlacement="auto"
-        menuPosition="fixed"
-        menuPortalTarget={typeof window !== "undefined" ? document.body : null}
+        styles={customStyles}
+        menuPortalTarget={typeof document !== "undefined" ? document.body : null}
         components={{ IndicatorSeparator: () => null }}
-        styles={{
-          ...baseStyles,
-          ...(variantStyles[variant] || variantStyles.default),
-        }}
+        classNamePrefix="react-select"
       />
 
-      {error && <p className="text-xxs text-red-500 mt-1">{error}</p>}
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
   );
 }

@@ -16,7 +16,6 @@ function LoginClient() {
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
-  // ✅ Validation function
   const validate = () => {
     let valid = true;
     let newErrors = { email: "", password: "" };

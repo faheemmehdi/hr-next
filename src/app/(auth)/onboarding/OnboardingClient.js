@@ -256,6 +256,8 @@ export default function OnboardingClient() {
                     error={errors[field.name]}
                     variant={field.variant || "default"}
                   />
+
+                  
                 ) : (
                   <Input
                     key={field.name}

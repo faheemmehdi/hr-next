@@ -9,7 +9,8 @@ export default function Input({
   error,
   placeholder,
   icon,
-  variant = "default", // 👈 "auth" or "form"
+  noMargin = false,
+  variant = "default",
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -20,7 +21,7 @@ export default function Input({
     default: {
       label: "block text-xxs font-medium text-gray-700 mb-1",
       input:
-        "w-full px-4 py-2 border rounded focus:outline-none mb-1 text-xxs h-8 lg:h-10",
+        "w-full px-4 py-2 border rounded focus:outline-none mb-1 text-xxs h-6 lg:h-8",
     },
     auth: {
       label: "block text-xxs  text-white mb-2 mt-3",
@@ -35,7 +36,7 @@ export default function Input({
   };
 
   return (
-    <div className="mb-4">
+    <div className={`${noMargin ? "" : "mb-4"}`}>
       {label && <label className={variants[variant].label}>{label}</label>}
 
       <div className="relative">

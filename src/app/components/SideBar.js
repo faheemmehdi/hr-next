@@ -10,7 +10,7 @@ import {
   FiUserPlus,
   FiBarChart2,
   FiSettings,
-} from "react-icons/fi"; // ✅ Feather icons
+} from "react-icons/fi";
 
 const menuItems = [
   {
