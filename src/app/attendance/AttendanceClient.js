@@ -41,7 +41,7 @@ function AttendanceClient() {
   return (
     <Layout>
       <div className="flex justify-between text-lg p-1 mb-2">
-        <h2>Attendance Management</h2>
+        <h2>Attendance Analytics</h2>
         <Link href="/attendance/settings">
           <FiSettings className="text-gray-600 cursor-pointer" />
         </Link>

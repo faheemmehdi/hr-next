@@ -7,6 +7,7 @@
   --color-secondary: #9333ea;
   --color-danger: #dc2626;   
   --color-success: #00ab47;   
+  --color-gray: #c2c1c1;   
   --auth-pages-bg-color: linear-gradient(to bottom, #513188 0%, #1a1a1b 100%);
 }
 
@@ -34,4 +35,7 @@ body {
 }
 .text-xxs{
   font-size: 0.700rem !important;
+}
+input[type="date"]::-webkit-datetime-edit {
+  color: #9ca3af; /* Tailwind gray-400 */
 }

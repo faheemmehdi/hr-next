@@ -82,7 +82,7 @@ export default function Input({
         )}
       </div>
 
-      {error && <p className="text-xxs text-red-600 ">{error}</p>}
+      {error && <p className="text-xxs text-red-500 ">{error}</p>}
     </div>
   );
 }

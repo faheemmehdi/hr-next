@@ -23,7 +23,7 @@ export default function SearchBar({
       {/* Search Icon inside input */}
       <IoSearch
         className="absolute left-3 top-1/2 -translate-y-1/2 text-xxs text-gray-400"
-        size={18}
+        size={16}
       />
 
       <input
@@ -33,8 +33,8 @@ export default function SearchBar({
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
         className="
-          w-full pl-10 pr-3 py-2 
-          text-xs text-gray-700 
+          w-full pl-10 pr-3 py-[7px] 
+          text-xxs text-gray-700 
           bg-white border border-gray-300 
           rounded 
           focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-8ring-gray-500

@@ -1,4 +1,8 @@
-import Select from "react-select";
+"use client";
+import dynamic from "next/dynamic";
+
+const Select = dynamic(() => import("react-select"), { ssr: false });
+
 
 export default function CustomSelect({
   label,
@@ -11,6 +15,8 @@ export default function CustomSelect({
   isMulti = false,
   error,
   variant = "default", // "default", "auth", "wizard"
+  controlHeight = "2.75rem",
+  controlWidth,
 }) {
   const handleChange = (selected) => {
     if (isMulti) {
@@ -26,28 +32,45 @@ export default function CustomSelect({
     return options.find((opt) => opt.value === value) || null;
   };
 
-  // ✅ Base styles (always applied)
   const baseStyles = {
     menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-    placeholder: (base) => ({ ...base, color: "#9ca3af" }),
+    placeholder: (base) => ({
+    ...base,
+    color: "#9ca3af",
+    display: "flex",
+    alignItems: "center",
+    height: "100%",
+    fontWeight: 500,
+  }),
     menu: (base) => ({
       ...base,
       borderRadius: "0.5rem",
       overflow: "hidden",
+    }),
+    menuList: (base) => ({
+      ...base,
+      maxHeight: "180px",
+      overflowY: "auto",
     }),
     option: (base, state) => ({
       ...base,
       backgroundColor: state.isSelected
         ? "#2563eb"
         : state.isFocused
-        ? "#f3f4f6"
-        : "#fff",
+          ? "#f3f4f6"
+          : "#fff",
       color: state.isSelected ? "#fff" : "#000",
-      fontSize: "0.875rem",
+      fontSize: "0.700rem",
     }),
+    dropdownIndicator: (base, state) => ({
+  ...base,
+  padding: "2px 6px",
+  color: "#9ca3af",
+  svg: { width: "14px", height: "14px" },
+}),
+
   };
 
-  // ✅ Variant-based styles
   const variantStyles = {
     default: {
       control: (base, state) => ({
@@ -56,11 +79,19 @@ export default function CustomSelect({
         backgroundColor: "#fff",
         color: "#111827",
         boxShadow: "none",
-        borderRadius: "0.375rem",
-        minHeight: "2.75rem",
-        fontSize: "0.875rem",
-        "&:hover": { borderColor: "#000" },
+        borderRadius: "0.2rem",
+        width: "100%",               
+    maxWidth: controlWidth || "100%",
+        height: controlHeight,
+        minHeight: controlHeight,
+        paddingTop: 0,
+        paddingBottom: 0,
+        display: "flex",              
+        alignItems: "center",       
+        justifyContent: "space-between",
+        fontSize: "0.700rem",
       }),
+
       singleValue: (base) => ({ ...base, color: "#111827" }),
       input: (base) => ({ ...base, color: "#111827" }),
     },
@@ -73,7 +104,7 @@ export default function CustomSelect({
         color: "#fff",
         borderRadius: "0.5rem",
         minHeight: "3rem",
-        fontSize: "1rem",
+        fontSize: "0.700rem",
         boxShadow: "none",
         "&:hover": { borderColor: "#2563eb" },
       }),
@@ -90,7 +121,8 @@ export default function CustomSelect({
         color: "#fff",
         borderRadius: "0.5rem",
         minHeight: "2.5rem",
-        fontSize: "0.75rem",
+        fontSize: "0.700rem",
+
         boxShadow: "none",
         "&:hover": { borderColor: "#2563eb" },
       }),
@@ -100,22 +132,20 @@ export default function CustomSelect({
     },
   };
 
-  // ✅ Merge styles
   const customStyles = {
     ...baseStyles,
     ...(variantStyles[variant] || variantStyles.default),
   };
 
   return (
-    <div className="mb-4">
+    <div className={`${variant === 'default' ? '' : 'mb-4'}`}>
       {label && (
         <label
           htmlFor={name}
-          className={`block text-sm font-medium mb-1 ${
-            variant === "auth" || variant === "wizard"
-              ? "text-gray-200"
-              : "text-gray-700"
-          }`}
+          className={`block text-sm font-medium mb-1 ${variant === "auth" || variant === "wizard"
+            ? "text-gray-200"
+            : "text-gray-700"
+            }`}
         >
           {label}
         </label>

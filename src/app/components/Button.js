@@ -9,9 +9,10 @@ export default function Button({
     const applyWidth = width ? width : "w-auto";
 
     const styles = {
-      primary: "bg-[var(--color-primary)] text-white hover:opacity-90",
+      primary: "bg-[var(--color-primary)] text-white  hover:opacity-90",
       secondary: "bg-[var(--color-secondary)] text-white hover:opacity-90",
       danger: "bg-[var(--color-danger)] text-white hover:opacity-90",
+      cancel: "bg-[var(--color-gray)] text-black hover:opacity-90 text-xxs",
       success: "bg-[var(--color-success)] text-white text-xxs hover:opacity-90",
       auth: "bg-white/10 text-gray-300 hover:bg-gray-500 border border-gray-300 rounded-4xl flex items-center justify-center gap-2",
       gradient:
