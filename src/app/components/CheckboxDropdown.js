@@ -45,7 +45,7 @@ export default function CheckboxDropdown({
       <div className="relative w-full">
         <button
           onClick={() => setOpen(!open)}
-          className="flex items-center justify-between w-full border border-gray-300 bg-white text-gray-700 text-xxs px-3 py-2 rounded hover:bg-gray-50 transition"
+          className="flex items-center justify-between w-full border border-gray-300 bg-white text-gray-700 text-xxs px-3 rounded-xs hover:bg-gray-50 transition" style={{paddingTop: "7px", paddingBottom: "7px"}}
         >
           <span className="text-gray-400">Select Columns</span>
           <FiChevronDown

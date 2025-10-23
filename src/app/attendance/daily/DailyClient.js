@@ -265,7 +265,8 @@ export default function DailyClient() {
     "name"
   );
 
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     setShowErrors(true);
     if (!locationVal || !departVal || !employee || !dateVal || !checkIn || !checkOut || !remarks) return; // stop submission
     alert("Saved!");

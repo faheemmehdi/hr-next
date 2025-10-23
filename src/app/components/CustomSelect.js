@@ -142,7 +142,7 @@ export default function CustomSelect({
       {label && (
         <label
           htmlFor={name}
-          className={`block text-sm font-medium mb-1 ${variant === "auth" || variant === "wizard"
+          className={`block text-xxs font-medium mb-1 ${variant === "auth" || variant === "wizard"
             ? "text-gray-200"
             : "text-gray-700"
             }`}

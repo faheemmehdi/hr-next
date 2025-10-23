@@ -347,8 +347,8 @@ export default function ProfileClient() {
           onClick={() => setActiveTab("info")}
           className={`px-4 py-2 border-b-3 text-xs font-bold cursor-pointer ${
             activeTab === "info"
-              ? "border-blue-900 text-blue-900"
-              : "border-transparent text-gray-600 hover:text-blue-900"
+              ? "border-[var(--active-tabs)] text-[var(--active-tabs)]"
+              : "border-transparent text-gray-600 hover:text-[var(--active-tabs)]"
           }`}
         >
           Employee Info
@@ -357,8 +357,8 @@ export default function ProfileClient() {
           onClick={() => setActiveTab("attendance")}
           className={`px-4 py-2 border-b-3 text-xs font-bold cursor-pointer ${
             activeTab === "attendance"
-              ? "border-blue-900 text-blue-900"
-              : "border-transparent text-gray-600 hover:text-blue-900"
+              ? "border-[var(--active-tabs)] text-[var(--active-tabs)]"
+              : "border-transparent text-gray-600 hover:text-[var(--active-tabs)]"
           }`}
         >
           Attendance
@@ -367,8 +367,8 @@ export default function ProfileClient() {
           onClick={() => setActiveTab("documents")}
           className={`px-4 py-2 border-b-3 text-xs font-bold cursor-pointer ${
             activeTab === "documents"
-              ? "border-blue-900 text-blue-900"
-              : "border-transparent text-gray-600 hover:text-blue-900"
+              ? "border-[var(--active-tabs)] text-[var(--active-tabs)]"
+              : "border-transparent text-gray-600 hover:text-[var(--active-tabs)]"
           }`}
         >
           Documents

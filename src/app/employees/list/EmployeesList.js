@@ -7,7 +7,7 @@ import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { FaEye, FaEdit, FaCog, FaTrash } from "react-icons/fa";
+import { FaEye, FaEdit, FaCog, FaTrash, FaUserTie, FaTags } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import {
     FiUser, FiEdit2, FiX
@@ -25,6 +25,7 @@ export default function EmployeesList() {
     const [tag, setTag] = useState("");
     const [savedFilter, setSavedFilter] = useState("");
     const [status, setStatus] = useState("");
+    const [bulkAction, setBulkActions] = useState("");
     const [showErrors, setShowErrors] = useState(false);
     const [selectTagEmp, setSelectTagEmp] = useState(null);
     const [showTagModal, setShowTagModal] = useState(false);
@@ -349,6 +350,15 @@ export default function EmployeesList() {
         "id",
         "name"
     );
+
+      const bulkActions = mapSelectOptions(
+        [
+            { id: 'import', name: "Import Employees" },
+            { id: 'export', name: "Export Employees" }
+        ],
+        "id",
+        "name"
+    );
     const allTags = [
         { id: 1, name: "Full-Time", bgColor: "#E6F4EA", textColor: "#137333" },
         { id: 2, name: "Part-Time", bgColor: "#FFF4E5", textColor: "#B06000" },
@@ -499,12 +509,26 @@ export default function EmployeesList() {
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="w-1/6">
+                    <div className="flex items-center justify-end w-full gap-3">
+                        
+                         <div className="w-1/6">
+                            <CustomSelect
+                                name="bulkActions"
+                                value={bulkAction}
+                                placeholder="Bulk Actions"
+                                onChange={setBulkActions}
+                                options={bulkActions}
+                                controlHeight="2rem"
+                            />
+                        </div>
+                        <div className="w-1/6">
                         <CheckboxDropdown
                             columns={allColumns}
                             selected={visibleColumns}
                             onChange={setVisibleColumns}
                         />
+                    </div>
+                    
                     </div>
 
 
@@ -598,7 +622,7 @@ export default function EmployeesList() {
                                         </button>
 
                                         {openMenuId === row.empId && (
-                                            <div ref={menuRef} className="absolute top-10 right-10 z-50 w-35 bg-white border border-gray-200 rounded-xl shadow-lg">
+                                            <div ref={menuRef} className="absolute top-10 right-16 z-50 w-35 bg-white border border-gray-200 rounded-xl shadow-lg">
                                                 <ul className="py-2 text-xxs text-gray-700">
                                                     <li>
                                                         <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
@@ -612,12 +636,19 @@ export default function EmployeesList() {
                                                     </li>
                                                     <li>
                                                         <button
+                                                            className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
+                                                            <FaUserTie className="mr-2" /> Assign Manager
+                                                        </button>
+
+                                                    </li>
+                                                     <li>
+                                                        <button
                                                             onClick={() => {
                                                                 setSelectTagEmp(row);
                                                                 setShowTagModal(true);
                                                             }}
                                                             className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FaEdit className="mr-2" /> Assign Tag
+                                                            <FaTags className="mr-2" /> Assign Tag
                                                         </button>
 
                                                     </li>

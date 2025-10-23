@@ -9,6 +9,8 @@
   --color-success: #00ab47;   
   --color-gray: #c2c1c1;   
   --auth-pages-bg-color: linear-gradient(to bottom, #513188 0%, #1a1a1b 100%);
+  --active-tabs: #03741f;
+  --toggle-btn: #5180be;
 }
 
 @theme inline {
