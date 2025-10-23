@@ -17,6 +17,7 @@ import {
 } from "react-icons/fi";
 import { CiMobile4 } from "react-icons/ci";
 import Button from "y@/app/components/Button";
+import StatusDesign from "y@/app/components/StatusColors";
 export default function DailyClient() {
   const [date, setDate] = useState("");
   const [dateVal, setDateVal] = useState("");
@@ -505,20 +506,7 @@ export default function DailyClient() {
 
                   <td className="px-4 py-3">{row.hours}</td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`px-2 py-1 rounded-full text-[11px] font-medium ${row.statusId === 1
-                        ? "bg-green-100 text-green-700"
-                        : row.statusId === 3
-                          ? "bg-yellow-100 text-yellow-700"
-                          : row.statusId === 2
-                            ? "bg-red-100 text-red-700"
-                            : row.statusId === 5
-                              ? "bg-blue-100 text-blue-700"
-                              : "bg-gray-100 text-gray-600"
-                        }`}
-                    >
-                      {row.status}
-                    </span>
+                                       <StatusDesign statusId={row.statusId} label={row.status} />
                   </td>
                 </tr>
               ))}

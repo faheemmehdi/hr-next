@@ -600,7 +600,9 @@ function SettingClient() {
                                 </div>
                             </div>
 
-
+                            <div className="w-full flex mt-6 justify-end">
+                                <Button type="button" variant="success">Save Rules</Button>
+                            </div>
                         </div>
                     )}
 

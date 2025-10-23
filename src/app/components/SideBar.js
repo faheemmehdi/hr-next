@@ -43,7 +43,8 @@ const menuItems = [
     dropdown: [
       { label: "Daily Logs", href: "/attendance/daily" },
       { label: "Monthly Report", href: "/attendance/monthly" },
-      { label: "Yearly Report", href: "/attendance/yearly" },
+      { label: "Regularization Requests", href: "/attendance/regularizations" },
+      { label: "Devices & Terminals", href: "/attendance/terminals" },
     ],
   },
   {

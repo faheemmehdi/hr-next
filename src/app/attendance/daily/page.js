@@ -4,6 +4,6 @@ export const metadata = {
   title: "Today Attendance | HRM",
 };
 
-export default function Attendance() {
+export default function DailyAttendance() {
   return <DailyClient />;
 }

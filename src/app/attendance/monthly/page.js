@@ -3,6 +3,6 @@ export const metadata = {
   title: "Monthly Attendance | HRM",
 };
 
-export default function Attendance() {
+export default function MonthlyAttendance() {
   return <MonthlyClient />;
 }

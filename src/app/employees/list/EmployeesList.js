@@ -38,7 +38,6 @@ export default function EmployeesList() {
         textColor: "#000000",
     });
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
