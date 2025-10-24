@@ -15,6 +15,14 @@ import {
   FiClock,
   FiUser,
 } from "react-icons/fi";
+import {
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaClock,
+  FaUserTimes,
+  FaUmbrellaBeach,
+} from "react-icons/fa";
+
 import { CiMobile4 } from "react-icons/ci";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
@@ -40,6 +48,35 @@ export default function DailyClient() {
     const today = new Date().toISOString().split("T")[0]; // format: YYYY-MM-DD
     setDate(today);
   }, []);
+
+
+const stats = [
+    {
+      title: "Check-In Employees",
+      value: 117,
+      icon: <FaSignInAlt className="text-green-500 text-xl" />,
+    },
+    {
+      title: "Check-Out Employees",
+      value: 212,
+      icon: <FaSignOutAlt className="text-pink-500 text-xl" />,
+    },
+    {
+      title: "Late Employees",
+      value: 15,
+      icon: <FaClock className="text-orange-500 text-xl" />,
+    },
+    {
+      title: "Absent Employees",
+      value: 15,
+      icon: <FaUserTimes className="text-red-600 text-xl" />,
+    },
+    {
+      title: "Employees on Leave",
+      value: 8,
+      icon: <FaUmbrellaBeach className="text-blue-500 text-xl" />,
+    },
+  ];
 
   const methodIcons = {
     1: <CiMobile4 size={12} className="text-blue-500 inline ml-1" />, // Mobile App
@@ -277,7 +314,26 @@ export default function DailyClient() {
 
   return (
     <Layout>
-      <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-2">
+        {stats.map((stat, idx) => (
+          <div
+            key={idx}
+            className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 flex flex-col justify-between hover:shadow-md transition"
+          >
+            <div className="flex justify-between items-center">
+              <h3 className="text-xs font-medium text-gray-600">
+                {stat.title}
+              </h3>
+              {stat.icon}
+            </div>
+            <p className="text-sm font-semibold text-gray-800 mt-3">
+              {stat.value}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6 mt-3">
         <div className="flex justify-between items-center">
           <h2 className="text-base font-semibold text-gray-700">
             Daily Attendance
@@ -288,7 +344,7 @@ export default function DailyClient() {
         </div>
         {isOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-8/12 lg:w-6/12">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-6/12">
               <h3 className="text-lg text-center font-semibold mb-4">Add Attendance</h3>
 
               <div className="w-full">

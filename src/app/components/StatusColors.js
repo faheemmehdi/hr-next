@@ -11,7 +11,7 @@ const StatusDesign = ({statusId, label}) =>{
 
   return (
     <span
-      className={`px-2 py-1 rounded-full text-[11px] font-medium ${badgeClass}`}
+      className={`px-2 py-1 rounded-full text-xxs font-medium ${badgeClass}`}
     >
       {label || "Unknown"}
     </span>

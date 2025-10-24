@@ -5,13 +5,13 @@ import {
   FiUsers,
   FiCalendar,
   FiDollarSign,
-  FiFileText,
   FiTrendingUp,
   FiUserPlus,
   FiBarChart2,
   FiSettings,
+  FiClock
 } from "react-icons/fi";
-
+import { LuCalendarDays } from "react-icons/lu";
 const menuItems = [
   {
     icon: <FiHome className="text-md" />,
@@ -36,7 +36,7 @@ const menuItems = [
     ],
   },
   {
-    icon: <FiCalendar className="text-md" />,
+    icon: <FiClock className="text-md" />,
     href: "/attendance",
     label: "Attendance",
     description: "Monitor employee check-in and working hours",
@@ -45,6 +45,20 @@ const menuItems = [
       { label: "Monthly Report", href: "/attendance/monthly" },
       { label: "Regularization Requests", href: "/attendance/regularizations" },
       { label: "Devices & Terminals", href: "/attendance/terminals" },
+      { label: "Attendance Setting", href: "/attendance/settings" },
+    ],
+  },
+   {
+    icon: <LuCalendarDays className="text-md" />,
+    label: "Leave & Holidays",
+    href: "/leave",
+    description: "Manage leave types, requests, and calendars",
+    dropdown: [
+      { label: "Leave Requests", href: "/leave/requests", },
+      { label: "Leave Types & Policies", href: "/leave/settings", },
+      { label: "Holiday Calendars", href: "/leave/holidays", },
+      { label: "Team Leave Calendar", href: "/leave/calendar", },
+      { label: "Leave Balances", href: "/leave/balances", },
     ],
   },
   {
@@ -56,17 +70,6 @@ const menuItems = [
       { label: "Salary Slip", href: "/payroll/salary-slip" },
       { label: "Bonuses", href: "/payroll/bonuses" },
       { label: "Tax", href: "/payroll/tax" },
-    ],
-  },
-  {
-    icon: <FiFileText className="text-md" />,
-    href: "/leave-requests",
-    label: "Leave Requests",
-    description: "Review and manage employee leave applications",
-    dropdown: [
-      { label: "Pending", href: "/leave-requests/pending" },
-      { label: "Approved", href: "/leave-requests/approved" },
-      { label: "Rejected", href: "/leave-requests/rejected" },
     ],
   },
   {
@@ -146,7 +149,7 @@ export default function Sidebar() {
                   <li key={i}>
                     <Link
                       href={drop.href}
-                      className="block px-3 py-1 text-xs hover:bg-gray-100 rounded"
+                      className="block px-3 py-1 text-xxs hover:bg-gray-100 rounded"
                     >
                       {drop.label}
                     </Link>

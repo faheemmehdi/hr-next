@@ -4,9 +4,9 @@ import Layout from "y@/app/components/Layout";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import { CiServer } from "react-icons/ci";
 import { AiOutlineWifi } from "react-icons/ai";
+import { BsWifiOff } from "react-icons/bs";
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
 import { FiAlertOctagon } from "react-icons/fi";
-import { RiWifiOffLine } from "react-icons/ri";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { GoDeviceDesktop } from "react-icons/go";
 import { FaRegEdit } from "react-icons/fa";
@@ -71,7 +71,7 @@ function Terminals() {
         {
             title: "Offline Devices",
             value: 35,
-            icon: <RiWifiOffLine className="text-red-500 text-xl" />,
+            icon: <BsWifiOff className="text-red-500 text-xl" />,
         },
         {
             title: "Pending Configuration",
@@ -296,7 +296,7 @@ setShowErrors(true);
                 </div>
                 {isOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-8/12 lg:w-6/12">
+                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-6/12">
                             <h3 className="text-lg text-center font-semibold mb-4">Add Device</h3>
 
                             <div className="w-full">
@@ -433,7 +433,7 @@ setShowErrors(true);
 
                                 <div className="flex justify-end gap-2">
                                     <Button variant="cancel" onClick={handleCloseModal}>
-                                        Cancel
+                                        Close
                                     </Button>
                                     <Button variant="success" onClick={saveHandle}>
                                         Add Device
@@ -523,7 +523,7 @@ setShowErrors(true);
                                         {openMenuId === row.deviceId && (
                                             <div
                                                 ref={menuRef}
-                                                className="absolute top-full right-16 mt-1 z-50 w-35 bg-white border border-gray-200 rounded-xl shadow-lg"
+                                                className="absolute top-5 right-16 mt-1 z-50 w-35 bg-white border border-gray-200 rounded-xl shadow-lg"
                                             >
                                                 <ul className="py-2 text-xxs text-gray-700">
                                                     <li>

@@ -14,11 +14,12 @@ import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
-export default function Regularization() {
+export default function LeaveRequests() {
     const [date, setDate] = useState("");
     const [dateVal, setDateVal] = useState("");
     const [search, setSearch] = useState("");
     const [location, setLocation] = useState("");
+    const [type, setType] = useState("");
     const [locationVal, setLocationVal] = useState("");
     const [employee, setEmployee] = useState("");
     const [department, setDepartment] = useState("");
@@ -51,138 +52,161 @@ export default function Regularization() {
         setOpenMenuId((prev) => (prev === id ? null : id));
     };
 
-    const regularizationData = [
-        {
-            empId: "EMP201",
-            name: "Hassan Javed",
-            imageUrl: "/api/portraits/men/38.jpg",
-            location: "Karachi HQ",
-            date: "2025-10-18",
-            requestType: "Missed Check-In",
-            reason: "Forgot to mark attendance after morning meeting.",
-            submittedOn: "2025-10-18 09:20 AM",
-            attachments: ["/api/portraits/men/attache.jpg"],
-            statusId: 3,
-            status: "Pending",
-        },
-        {
-            empId: "EMP202",
-            name: "Amna Yousaf",
-            imageUrl: "/api/portraits/women/21.jpg",
-            location: "Lahore",
-            date: "2025-10-17",
-            requestType: "Manual Attendance",
-            reason: "Visited client site, device unavailable.",
-            submittedOn: "2025-10-17 06:10 PM",
-            attachments: ["/api/portraits/men/screenshot.jpg"],
-            statusId: 1,
-            status: "Approved",
-        },
-        {
-            empId: "EMP203",
-            name: "Salman Rafiq",
-            imageUrl: "/api/portraits/men/25.jpg",
-            location: "Remote (Hybrid)",
-            date: "2025-10-19",
-            requestType: "Missed Check-Out",
-            reason: "Wi-Fi disconnect caused missed checkout.",
-            submittedOn: "2025-10-19 09:05 PM",
-            attachments: [],
-            statusId: 2,
-            status: "Rejected",
-        },
-        {
-            empId: "EMP204",
-            name: "Nimra Gul",
-            imageUrl: "/api/portraits/women/29.jpg",
-            location: "Islamabad",
-            date: "2025-10-20",
-            requestType: "Incorrect Shift",
-            reason: "Shift timing assigned incorrectly by HR.",
-            submittedOn: "2025-10-20 02:45 PM",
-            attachments: ["/api/portraits/men/attendance.jpg"],
-            statusId: 3,
-            status: "Pending",
-        },
-        {
-            empId: "EMP205",
-            name: "Zeeshan Arif",
-            imageUrl: "/api/portraits/men/32.jpg",
-            location: "Lahore",
-            date: "2025-10-19",
-            requestType: "Manual Attendance",
-            reason: "Worked at field site without device access.",
-            submittedOn: "2025-10-19 04:10 PM",
-            attachments: ["/api/portraits/men/38.jpg"],
-            statusId: 1,
-            status: "Approved",
-        },
-        {
-            empId: "EMP206",
-            name: "Kiran Abbas",
-            imageUrl: "/api/portraits/women/35.jpg",
-            location: "Karachi HQ",
-            date: "2025-10-18",
-            requestType: "Missed Check-In",
-            reason: "Device malfunctioned during login.",
-            submittedOn: "2025-10-18 10:15 AM",
-            attachments: [],
-            statusId: 2,
-            status: "Rejected",
-        },
-        {
-            empId: "EMP207",
-            name: "Tahir Hussain",
-            imageUrl: "/api/portraits/men/38.jpg",
-            location: "Islamabad",
-            date: "2025-10-20",
-            requestType: "Check-In Correction",
-            reason: "App recorded wrong timestamp.",
-            submittedOn: "2025-10-20 11:00 AM",
-            attachments: ["correction-proof.jpg"],
-            statusId: 3,
-            status: "Pending",
-        },
-        {
-            empId: "EMP208",
-            name: "Sana Khalid",
-            imageUrl: "/api/portraits/women/44.jpg",
-            location: "Lahore",
-            date: "2025-10-21",
-            requestType: "Missed Attendance",
-            reason: "Forgot to log attendance during client travel.",
-            submittedOn: "2025-10-21 06:30 PM",
-            attachments: ["travel-document.pdf"],
-            statusId: 1,
-            status: "Approved",
-        },
-        {
-            empId: "EMP209",
-            name: "Usama Iqbal",
-            imageUrl: "/api/portraits/men/49.jpg",
-            location: "Remote (Home)",
-            date: "2025-10-18",
-            requestType: "Half Day Correction",
-            reason: "System marked full day absent instead of half day.",
-            submittedOn: "2025-10-18 12:45 PM",
-            attachments: [],
-            statusId: 3,
-            status: "Pending",
-        },
-        {
-            empId: "EMP210",
-            name: "Hira Rehman",
-            imageUrl: "/api/portraits/women/50.jpg",
-            location: "Karachi HQ",
-            date: "2025-10-19",
-            requestType: "Manual Check-Out",
-            reason: "Forgot to checkout after client meeting.",
-            submittedOn: "2025-10-19 08:55 PM",
-            attachments: ["meeting-notes.pdf"],
-            statusId: 1,
-            status: "Approved",
-        },
-    ];
+const leaveRequestsData = [
+  {
+    empId: "EMP301",
+    name: "Ahsan Qureshi",
+    imageUrl: "/api/portraits/men/28.jpg",
+    location: "Lahore HQ",
+    leaveType: "Annual Leave",
+    dates: "Mar 3 – Mar 5",
+    appliedDays: 3,
+    reason: "Family trip to northern areas.",
+    attachments: ["travel-plan.pdf"],
+    statusId: 1,
+    status: "Approved",
+    appliedOn: "Feb 25, 2025",
+    approvedBy: "Sarah Ahmed",
+  },
+  {
+    empId: "EMP302",
+    name: "Sana Imran",
+    imageUrl: "/api/portraits/women/34.jpg",
+    location: "Karachi HQ",
+    leaveType: "Sick Leave",
+    dates: "Apr 10 – Apr 12",
+    appliedDays: 3,
+    reason: "Viral fever and doctor's recommendation for rest.",
+    attachments: ["medical-certificate.jpg"],
+    statusId: 2,
+    status: "Rejected",
+    appliedOn: "Apr 8, 2025",
+    approvedBy: "Ali Khan",
+  },
+  {
+    empId: "EMP303",
+    name: "Tahir Hussain",
+    imageUrl: "/api/portraits/men/19.jpg",
+    location: "Islamabad Office",
+    leaveType: "Casual Leave",
+    dates: "May 20 – May 21",
+    appliedDays: 2,
+    reason: "Attending cousin’s wedding in Faisalabad.",
+    attachments: [],
+    statusId: 3,
+    status: "Pending",
+    appliedOn: "May 15, 2025",
+    approvedBy: "—",
+  },
+  {
+    empId: "EMP304",
+    name: "Nimra Gul",
+    imageUrl: "/api/portraits/women/41.jpg",
+    location: "Remote (Hybrid)",
+    leaveType: "Work From Home",
+    dates: "Jun 14 – Jun 14",
+    appliedDays: 1,
+    reason: "Power outage and commute issue.",
+    attachments: ["screenshot-powercut.png"],
+    statusId: 1,
+    status: "Approved",
+    appliedOn: "Jun 13, 2025",
+    approvedBy: "Hassan Rafiq",
+  },
+  {
+    empId: "EMP305",
+    name: "Zeeshan Arif",
+    imageUrl: "/api/portraits/men/37.jpg",
+    location: "Lahore HQ",
+    leaveType: "Emergency Leave",
+    dates: "Jul 2 – Jul 3",
+    appliedDays: 2,
+    reason: "Family medical emergency.",
+    attachments: ["hospital-slip.pdf"],
+    statusId: 3,
+    status: "Pending",
+    appliedOn: "Jul 1, 2025",
+    approvedBy: "—",
+  },
+  {
+    empId: "EMP306",
+    name: "Amna Yousaf",
+    imageUrl: "/api/portraits/women/30.jpg",
+    location: "Islamabad Office",
+    leaveType: "Annual Leave",
+    dates: "Aug 10 – Aug 14",
+    appliedDays: 5,
+    reason: "Personal travel plan.",
+    attachments: ["ticket-itinerary.pdf"],
+    statusId: 1,
+    status: "Approved",
+    appliedOn: "Aug 5, 2025",
+    approvedBy: "Sara Bukhari",
+  },
+  {
+    empId: "EMP307",
+    name: "Hassan Javed",
+    imageUrl: "/api/portraits/men/32.jpg",
+    location: "Karachi HQ",
+    leaveType: "Casual Leave",
+    dates: "Sep 18 – Sep 19",
+    appliedDays: 2,
+    reason: "Relocation and house shifting.",
+    attachments: [],
+    statusId: 2,
+    status: "Rejected",
+    appliedOn: "Sep 16, 2025",
+    approvedBy: "Nimra Asif",
+  },
+  {
+    empId: "EMP308",
+    name: "Kiran Abbas",
+    imageUrl: "/api/portraits/women/38.jpg",
+    location: "Remote (Home)",
+    leaveType: "Maternity Leave",
+    dates: "Oct 1 – Dec 30",
+    appliedDays: 91,
+    reason: "Maternity period.",
+    attachments: ["medical-report.pdf"],
+    statusId: 1,
+    status: "Approved",
+    appliedOn: "Sep 15, 2025",
+    approvedBy: "HR Department",
+  },
+  {
+    empId: "EMP309",
+    name: "Usama Iqbal",
+    imageUrl: "/api/portraits/men/45.jpg",
+    location: "Lahore HQ",
+    leaveType: "Sick Leave",
+    dates: "Nov 5 – Nov 6",
+    appliedDays: 2,
+    reason: "Flu and fever.",
+    attachments: ["doctor-note.jpg"],
+    statusId: 3,
+    status: "Pending",
+    appliedOn: "Nov 4, 2025",
+    approvedBy: "—",
+  },
+  {
+    empId: "EMP310",
+    name: "Hira Rehman",
+    imageUrl: "/api/portraits/women/47.jpg",
+    location: "Karachi HQ",
+    leaveType: "Casual Leave",
+    dates: "Dec 22 – Dec 23",
+    appliedDays: 2,
+    reason: "Attending friend’s engagement.",
+    attachments: ["invitation-card.jpg"],
+    statusId: 1,
+    status: "Approved",
+    appliedOn: "Dec 20, 2025",
+    approvedBy: "Sana Tariq",
+  },
+];
+
+
+
 
 
 
@@ -211,6 +235,20 @@ export default function Regularization() {
         "id",
         "name"
     );
+const leaveTypes = mapSelectOptions(
+  [
+    { id: 1, name: "Annual Leave" },
+    { id: 2, name: "Sick Leave" },
+    { id: 3, name: "Casual Leave" },
+    { id: 4, name: "Maternity Leave" },
+    { id: 5, name: "Paternity Leave" },
+    { id: 6, name: "Emergency Leave" },
+    { id: 7, name: "Work From Home" },
+    { id: 8, name: "Unpaid Leave" },
+  ],
+  "id",
+  "name"
+);
 
     const employees = mapSelectOptions(
         [
@@ -238,7 +276,7 @@ export default function Regularization() {
             <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
-                        Regularization Requests
+                        Leave Requests
                     </h2>
                     <Button type="button" variant="success">
                         Export Requests
@@ -265,7 +303,16 @@ export default function Regularization() {
                                 controlHeight="2rem"
                             />
                         </div>
-
+                        <div className="mb-1 w-[9rem]">
+                            <CustomSelect
+                                name="type"
+                                value={type}
+                                placeholder="Leave Type"
+                                onChange={setType}
+                                options={leaveTypes}
+                                controlHeight="2rem"
+                            />
+                        </div>
                         <div className="mb-1 w-[9rem]">
                             <CustomSelect
                                 name="status"
@@ -295,17 +342,18 @@ export default function Regularization() {
                                 <th className="px-4 py-3 text-left rounded-tl-md">Emp ID</th>
                                 <th className="px-4 py-3 text-left">Name</th>
                                 <th className="px-4 py-3 text-left">Location</th>
-                                <th className="px-4 py-3 text-left">Date</th>
-                                <th className="px-4 py-3 text-left">Request Type</th>
+                                <th className="px-4 py-3 text-left">Leave Type</th>
+                                <th className="px-4 py-3 text-left">Dates</th>
+                                <th className="px-4 py-3 text-left">Applied Days</th>
                                 <th className="px-4 py-3 text-left">Reason</th>
-                                <th className="px-4 py-3 text-left">Submitted On</th>
-                                <th className="px-4 py-3 text-left">Attachements</th>
+                                <th className="px-4 py-3 text-left">Applied On</th>
+                                <th className="px-4 py-3 text-left">Approved By</th>
                                 <th className="px-4 py-3 text-left">Status</th>
                                 <th className="px-4 py-3 text-left">Action</th>
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {regularizationData.map((row, idx) => (
+                            {leaveRequestsData.map((row, idx) => (
                                 <tr
                                     key={idx}
                                     className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
@@ -328,36 +376,13 @@ export default function Regularization() {
 
                                     </td>
                                     <td className="px-4 py-3">{row.location}</td>
-                                    <td className="px-4 py-3">{row.date}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]">{row.requestType}</td>
+                                    <td className="px-4 py-3">{row.leaveType}</td>
+                                    <td className="px-4 py-3">{row.dates}</td>
+                                    <td className="px-4 py-3">{row.appliedDays} Days</td>
                                     <td className="px-4 py-3 truncate max-w-[120px]" title={row.reason}>{row.reason}</td>
-                                    <td className="px-4 py-3">{row.submittedOn}</td>
-                                    <td className="px-4 py-3">
-                                        {row.attachments && row.attachments.length > 0 ? (
-                                            <div className="flex flex-wrap gap-2">
-                                                {row.attachments.map((file, i) => {
-                                                    const fileName = file.split("/").pop(); // 👈 extracts only "file.pdf"
-
-                                                    return (
-                                                        <a
-                                                            key={i}
-                                                            target="_blank"
-                                                            href={`${baseUrl}${file}`}
-                                                            className="text-xxs px-2 py-1 rounded bg-blue-50 text-blue-500 border border-blue-100 hover:bg-blue-100 transition inline-flex items-center"
-                                                            title={fileName}
-                                                        >
-                                                            <i className="bi bi-paperclip me-1"></i>
-                                                            {fileName.length > 15 ? fileName.substring(0, 12) + "…" : fileName}
-                                                        </a>
-                                                    );
-                                                })}
-
-                                            </div>
-                                        ) : (
-                                            <span className="text-gray-400 text-xxs italic">No Attachment</span>
-                                        )}
-                                    </td>
-
+                                 
+                                    <td className="px-4 py-3">{row.appliedOn}</td>
+                                    <td className="px-4 py-3">{row.approvedBy}</td>
                                     <td className="px-4 py-3">
                                         <StatusDesign statusId={row.statusId} label={row.status} />
                                     </td>
@@ -411,18 +436,18 @@ export default function Regularization() {
 
                                     <div className="border-b border-gray-400 pb-3 mb-4">
                                         <div className="flex justify-between">
-                                            <h2 className="text-lg font-semibold text-gray-800">Regularization Request Details</h2>
-                                            <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-green-100 text-green-700">
-                                                Approved
+                                            <h2 className="text-lg font-semibold text-gray-800">Leave Request Details</h2>
+                                            <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-yellow-100 text-yellow-700">
+                                                Pending
                                             </span>
                                         </div>
-                                        <p className="text-xxs text-gray-500">Submitted on Oct 20, 2025 at 09:10 AM</p>
+                                        <p className="text-xxs text-gray-500">Applied on Oct 20, 2025 at 09:10 AM</p>
                                     </div>
 
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                                         <div>
                                             <p className="text-xxs text-gray-500 font-medium">Employee Name</p>
-                                            <p className="text-xs font-semibold text-gray-800">Ali Khan</p>
+                                            <p className="text-xs font-semibold text-gray-800">Muhammad Khan</p>
                                         </div>
                                         <div>
                                             <p className="text-xxs text-gray-500 font-medium">Employee ID</p>
@@ -434,28 +459,37 @@ export default function Regularization() {
                                         </div>
                                     </div>
 
+
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Date</p>
-                                            <p className="text-xs text-gray-800">Oct 19, 2025</p>
-                                        </div>
                                         <div>
                                             <p className="text-xxs text-gray-500 font-medium">Shift</p>
                                             <p className="text-xs text-gray-800">Morning (9:00 AM - 6:00 PM)</p>
                                         </div>
                                         <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Method</p>
-                                            <p className="text-xs text-gray-800">Biometric</p>
+                                            <p className="text-xxs text-gray-500 font-medium">Leave Type</p>
+                                            <p className="text-xs text-gray-800">Sick Leave</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xxs text-gray-500 font-medium">Leave Days</p>
+                                            <p className="text-xs text-gray-800">3 Days</p>
                                         </div>
                                     </div>
+ <div className="grid grid-cols-1 md:grid-cols-1 mb-4">
+                                        <div>
+                                            <p className="text-xxs text-gray-500 font-medium">Applied Dates</p>
+                                            <div className="flex text-xxs">
+                                            <p className="text-gray-800">17 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
+                                            <p className="text-gray-800">18 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
+                                            <p className="text-gray-800">19 Feb 2025</p>
 
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="border-t border-gray-400 pt-4 mb-4">
-                                        <p className="text-xxs text-gray-500 font-medium mb-1">Request Type</p>
-                                        <p className="text-xs font-semibold text-gray-800 mb-3">Missed Punch (In-Time Correction)</p>
-
+                                       
                                         <p className="text-xxs text-gray-500 font-medium mb-1">Reason Provided</p>
                                         <p className="text-xs text-gray-800 text-justify">
-                                            Attended client meeting offsite, forgot to punch in.Attended client meeting offsite, forgot to punch in.
+                                           Relocation and house shifting.
                                         </p>
                                     </div>
 
@@ -464,7 +498,7 @@ export default function Regularization() {
                                         <div className="bg-gray-50 border border-gray-200 rounded px-2 py-1 flex items-center justify-between">
                                             <div className="flex items-center space-x-2">
                                                 <FaDotCircle className="h-2 w-2 text-gray-500" />
-                                                <span className="text-xxs text-gray-700">client_meeting.jpg</span>
+                                                <span className="text-xxs text-gray-700">Card.jpg</span>
                                             </div>
                                             <button className="text-xxs text-blue-600 hover:underline">View</button>
                                         </div>
@@ -492,7 +526,7 @@ export default function Regularization() {
                         <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-4/12">
                             <div className="flex items-center justify-between mb-2">
                                 <h2 className="text-lg font-semibold text-gray-800">
-                                    Reject Regularization Request
+                                    Reject Leave Request
                                 </h2>
 
                             </div>
@@ -500,16 +534,19 @@ export default function Regularization() {
                             {/* Employee Info */}
                             <div className="border-gray-300 border-b p-1 mb-4">
                                 <p className="text-xs text-gray-800 font-medium">
-                                    <span className="font-semibold">Muhammad Ali</span>
+                                    <span className="font-semibold">Muhammad Khan</span>
                                 </p>
                                 <p className="text-xxs text-gray-600">
                                     <span>Employee ID:</span> EMP-1024
                                 </p>
                                 <p className="text-xxs text-gray-600">
-                                    <span>Date:</span> 15 Oct 2025
+                                    <span>Applied Dates:</span> 3 Oct - 5 Oct (3 Days)
                                 </p>
                                 <p className="text-xxs text-gray-600">
-                                    <span>Reason:</span> “Marked Absent by Mistake”
+                                    <span>Leave Type:</span> Casual Leave
+                                </p>
+                                <p className="text-xxs text-gray-600">
+                                    <span>Reason:</span> “Relocation and house shifting.”
                                 </p>
                             </div>
 

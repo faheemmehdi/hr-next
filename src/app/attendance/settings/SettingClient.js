@@ -136,7 +136,7 @@ function SettingClient() {
             <div className="flex justify-between text-lg p-1 mb-1">
                 <h2>Attendance Settings</h2>
             </div>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-5">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-screen p-5">
                 <div className="flex gap-2 border-b-2 border-gray-100 font-medium">
                     <button
                         onClick={() => setActiveTab("general")}
