@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { RiInformation2Line } from "react-icons/ri";
 export default function Input({
   label,
   type = "text",
@@ -11,6 +12,7 @@ export default function Input({
   icon,
   noMargin = false,
   variant = "default",
+  tooltip = "",
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -19,12 +21,12 @@ export default function Input({
   // Define style presets
   const variants = {
     default: {
-      label: "block text-xxs font-medium text-gray-700 mb-1",
+      label: "text-xxs font-medium text-gray-700 mb-1",
       input:
         "w-full px-4 py-2 border rounded focus:outline-none mb-1 text-xxs h-6 lg:h-8",
     },
     auth: {
-      label: "block text-xxs  text-white mb-2 mt-3",
+      label: "text-xxs  text-white mb-2 mt-3",
       input:
         "w-full px-4 py-3 mb-1 rounded-md text-white text-xxs h-10 shadow-sm border border-gray-600 bg-transparent focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-400",
     },
@@ -37,7 +39,23 @@ export default function Input({
 
   return (
     <div className={`${noMargin ? "" : "mb-4"}`}>
-      {label && <label className={variants[variant].label}>{label}</label>}
+      {label && (
+  <label className={`${variants[variant].label} flex items-center gap-1 relative`}>
+    <span>{label}</span>
+    {tooltip && (
+      <div className="relative group">
+        <RiInformation2Line  className="text-gray-500 cursor-pointer hover:text-blue-500 transition-colors text-sm" />
+        <div
+          className="absolute left-1/2 -translate-x-1/2 mt-1 w-max max-w-[200px] opacity-0 group-hover:opacity-100 
+          transition-opacity duration-200 bg-gray-800 text-white text-[10px] px-2 py-1 rounded shadow-md z-10"
+        >
+          {tooltip}
+        </div>
+      </div>
+    )}
+  </label>
+)}
+
 
       <div className="relative">
         {icon && (

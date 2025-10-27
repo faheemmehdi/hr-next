@@ -365,7 +365,7 @@ setShowErrors(true);
                                         onChange={setType}
                                         options={types}
                                         controlHeight="2rem"
-                                        error={showErrors && !types ? "Device Type is required" : ""}
+                                        error={showErrors && !type ? "Device Type is required" : ""}
                                     />
                                     <CustomSelect
                                         name="time"

@@ -14,28 +14,32 @@ import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineBlock } from "react-icons/md";
+import ToggleSwitch from "y@/app/components/ToggleSwitch";
 export default function LeaveSettings() {
-    const [date, setDate] = useState("");
-    const [dateVal, setDateVal] = useState("");
+    const [typeName, setTypeName] = useState("");
+    const [typeCode, setTypeCode] = useState("");
     const [search, setSearch] = useState("");
     const [location, setLocation] = useState("");
     const [type, setType] = useState("");
     const [locationVal, setLocationVal] = useState("");
-    const [employee, setEmployee] = useState("");
-    const [department, setDepartment] = useState("");
-    const [departVal, setDepartVal] = useState("");
+    const [leaveLimit, setLeaveLimit] = useState("");
+    const [CFAllow, setCFAllow] = useState("");
+    const [CFDays, setCFDays] = useState("");
     const [status, setStatus] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
-    const [checkIn, setCheckIn] = useState("");
-    const [checkOut, setCheckOut] = useState("");
-    const [remarks, setRemarks] = useState("");
+    const [isAddLeaveOpen, setAddLeaveOpen] = useState(false);
+    const [cashAllow, setCashAllow] = useState(false);
+    const [probation, setProbation] = useState(true);
+    const [active, setActive] = useState("");
     const [showErrors, setShowErrors] = useState(false);
 
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false);
     const openReasonModal = () => setIsReasonOpen(true);
     const closeReasonModal = () => setIsReasonOpen(false);
+    const openAddLeaveModal = () => setAddLeaveOpen(true);
+    const closeAddLeaveModal = () => setAddLeaveOpen(false);
     const [openMenuId, setOpenMenuId] = useState(null);
     const menuRef = useRef();
     useEffect(() => {
@@ -52,113 +56,113 @@ export default function LeaveSettings() {
         setOpenMenuId((prev) => (prev === id ? null : id));
     };
 
-const leaveTypesData = [
-  {
-    typeId: 1,
-    code: "AL",
-    name: "Annual Leave",
-    annualLimit: 20,
-    accrual: "Yearly",
-    carryForward: 1, // 1 = Allowed
-    carryForwardDays: 10,
-    encashment: 1, // 1 = Allowed
-    eligibility: "Confirmed employees only",
-    probation: 0, // 0 = Not allowed
-    location: "All Locations",
-    statusId: 1,
-    status: "Active",
-  },
-  {
-    typeId: 2,
-    code: "SL",
-    name: "Sick Leave",
-    annualLimit: 8,
-    accrual: "Monthly",
-    carryForward: 0,
-    carryForwardDays: 0,
-    encashment: 0,
-    eligibility: "All employees",
-    probation: 1,
-    location: "All Locations",
-    statusId: 1,
-    status: "Active",
-  },
-  {
-    typeId: 3,
-    code: "CL",
-    name: "Casual Leave",
-    annualLimit: 12,
-    accrual: "Monthly",
-    carryForward: 1,
-    carryForwardDays: 6,
-    encashment: 0,
-    eligibility: "All confirmed staff",
-    probation: 0,
-    location: "Lahore HQ",
-    statusId: 1,
-    status: "Active",
-  },
-  {
-    typeId: 4,
-    code: "ML",
-    name: "Maternity Leave",
-    annualLimit: 90,
-    accrual: "On Application",
-    carryForward: 0,
-    carryForwardDays: 0,
-    encashment: 0,
-    eligibility: "Female employees only",
-    probation: 0,
-    location: "Karachi HQ",
-    statusId: 1,
-    status: "Active",
-  },
-  {
-    typeId: 5,
-    code: "PL",
-    name: "Paternity Leave",
-    annualLimit: 10,
-    accrual: "On Application",
-    carryForward: 0,
-    carryForwardDays: 0,
-    encashment: 0,
-    eligibility: "Male employees only",
-    probation: 0,
-    location: "Islamabad Office",
-    statusId: 2,
-    status: "Inactive",
-  },
-  {
-    typeId: 6,
-    code: "EL",
-    name: "Emergency Leave",
-    annualLimit: 5,
-    accrual: "On Need Basis",
-    carryForward: 0,
-    carryForwardDays: 0,
-    encashment: 0,
-    eligibility: "All employees",
-    probation: 1,
-    location: "All Locations",
-    statusId: 1,
-    status: "Active",
-  },
-  {
-    typeId: 7,
-    code: "WFH",
-    name: "Work From Home",
-    annualLimit: 12,
-    accrual: "Monthly",
-    carryForward: 0,
-    carryForwardDays: 0,
-    encashment: 0,
-    eligibility: "Eligible roles only",
-    probation: 1,
-    location: "Remote / Hybrid",
-    statusId: 2,
-    status: "Inactive",
-  },
-];
+    const leaveTypesData = [
+        {
+            typeId: 1,
+            code: "AL",
+            name: "Annual Leave",
+            annualLimit: 20,
+            accrual: "Yearly",
+            carryForward: 1, // 1 = Allowed
+            carryForwardDays: 10,
+            encashment: 1, // 1 = Allowed
+            eligibility: "Confirmed employees only",
+            probation: 0, // 0 = Not allowed
+            location: "All Locations",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            typeId: 2,
+            code: "SL",
+            name: "Sick Leave",
+            annualLimit: 8,
+            accrual: "Monthly",
+            carryForward: 0,
+            carryForwardDays: 0,
+            encashment: 0,
+            eligibility: "All employees",
+            probation: 1,
+            location: "All Locations",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            typeId: 3,
+            code: "CL",
+            name: "Casual Leave",
+            annualLimit: 12,
+            accrual: "Monthly",
+            carryForward: 1,
+            carryForwardDays: 6,
+            encashment: 0,
+            eligibility: "All confirmed staff",
+            probation: 0,
+            location: "Lahore HQ",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            typeId: 4,
+            code: "ML",
+            name: "Maternity Leave",
+            annualLimit: 90,
+            accrual: "On Application",
+            carryForward: 0,
+            carryForwardDays: 0,
+            encashment: 0,
+            eligibility: "Female employees only",
+            probation: 0,
+            location: "Karachi HQ",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            typeId: 5,
+            code: "PL",
+            name: "Paternity Leave",
+            annualLimit: 10,
+            accrual: "On Application",
+            carryForward: 0,
+            carryForwardDays: 0,
+            encashment: 0,
+            eligibility: "Male employees only",
+            probation: 0,
+            location: "Islamabad Office",
+            statusId: 2,
+            status: "Inactive",
+        },
+        {
+            typeId: 6,
+            code: "EL",
+            name: "Emergency Leave",
+            annualLimit: 5,
+            accrual: "On Need Basis",
+            carryForward: 0,
+            carryForwardDays: 0,
+            encashment: 0,
+            eligibility: "All employees",
+            probation: 1,
+            location: "All Locations",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            typeId: 7,
+            code: "WFH",
+            name: "Work From Home",
+            annualLimit: 12,
+            accrual: "Monthly",
+            carryForward: 0,
+            carryForwardDays: 0,
+            encashment: 0,
+            eligibility: "Eligible roles only",
+            probation: 1,
+            location: "Remote / Hybrid",
+            statusId: 2,
+            status: "Inactive",
+        },
+    ];
 
 
 
@@ -190,20 +194,19 @@ const leaveTypesData = [
         "id",
         "name"
     );
-const leaveTypes = mapSelectOptions(
-  [
-    { id: 1, name: "Annual Leave" },
-    { id: 2, name: "Sick Leave" },
-    { id: 3, name: "Casual Leave" },
-    { id: 4, name: "Maternity Leave" },
-    { id: 5, name: "Paternity Leave" },
-    { id: 6, name: "Emergency Leave" },
-    { id: 7, name: "Work From Home" },
-    { id: 8, name: "Unpaid Leave" },
-  ],
-  "id",
-  "name"
-);
+    const accrualTypes = mapSelectOptions(
+        [
+            { id: 1, name: "Monthly" },
+            { id: 2, name: "Quarterly" },
+            { id: 3, name: "Yearly" },
+            { id: 4, name: "On Joining" },
+            { id: 5, name: "On Application" },
+            { id: 6, name: "Manual Adjustment" },
+        ],
+        "id",
+        "name"
+    );
+
 
     const employees = mapSelectOptions(
         [
@@ -222,7 +225,7 @@ const leaveTypes = mapSelectOptions(
         "name"
     );
 
-   
+
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 
@@ -233,7 +236,7 @@ const leaveTypes = mapSelectOptions(
                     <h2 className="text-base font-semibold text-gray-700">
                         Leave Types & Policies
                     </h2>
-                    <Button type="button" variant="success">
+                    <Button type="button" onClick={openAddLeaveModal} variant="success">
                         Add Leave Type
                     </Button>
                 </div>
@@ -334,16 +337,16 @@ const leaveTypes = mapSelectOptions(
                                                             <FiEdit3 className="mr-2 text-sm" /> Edit Leave Type
                                                         </button>
                                                     </li>
-                                                     <li>
-                                                        <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 hover:text-red-500">
-                                                            <MdOutlineBlock className="mr-2 text-sm" /> Deactivate
+                                                    <li>
+                                                        <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-500">
+                                                            <MdOutlineBlock className="mr-2 text-sm" /> Deactivate Type
                                                         </button>
                                                     </li>
-                                                    <li>
+                                                    {/* <li>
                                                         <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-500">
                                                             <RxCross2 className="mr-2 text-sm" /> Delete Leave Type
                                                         </button>
-                                                    </li>
+                                                    </li> */}
 
                                                 </ul>
                                             </div>
@@ -402,22 +405,22 @@ const leaveTypes = mapSelectOptions(
                                             <p className="text-xs text-gray-800">3 Days</p>
                                         </div>
                                     </div>
- <div className="grid grid-cols-1 md:grid-cols-1 mb-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-1 mb-4">
                                         <div>
                                             <p className="text-xxs text-gray-500 font-medium">Applied Dates</p>
                                             <div className="flex text-xxs">
-                                            <p className="text-gray-800">17 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                            <p className="text-gray-800">18 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                            <p className="text-gray-800">19 Feb 2025</p>
+                                                <p className="text-gray-800">17 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
+                                                <p className="text-gray-800">18 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
+                                                <p className="text-gray-800">19 Feb 2025</p>
 
                                             </div>
                                         </div>
                                     </div>
                                     <div className="border-t border-gray-400 pt-4 mb-4">
-                                       
+
                                         <p className="text-xxs text-gray-500 font-medium mb-1">Reason Provided</p>
                                         <p className="text-xs text-gray-800 text-justify">
-                                           Relocation and house shifting.
+                                            Relocation and house shifting.
                                         </p>
                                     </div>
 
@@ -449,12 +452,197 @@ const leaveTypes = mapSelectOptions(
                     </div>
                 )}
 
+
+                {isAddLeaveOpen && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-6/12">
+                            <h3 className="text-lg text-center font-semibold mb-4">Add Leave Type</h3>
+                            <div className="w-full">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                                    <CustomSelect
+                                        name="location"
+                                        label="Location"
+                                        value={locationVal}
+                                        placeholder="Select Location"
+                                        onChange={setLocationVal}
+                                        options={locations}
+                                        controlHeight="2rem"
+                                        error={showErrors && !locationVal ? "Location is required" : ""}
+                                    />
+
+                                    <Input
+                                        type="text"
+                                        name="typeName"
+                                        placeholder="Enter Leave Type name"
+                                        label="Leave Type Name"
+                                        noMargin={true}
+                                        value={typeName}
+                                        onChange={(e) => setTypeName(e.target.value)}
+                                        error={showErrors && !typeName ? "Leave Type Name is required" : ""}
+                                    />
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                                    <Input
+                                        type="text"
+                                        name="typeCode"
+                                        placeholder="Enter Leave Type Code"
+                                        label="Leave Type Code"
+                                        noMargin={true}
+                                        value={typeCode}
+                                        onChange={(e) => setTypeCode(e.target.value)}
+                                        error={showErrors && !typeCode ? "Type Code is required" : ""}
+                                    />
+                                    <Input
+                                        type="number"
+                                        name="leavesLimit"
+                                        placeholder="Enter number"
+                                        label="Annual Limit"
+                                        noMargin={true}
+                                        value={leaveLimit}
+                                        onChange={(e) => setLeaveLimit(e.target.value)}
+                                        error={showErrors && !leaveLimit ? "Annual Limit is required" : ""}
+                                    />
+                                    <CustomSelect
+                                        name="type"
+                                        label="Accrual Type"
+                                        value={type}
+                                        placeholder="Select Type"
+                                        onChange={setType}
+                                        options={accrualTypes}
+                                        controlHeight="2rem"
+                                        error={showErrors && !type ? "Accrual Type is required" : ""}
+                                    />
+
+
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+
+                                    <div className="flex flex-col gap-2">
+                                        <div className="w-full md:w-62">
+                                            <ToggleSwitch
+                                                label="Carry Forward Allowed"
+                                                checked={CFAllow}
+                                                onChange={setCFAllow}
+                                            />
+                                        </div>
+                                        {CFAllow && (
+                                            <Input
+                                                type="number"
+                                                name="cfDays"
+                                                placeholder="Enter Max Days"
+                                                label="Carry Forward Limit (Days)"
+                                                noMargin={true}
+                                                value={CFDays}
+                                                onChange={(e) => setCFDays(e.target.value)}
+                                                error={showErrors && !CFDays && CFAllow ? "Carry Forward Limit is required" : ""}
+                                            />
+                                        )}
+                                    </div>
+
+                                    <div className="flex flex-col gap-2">
+                                        <div className="w-full md:w-62">
+                                            <ToggleSwitch
+                                                label="Encashment Allowed"
+                                                checked={cashAllow}
+                                                onChange={setCashAllow}
+                                            />
+                                        </div>
+                                        {cashAllow && (
+                                            <div className="w-full">
+                                                <label
+                                                    htmlFor="cashPolicyNote"
+                                                    className="block text-xxs text-gray-700 mb-1"
+                                                >
+                                                    Encashment Policy Note
+                                                </label>
+                                                <textarea
+                                                    id="cashPolicyNote"
+                                                    rows="1"
+                                                    placeholder="Enter policy note ..."
+                                                    className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 text-xxs 
+      focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 
+      resize-y overflow-hidden transition-all duration-150 min-h-[32px] max-h-[150px]"
+                                                />
+                                            </div>
+
+                                        )}
+                                    </div>
+
+
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                                    <div className="w-full">
+                                        <Input
+                                            type="number"
+                                            name="cfDays"
+                                            placeholder="Enter Max Days"
+                                            label="Carry Forward Limit (Days)"
+                                            noMargin={true}
+                                            value={CFDays}
+                                            onChange={(e) => setCFDays(e.target.value)}
+                                            error={showErrors && !CFDays && CFAllow ? "Carry Forward Limit is required" : ""}
+                                        />
+                                    </div>
+                                    <div className="w-full flex items-center">
+                                        <div className="w-full md:w-37 md:mt-4">
+                                            <ToggleSwitch
+                                                label="Probation Eligibility"
+                                                checked={probation}
+                                                onChange={setProbation}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="w-full flex items-center">
+
+                                        <div className="w-full md:w-37 md:mt-4">
+                                            <ToggleSwitch
+                                                label="Active Status"
+                                                checked={active}
+                                                onChange={setActive}
+                                            />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div className="w-full mb-3">
+                                    <label
+                                        htmlFor="pDesc"
+                                        className="block text-xxs text-gray-700 mb-2"
+                                    >
+                                        Policy Description / Notes
+                                    </label>
+                                    <textarea
+                                        id="pDesc"
+                                        rows="4"
+                                        placeholder="Enter policies notes..."
+                                        className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
+             focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex justify-end gap-2">
+                                <Button variant="cancel" onClick={closeAddLeaveModal}>
+                                    Close
+                                </Button>
+                                <Button variant="success">
+                                    Save
+                                </Button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                )}
+
                 {isReasonOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
                         <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-4/12">
                             <div className="flex items-center justify-between mb-2">
                                 <h2 className="text-lg font-semibold text-gray-800">
-                                    Reject Leave Request
+                                    Leave Type Details
                                 </h2>
 
                             </div>
@@ -486,13 +674,13 @@ const leaveTypes = mapSelectOptions(
                             {/* Textarea */}
                             <div className="mb-6">
                                 <label
-                                    htmlFor="rejectionReason"
+                                    htmlFor="cashPolicyNote"
                                     className="block text-xxs text-gray-700 mb-2"
                                 >
                                     Rejection Reason <span className="text-red-500">*</span>
                                 </label>
                                 <textarea
-                                    id="rejectionReason"
+                                    id="cashPolicyNote"
                                     rows="4"
                                     placeholder="Write your reason here..."
                                     className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 

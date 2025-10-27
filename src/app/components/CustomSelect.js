@@ -1,5 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
+import { RiInformation2Line } from "react-icons/ri";
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
@@ -17,6 +18,7 @@ export default function CustomSelect({
   variant = "default", // "default", "auth", "wizard"
   controlHeight = "2.75rem",
   controlWidth,
+  tooltip = "",
 }) {
   const handleChange = (selected) => {
     if (isMulti) {
@@ -142,13 +144,25 @@ export default function CustomSelect({
       {label && (
         <label
           htmlFor={name}
-          className={`block text-xxs font-medium mb-1 ${variant === "auth" || variant === "wizard"
+          className={`text-xxs font-medium mb-1 ${variant === "auth" || variant === "wizard"
             ? "text-gray-200"
             : "text-gray-700"
             }`}
         >
           {label}
+          {tooltip && (
+            <div className="relative group">
+              <RiInformation2Line className="text-gray-500 cursor-pointer hover:text-blue-500 transition-colors text-sm" />
+              <div
+                className="absolute left-1/2 -translate-x-1/2 mt-1 w-max max-w-[200px] opacity-0 group-hover:opacity-100 
+                transition-opacity duration-200 bg-gray-800 text-white text-[10px] px-2 py-1 rounded shadow-md z-10"
+              >
+                {tooltip}
+              </div>
+            </div>
+          )}
         </label>
+      
       )}
 
       <Select
