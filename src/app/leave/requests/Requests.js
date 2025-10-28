@@ -12,6 +12,7 @@ import { FaDotCircle } from "react-icons/fa";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
+import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
 export default function LeaveRequests() {
@@ -520,19 +521,11 @@ const leaveTypes = mapSelectOptions(
                         </div>
                     </div>
                 )}
-
-                {isReasonOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-4/12">
-                            <div className="flex items-center justify-between mb-2">
-                                <h2 className="text-lg font-semibold text-gray-800">
-                                    Reject Leave Request
-                                </h2>
-
-                            </div>
-
-                            {/* Employee Info */}
-                            <div className="border-gray-300 border-b p-1 mb-4">
+<ReasonModal
+                    isOpen={isReasonOpen}
+                    title="Reject Leave Request"
+                    infoSection={
+                       <div className="border-gray-300 border-b p-1 mb-4">
                                 <p className="text-xs text-gray-800 font-medium">
                                     <span className="font-semibold">Muhammad Khan</span>
                                 </p>
@@ -548,46 +541,12 @@ const leaveTypes = mapSelectOptions(
                                 <p className="text-xxs text-gray-600">
                                     <span>Reason:</span> “Relocation and house shifting.”
                                 </p>
-                            </div>
-
-                            {/* Instruction */}
-                            <p className="text-xxs text-gray-600 mb-4">
-                                Please provide a reason for rejecting this request. The reason will be shared with the employee.
-                            </p>
-
-                            {/* Textarea */}
-                            <div className="mb-6">
-                                <label
-                                    htmlFor="rejectionReason"
-                                    className="block text-xxs text-gray-700 mb-2"
-                                >
-                                    Rejection Reason <span className="text-red-500">*</span>
-                                </label>
-                                <textarea
-                                    id="rejectionReason"
-                                    rows="4"
-                                    placeholder="Write your reason here..."
-                                    className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-             focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                />
-
-                            </div>
-
-
-                            <div className="flex justify-end gap-2">
-                                <Button variant="cancel" onClick={closeReasonModal}>
-                                    Close
-                                </Button>
-                                <Button variant="danger">
-                                    Reject Request
-                                </Button>
-                            </div>
-
-
-                        </div>
-                    </div>
-                )}
-
+                            </div>}
+                    onClose={closeReasonModal}
+                    // onSubmit={handleReject}
+                    submitLabel="Reject Request"
+                    reasonTitle="Please provide a reason for rejecting this request. The reason will be shared with the employee."
+                />
             </div>
         </Layout>
     );

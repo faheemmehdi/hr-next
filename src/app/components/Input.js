@@ -40,21 +40,23 @@ export default function Input({
   return (
     <div className={`${noMargin ? "" : "mb-4"}`}>
       {label && (
-  <label className={`${variants[variant].label} flex items-center gap-1 relative`}>
-    <span>{label}</span>
-    {tooltip && (
-      <div className="relative group">
-        <RiInformation2Line  className="text-gray-500 cursor-pointer hover:text-blue-500 transition-colors text-sm" />
-        <div
-          className="absolute left-1/2 -translate-x-1/2 mt-1 w-max max-w-[200px] opacity-0 group-hover:opacity-100 
-          transition-opacity duration-200 bg-gray-800 text-white text-[10px] px-2 py-1 rounded shadow-md z-10"
-        >
-          {tooltip}
-        </div>
-      </div>
-    )}
-  </label>
-)}
+        <label className={`${variants[variant].label} flex items-center gap-1 relative`}>
+          <span>{label}</span>
+          {tooltip && (
+            <div className="relative">
+              <RiInformation2Line className="text-gray-500 cursor-pointer hover:text-blue-500 transition-colors text-sm peer" />
+              <div
+                className="absolute left-1/2 -translate-x-1/2 mt-1 w-max max-w-[200px]
+          opacity-0 peer-hover:opacity-100 transition-opacity duration-200
+          bg-gray-800 text-white text-[10px] px-2 py-1 rounded shadow-md z-10 pointer-events-none"
+              >
+                {tooltip}
+              </div>
+            </div>
+          )}
+        </label>
+      )}
+
 
 
       <div className="relative">
@@ -72,15 +74,13 @@ export default function Input({
           placeholder={placeholder}
           className={`${variants[variant].input}
             ${icon ? "pl-10" : "pl-4"}
-            ${
-              type === "password" ? "pr-14" : ""
+            ${type === "password" ? "pr-14" : ""
             }  /* more space for text button */
-            ${
-              variant === "default"
-                ? error
-                  ? "border-red-500"
-                  : "border-gray-300 focus:border-gray-600"
-                : ""
+            ${variant === "default"
+              ? error
+                ? "border-red-500"
+                : "border-gray-300 focus:border-gray-600"
+              : ""
             }`}
         />
 

@@ -15,6 +15,7 @@ import StatusDesign from "y@/app/components/StatusColors";
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineBlock } from "react-icons/md";
 import ToggleSwitch from "y@/app/components/ToggleSwitch";
+import ReasonModal from "y@/app/components/ReasonConfirmModal";
 export default function LeaveSettings() {
     const [typeName, setTypeName] = useState("");
     const [typeCode, setTypeCode] = useState("");
@@ -25,6 +26,7 @@ export default function LeaveSettings() {
     const [leaveLimit, setLeaveLimit] = useState("");
     const [CFAllow, setCFAllow] = useState("");
     const [CFDays, setCFDays] = useState("");
+    const [ASAfter, setASAfter] = useState("");
     const [status, setStatus] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
@@ -367,72 +369,81 @@ export default function LeaveSettings() {
 
                                     <div className="border-b border-gray-400 pb-3 mb-4">
                                         <div className="flex justify-between">
-                                            <h2 className="text-lg font-semibold text-gray-800">Leave Request Details</h2>
-                                            <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-yellow-100 text-yellow-700">
-                                                Pending
+                                            <h2 className="text-lg font-semibold text-gray-800">Leave Type Details</h2>
+                                            <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-green-100 text-green-700">
+                                                Active
                                             </span>
                                         </div>
-                                        <p className="text-xxs text-gray-500">Applied on Oct 20, 2025 at 09:10 AM</p>
+                                        <p className="text-xxs text-gray-500">Updated on Oct 20, 2025 at 09:10 AM</p>
                                     </div>
 
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                                         <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Employee Name</p>
-                                            <p className="text-xs font-semibold text-gray-800">Muhammad Khan</p>
+                                            <p className="text-xxs text-gray-500 font-medium">Leave Type Name</p>
+                                            <p className="text-xs font-semibold text-gray-800">Casual Leave</p>
                                         </div>
                                         <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Employee ID</p>
-                                            <p className="text-xs text-gray-800">EMP-102</p>
+                                            <p className="text-xxs text-gray-500 font-medium">Code</p>
+                                            <p className="text-xs text-gray-800">CL</p>
                                         </div>
                                         <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Department</p>
-                                            <p className="text-xs text-gray-800">Sales</p>
+                                            <p className="text-xxs text-gray-500 font-medium">Location</p>
+                                            <p className="text-xs text-gray-800">Lahore</p>
                                         </div>
                                     </div>
 
 
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                                         <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Shift</p>
-                                            <p className="text-xs text-gray-800">Morning (9:00 AM - 6:00 PM)</p>
+                                            <p className="text-xxs text-gray-500 font-medium">Annual Limit</p>
+                                            <p className="text-xs text-gray-800">23 Days</p>
                                         </div>
                                         <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Leave Type</p>
-                                            <p className="text-xs text-gray-800">Sick Leave</p>
+                                            <p className="text-xxs text-gray-500 font-medium">Accrual Type</p>
+                                            <p className="text-xs text-gray-800">Yearly</p>
                                         </div>
                                         <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Leave Days</p>
-                                            <p className="text-xs text-gray-800">3 Days</p>
+                                             <p className="text-xxs text-gray-500 font-medium">Probation</p>
+                                            <p className="text-xs text-gray-800">No</p>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-1 mb-4">
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Applied Dates</p>
-                                            <div className="flex text-xxs">
-                                                <p className="text-gray-800">17 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                                <p className="text-gray-800">18 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                                <p className="text-gray-800">19 Feb 2025</p>
 
-                                            </div>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                                        <div>
+                                            <p className="text-xxs text-gray-500 font-medium">Carry Forward</p>
+                                            <p className="text-xs text-gray-800">Allowed</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xxs text-gray-500 font-medium">Carry Forward Limit</p>
+                                            <p className="text-xs text-gray-800">11 Days</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xxs text-gray-500 font-medium">Accrual Start After</p>
+                                            <p className="text-xs text-gray-800">32 Days</p>
                                         </div>
                                     </div>
+                                   
+                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                                        <div>
+                                            <p className="text-xxs text-gray-500 font-medium">Encashment</p>
+                                            <p className="text-xs text-gray-800">Allowed</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xxs text-gray-500 font-medium">Encashment Policy Note</p>
+                                            <p className="text-xs text-gray-800 text-justify truncate" title="Would you like me to show you a clean professional ToggleSwitch component built in Tailwind (with proper label alignment and smooth animation">Would you like me to show you a clean professional ToggleSwitch component built in Tailwind with proper label alignment and smooth animation</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xxs text-gray-500 font-medium">Carry Forward</p>
+                                            <p className="text-xs text-gray-800">Allowed</p>
+                                        </div>
+                                    </div>
+
                                     <div className="border-t border-gray-400 pt-4 mb-4">
 
-                                        <p className="text-xxs text-gray-500 font-medium mb-1">Reason Provided</p>
+                                        <p className="text-xxs text-gray-500 font-medium mb-1">Policy Description / Notes</p>
                                         <p className="text-xs text-gray-800 text-justify">
-                                            Relocation and house shifting.
+                                            Would you like me to show you a clean professional ToggleSwitch component built in Tailwind with proper label alignment and smooth animation
                                         </p>
-                                    </div>
-
-                                    <div className="border-t border-gray-400 pt-4 mb-4">
-                                        <p className="text-xxs text-gray-500 font-medium mb-2">Attachment</p>
-                                        <div className="bg-gray-50 border border-gray-200 rounded px-2 py-1 flex items-center justify-between">
-                                            <div className="flex items-center space-x-2">
-                                                <FaDotCircle className="h-2 w-2 text-gray-500" />
-                                                <span className="text-xxs text-gray-700">Card.jpg</span>
-                                            </div>
-                                            <button className="text-xxs text-blue-600 hover:underline">View</button>
-                                        </div>
                                     </div>
 
                                     <div className="flex justify-end border-t border-gray-400 pt-4">
@@ -510,6 +521,7 @@ export default function LeaveSettings() {
                                         onChange={setType}
                                         options={accrualTypes}
                                         controlHeight="2rem"
+                                        tooltip="Decides when employees get this leave (every month or year)."
                                         error={showErrors && !type ? "Accrual Type is required" : ""}
                                     />
 
@@ -561,8 +573,8 @@ export default function LeaveSettings() {
                                                     rows="1"
                                                     placeholder="Enter policy note ..."
                                                     className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 text-xxs 
-      focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 
-      resize-y overflow-hidden transition-all duration-150 min-h-[32px] max-h-[150px]"
+                                                    focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 
+                                                    resize-y overflow-hidden transition-all duration-150 min-h-[32px] max-h-[150px]"
                                                 />
                                             </div>
 
@@ -575,13 +587,13 @@ export default function LeaveSettings() {
                                     <div className="w-full">
                                         <Input
                                             type="number"
-                                            name="cfDays"
-                                            placeholder="Enter Max Days"
-                                            label="Carry Forward Limit (Days)"
+                                            name="asAfter"
+                                            placeholder="Enter Number"
+                                            label="Accrual Start After (Days)"
                                             noMargin={true}
-                                            value={CFDays}
-                                            onChange={(e) => setCFDays(e.target.value)}
-                                            error={showErrors && !CFDays && CFAllow ? "Carry Forward Limit is required" : ""}
+                                            value={ASAfter}
+                                            onChange={(e) => setASAfter(e.target.value)}
+                                            error={showErrors && !ASAfter && CFAllow ? "Accrual Start After is required" : ""}
                                         />
                                     </div>
                                     <div className="w-full flex items-center">
@@ -619,7 +631,7 @@ export default function LeaveSettings() {
                                         rows="4"
                                         placeholder="Enter policies notes..."
                                         className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-             focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
+                                        focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
                                     />
                                 </div>
                             </div>
@@ -637,72 +649,30 @@ export default function LeaveSettings() {
                     </div>
                 )}
 
-                {isReasonOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-4/12">
-                            <div className="flex items-center justify-between mb-2">
-                                <h2 className="text-lg font-semibold text-gray-800">
-                                    Leave Type Details
-                                </h2>
-
-                            </div>
-
-                            {/* Employee Info */}
-                            <div className="border-gray-300 border-b p-1 mb-4">
-                                <p className="text-xs text-gray-800 font-medium">
-                                    <span className="font-semibold">Muhammad Khan</span>
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Employee ID:</span> EMP-1024
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Applied Dates:</span> 3 Oct - 5 Oct (3 Days)
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Leave Type:</span> Casual Leave
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Reason:</span> “Relocation and house shifting.”
-                                </p>
-                            </div>
-
-                            {/* Instruction */}
-                            <p className="text-xxs text-gray-600 mb-4">
-                                Please provide a reason for rejecting this request. The reason will be shared with the employee.
+                <ReasonModal
+                    isOpen={isReasonOpen}
+                    title="Deactivate Leave Type"
+                    infoSection={
+                        <div className="border-gray-300 border-b py-1 mb-2">
+                            <p className="text-xs text-gray-800 font-medium">
+                                <span className="font-semibold">Annual Leave</span>
                             </p>
+                            <p className="text-xxs text-gray-600">
+                                <span>Code:</span> AL
+                            </p>
+                            <p className="text-xxs text-gray-600">
+                                <span>Location:</span> Multan
+                            </p>
+                            <p className="text-xxs text-gray-600">
+                                <span>Annual Limit:</span> 22
+                            </p>
+                        </div>}
+                    onClose={closeReasonModal}
+                    // onSubmit={handleReject}
+                    submitLabel="Deactivate"
+                    reasonTitle="Please provide a reason to deactivate this leave type."
+                />
 
-                            {/* Textarea */}
-                            <div className="mb-6">
-                                <label
-                                    htmlFor="cashPolicyNote"
-                                    className="block text-xxs text-gray-700 mb-2"
-                                >
-                                    Rejection Reason <span className="text-red-500">*</span>
-                                </label>
-                                <textarea
-                                    id="cashPolicyNote"
-                                    rows="4"
-                                    placeholder="Write your reason here..."
-                                    className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-             focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                />
-
-                            </div>
-
-
-                            <div className="flex justify-end gap-2">
-                                <Button variant="cancel" onClick={closeReasonModal}>
-                                    Close
-                                </Button>
-                                <Button variant="danger">
-                                    Reject Request
-                                </Button>
-                            </div>
-
-
-                        </div>
-                    </div>
-                )}
 
             </div>
         </Layout>

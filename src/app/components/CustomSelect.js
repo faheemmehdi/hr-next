@@ -141,29 +141,32 @@ export default function CustomSelect({
 
   return (
     <div className={`${variant === 'default' ? '' : 'mb-4'}`}>
-      {label && (
-        <label
-          htmlFor={name}
-          className={`text-xxs font-medium mb-1 ${variant === "auth" || variant === "wizard"
-            ? "text-gray-200"
-            : "text-gray-700"
-            }`}
+     {label && (
+  <label
+    htmlFor={name}
+    className={`text-xxs flex items-center gap-1 mb-1 ${
+      variant === "auth" || variant === "wizard"
+        ? "text-gray-200"
+        : "text-gray-700"
+    }`}
+  >
+    <span>{label}</span>
+    {tooltip && (
+      <div className="relative">
+        <RiInformation2Line className="text-gray-500 cursor-pointer hover:text-blue-500 transition-colors text-sm peer" />
+        {/* Tooltip shown only when icon hovered */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 mt-1 w-max max-w-[200px]
+          opacity-0 peer-hover:opacity-100 transition-opacity duration-200
+          bg-gray-800 text-white text-[10px] px-2 py-1 rounded shadow-md z-10 pointer-events-none"
         >
-          {label}
-          {tooltip && (
-            <div className="relative group">
-              <RiInformation2Line className="text-gray-500 cursor-pointer hover:text-blue-500 transition-colors text-sm" />
-              <div
-                className="absolute left-1/2 -translate-x-1/2 mt-1 w-max max-w-[200px] opacity-0 group-hover:opacity-100 
-                transition-opacity duration-200 bg-gray-800 text-white text-[10px] px-2 py-1 rounded shadow-md z-10"
-              >
-                {tooltip}
-              </div>
-            </div>
-          )}
-        </label>
-      
-      )}
+          {tooltip}
+        </div>
+      </div>
+    )}
+  </label>
+)}
+
 
       <Select
         id={name}

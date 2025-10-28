@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
+import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import {
     FiUser, FiEye
 } from "react-icons/fi";
@@ -229,7 +230,7 @@ export default function Regularization() {
         "name"
     );
 
-   
+
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 
@@ -487,69 +488,29 @@ export default function Regularization() {
                     </div>
                 )}
 
-                {isReasonOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-4/12">
-                            <div className="flex items-center justify-between mb-2">
-                                <h2 className="text-lg font-semibold text-gray-800">
-                                    Reject Regularization Request
-                                </h2>
-
-                            </div>
-
-                            {/* Employee Info */}
-                            <div className="border-gray-300 border-b p-1 mb-4">
-                                <p className="text-xs text-gray-800 font-medium">
-                                    <span className="font-semibold">Muhammad Ali</span>
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Employee ID:</span> EMP-1024
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Date:</span> 15 Oct 2025
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Reason:</span> “Marked Absent by Mistake”
-                                </p>
-                            </div>
-
-                            {/* Instruction */}
-                            <p className="text-xxs text-gray-600 mb-4">
-                                Please provide a reason for rejecting this request. The reason will be shared with the employee.
+                <ReasonModal
+                    isOpen={isReasonOpen}
+                    title="Reject Regularization Request"
+                    infoSection={
+                        <div className="border-gray-300 border-b p-1 mb-4">
+                            <p className="text-xs text-gray-800 font-medium">
+                                <span className="font-semibold">Muhammad Ali</span>
                             </p>
-
-                            {/* Textarea */}
-                            <div className="mb-6">
-                                <label
-                                    htmlFor="rejectionReason"
-                                    className="block text-xxs text-gray-700 mb-2"
-                                >
-                                    Rejection Reason <span className="text-red-500">*</span>
-                                </label>
-                                <textarea
-                                    id="rejectionReason"
-                                    rows="4"
-                                    placeholder="Write your reason here..."
-                                    className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-             focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                />
-
-                            </div>
-
-
-                            <div className="flex justify-end gap-2">
-                                <Button variant="cancel" onClick={closeReasonModal}>
-                                    Close
-                                </Button>
-                                <Button variant="danger">
-                                    Reject Request
-                                </Button>
-                            </div>
-
-
-                        </div>
-                    </div>
-                )}
+                            <p className="text-xxs text-gray-600">
+                                <span>Employee ID:</span> EMP-1024
+                            </p>
+                            <p className="text-xxs text-gray-600">
+                                <span>Date:</span> 15 Oct 2025
+                            </p>
+                            <p className="text-xxs text-gray-600">
+                                <span>Reason:</span> “Marked Absent by Mistake”
+                            </p>
+                        </div>}
+                    onClose={closeReasonModal}
+                    // onSubmit={handleReject}
+                    submitLabel="Reject Request"
+                    reasonTitle="Please provide a reason for rejecting this request. The reason will be shared with the employee."
+                />
 
             </div>
         </Layout>
