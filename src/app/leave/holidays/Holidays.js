@@ -112,8 +112,8 @@ export default function HolidaysCalender() {
         {
             id: 4,
             holidayName: "Labour Day",
-            startDay: "2025-05-01",
-            endDay: "2025-05-01",
+            startDay: "2025-10-02",
+            endDay: "2025-10-03", // end date +1 day for FullCalendar
             day: "Thursday",
             regionId: 1,
             regionName: "Pakistan",
@@ -219,7 +219,18 @@ export default function HolidaysCalender() {
 
 
 
-
+ const colorClasses = [
+    'bg-blue-500',
+    'bg-green-500',
+    'bg-purple-500',
+    'bg-pink-500',
+    'bg-indigo-500',
+    'bg-yellow-500',
+    'bg-rose-500',
+    'bg-emerald-500',
+    'bg-orange-500',
+    'bg-cyan-500',
+  ];
 
 
 
@@ -411,26 +422,72 @@ export default function HolidaysCalender() {
                         </tbody>
                     </table>
                 </div>) : (<div className="bg-white rounded-md shadow-sm p-4 -mt-2">
-                    <FullCalendar
-                        plugins={[dayGridPlugin, interactionPlugin]}
-                        initialView="dayGridMonth"
-                        height="700px"
-                        events={holidayCalendarData.map((row) => ({
-                            id: row.id,
-                            title: row.holidayName,
-                            start: row.startDay,
-                            end: row.endDay,
-                            bacDaykgroundColor: row.statusId === 1 ? '#16a34a' : '#f87171',
-                            borderColor: 'transparent',
-                            textColor: '#fff',
-                            extendedProps: { description: row.description, region: row.regionName }
-                        }))}
-                        eventClick={(info) => {
-                            alert(
-                                `${info.event.title}\n\nRegion: ${info.event.extendedProps.region}\nDescription: ${info.event.extendedProps.description}`
-                            );
-                        }}
-                    />
+                   <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        headerToolbar={false}
+        height="700px"
+        dayHeaderClassNames="!py-2 bg-gray-100 uppercase text-xxs tracking-wide text-gray-600"
+
+      
+
+      eventContent={(arg) => {
+  const colorPalette = [
+    'bg-orange-200 text-orange-800',
+    'bg-sky-200 text-sky-800',
+    'bg-emerald-200 text-emerald-800',
+    'bg-rose-200 text-rose-800',
+    'bg-indigo-200 text-indigo-800',
+    'bg-amber-200 text-amber-800',
+  ];
+
+  // Pick color based on event index/id
+  const colorClass =
+    colorPalette[arg.event.id % colorPalette.length] || 'bg-gray-200 text-gray-800';
+
+  return (
+    <div
+      className={`group ${colorClass} text-[11px] font-medium rounded-md px-2 py-[4px] mb-[2px] 
+                  shadow-sm cursor-pointer hover:shadow-md hover:scale-[1.02] transition-all duration-150`}
+    >
+      <div className="truncate">{arg.event.title}</div>
+    </div>
+  );
+}}
+        /* 🗓️ Events */
+        events={holidayCalendarData.map((row, index) => ({
+          id: row.id || index, // ensure numeric id for color selection
+          title: row.holidayName,
+          start: row.startDay,
+          end: row.endDay,
+          borderColor: 'transparent',
+          textColor: '#fff',
+          extendedProps: {
+            description: row.description,
+            region: row.regionName,
+          },
+        }))}
+
+        /* 🖱️ Click popup */
+        eventClick={(info) => {
+          const { title, extendedProps } = info.event;
+          const popup = document.createElement('div');
+          popup.className =
+            'fixed inset-0 flex items-center justify-center z-50 bg-black/40';
+          popup.innerHTML = `
+            <div class="bg-white rounded-xl shadow-2xl p-6 w-96 text-gray-800">
+              <h3 class="text-lg font-semibold mb-2">${title}</h3>
+              <p class="text-sm mb-1"><strong>Region:</strong> ${extendedProps.region}</p>
+              <p class="text-sm mb-3"><strong>Description:</strong> ${extendedProps.description}</p>
+              <div class="flex justify-end">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Close</button>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(popup);
+          popup.querySelector('button').onclick = () => popup.remove();
+        }}
+      />
                 </div>)}
 
                 {isOpen && (
