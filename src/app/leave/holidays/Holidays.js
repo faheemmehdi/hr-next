@@ -9,7 +9,7 @@ import CustomSelect from "y@/app/components/CustomSelect";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-
+import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import {
     FiUser, FiEye
 } from "react-icons/fi";
@@ -23,6 +23,7 @@ import StatusDesign from "y@/app/components/StatusColors";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
+import FileUpload from "y@/app/components/FileUpload";
 export default function HolidaysCalender() {
     const [date, setDate] = useState("");
     const [selectRegion, setSelectRegion] = useState("");
@@ -32,15 +33,17 @@ export default function HolidaysCalender() {
     const [selectYear, setSelectYear] = useState("");
     const [viewMode, setViewMode] = useState('table');
 
-    const [employee, setEmployee] = useState("");
-    const [department, setDepartment] = useState("");
-    const [departVal, setDepartVal] = useState("");
-    const [status, setStatus] = useState("");
+    const [regionVal, setRegionVal] = useState("");
+    const [locationVal, setLocationVal] = useState("");
+    const [holidayName, setHolidayName] = useState("");
+    const [status, setStatus] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
-    const [checkIn, setCheckIn] = useState("");
-    const [checkOut, setCheckOut] = useState("");
-    const [remarks, setRemarks] = useState("");
+    const [cTypeVal, setCTypeVal] = useState("");
+    const [attach, setAttach] = useState("");
+    const [sDate, setSDate] = useState("");
+    const [eDate, setEDate] = useState("");
+    const [holidayType, setHolidayType] = useState("");
     const [showErrors, setShowErrors] = useState(false);
 
     const handleOpenModal = () => setIsOpen(true);
@@ -67,8 +70,8 @@ export default function HolidaysCalender() {
         {
             id: 1,
             holidayName: "New Year’s Day",
-            startDay: "2025-01-01",
-            endDay: "2025-01-01",
+            startDay: "2025-11-01",
+            endDay: "2025-11-01",
             day: "Wednesday",
             regionId: 1,
             regionName: "Pakistan",
@@ -97,8 +100,8 @@ export default function HolidaysCalender() {
         {
             id: 3,
             holidayName: "Eid-ul-Fitr",
-            startDay: "2025-10-01",
-            endDay: "2025-10-04", // end date +1 day for FullCalendar
+            startDay: "2025-11-01",
+            endDay: "2025-11-04", // end date +1 day for FullCalendar
             day: "Tuesday – Thursday",
             regionId: 1,
             regionName: "Pakistan",
@@ -113,7 +116,7 @@ export default function HolidaysCalender() {
             id: 4,
             holidayName: "Labour Day",
             startDay: "2025-10-02",
-            endDay: "2025-10-03", // end date +1 day for FullCalendar
+            endDay: "2025-10-02", // end date +1 day for FullCalendar
             day: "Thursday",
             regionId: 1,
             regionName: "Pakistan",
@@ -216,24 +219,16 @@ export default function HolidaysCalender() {
         },
     ];
 
-
-
-
- const colorClasses = [
-    'bg-blue-500',
-    'bg-green-500',
-    'bg-purple-500',
-    'bg-pink-500',
-    'bg-indigo-500',
-    'bg-yellow-500',
-    'bg-rose-500',
-    'bg-emerald-500',
-    'bg-orange-500',
-    'bg-cyan-500',
-  ];
-
-
-
+    const holidayTypes = mapSelectOptions(
+        [
+            { id: 1, name: "Public Holiday" },
+            { id: 2, name: "Company Holiday" },
+            { id: 3, name: "Optional Holiday" },
+            { id: 4, name: "Religious Holiday" },
+        ],
+        "id",
+        "name"
+    );
     const locations = mapSelectOptions(
         [
             { id: 1, name: "Lahore" },
@@ -261,6 +256,18 @@ export default function HolidaysCalender() {
         "name"
     );
 
+    const calendarTypes = mapSelectOptions(
+        [
+            { id: 1, name: "National" },
+            { id: 2, name: "Regional" },
+            { id: 3, name: "International" },
+            { id: 4, name: "Religious" },
+            { id: 5, name: "Company" },
+            { id: 6, name: "Custom" },
+        ],
+        "id",
+        "name"
+    );
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -272,7 +279,7 @@ export default function HolidaysCalender() {
                     <h2 className="text-base font-semibold text-gray-700">
                         Holiday Calendars
                     </h2>
-                    <Button type="button" variant="success">
+                    <Button type="button" onClick={handleOpenModal} variant="success">
                         Add Holiday
                     </Button>
                 </div>
@@ -336,8 +343,8 @@ export default function HolidaysCalender() {
                             onChange={(e) => setDate(e.target.value)}
                         />
                         {viewMode == 'calendar' &&
-                            <CiGrid41 onClick={() => setViewMode('table')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Calendar View" />}
-                        {viewMode == 'table' && <IoIosList onClick={() => setViewMode('calendar')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Table View" />}
+                            <IoIosList onClick={() => setViewMode('table')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Table View" />}
+                        {viewMode == 'table' && <CiGrid41 onClick={() => setViewMode('calendar')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Calendar View" />}
                         <TbFilterOff className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Reset Filter" />
                     </div>
                 </div>
@@ -421,169 +428,342 @@ export default function HolidaysCalender() {
                             ))}
                         </tbody>
                     </table>
-                </div>) : (<div className="bg-white rounded-md shadow-sm p-4 -mt-2">
-                   <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        headerToolbar={false}
-        height="700px"
-        dayHeaderClassNames="!py-2 bg-gray-100 uppercase text-xxs tracking-wide text-gray-600"
+                </div>) : (<div className="bg-white rounded shadow p-4 -mt-2">
+                    <FullCalendar
+                        plugins={[dayGridPlugin, interactionPlugin]}
+                        initialView="dayGridMonth"
+                        headerToolbar={false}
+                        height="auto"
+                        expandRows={false}
+                        eventBackgroundColor="transparent"
+                        eventBorderColor="transparent"
+                        eventColor=""
+                        dayHeaderClassNames="!py-2 bg-gray-100 uppercase text-xxs tracking-wide text-gray-600"
 
-      
+                        dayCellDidMount={(info) => {
+                            const frame = info.el.querySelector('.fc-daygrid-day-frame');
+                            const top = info.el.querySelector('.fc-daygrid-day-top');
+                            const events = info.el.querySelector('.fc-daygrid-day-events');
+                            const more = info.el.querySelector('.fc-daygrid-day-bottom');
 
-      eventContent={(arg) => {
-  const colorPalette = [
-    'bg-orange-200 text-orange-800',
-    'bg-sky-200 text-sky-800',
-    'bg-emerald-200 text-emerald-800',
-    'bg-rose-200 text-rose-800',
-    'bg-indigo-200 text-indigo-800',
-    'bg-amber-200 text-amber-800',
-  ];
+                            if (frame) {
+                                frame.style.minHeight = 'auto';
+                                frame.style.height = 'auto';
+                                frame.classList.add('p-[2px]', 'flex', 'flex-col', 'justify-start', 'text-xxs');
+                            }
 
-  // Pick color based on event index/id
-  const colorClass =
-    colorPalette[arg.event.id % colorPalette.length] || 'bg-gray-200 text-gray-800';
+                            if (top) {
+                                // Date number aligned top-right
+                                top.classList.add('flex', 'justify-end', 'mb-[1px]');
+                            }
 
-  return (
-    <div
-      className={`group ${colorClass} text-[11px] font-medium rounded-md px-2 py-[4px] mb-[2px] 
-                  shadow-sm cursor-pointer hover:shadow-md hover:scale-[1.02] transition-all duration-150`}
-    >
-      <div className="truncate">{arg.event.title}</div>
-    </div>
-  );
-}}
-        /* 🗓️ Events */
-        events={holidayCalendarData.map((row, index) => ({
-          id: row.id || index, // ensure numeric id for color selection
-          title: row.holidayName,
-          start: row.startDay,
-          end: row.endDay,
-          borderColor: 'transparent',
-          textColor: '#fff',
-          extendedProps: {
-            description: row.description,
-            region: row.regionName,
-          },
-        }))}
+                            if (events) {
+                                // Stack events neatly with small gap
+                                events.classList.add('flex', 'flex-col', 'gap-[1px]', 'mt-0', 'pb-0', 'overflow-visible');
+                            }
 
-        /* 🖱️ Click popup */
-        eventClick={(info) => {
-          const { title, extendedProps } = info.event;
-          const popup = document.createElement('div');
-          popup.className =
-            'fixed inset-0 flex items-center justify-center z-50 bg-black/40';
-          popup.innerHTML = `
-            <div class="bg-white rounded-xl shadow-2xl p-6 w-96 text-gray-800">
-              <h3 class="text-lg font-semibold mb-2">${title}</h3>
-              <p class="text-sm mb-1"><strong>Region:</strong> ${extendedProps.region}</p>
-              <p class="text-sm mb-3"><strong>Description:</strong> ${extendedProps.description}</p>
-              <div class="flex justify-end">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Close</button>
-              </div>
+                            if (more) {
+                                // Remove hidden "+ more" space
+                                more.style.marginTop = '0px';
+                            }
+                        }}
+
+                        /* 🎨 Beautiful modern event design */
+                        eventContent={(arg) => {
+                            const colorPalette = [
+                                'bg-orange-200 text-orange-800',
+                                'bg-sky-200 text-sky-800',
+                                'bg-emerald-200 text-emerald-800',
+                                'bg-rose-200 text-rose-800',
+                                'bg-indigo-200 text-indigo-800',
+                                'bg-amber-200 text-amber-800',
+                            ];
+
+                            const colorClass =
+                                colorPalette[arg.event.id % colorPalette.length] ||
+                                'bg-gray-200 text-gray-800';
+
+                            return (
+                                <div
+                                    className={`group ${colorClass} text-[11px] font-medium rounded px-2 py-[3px] 
+        shadow-sm cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-150 border-l-4`}
+                                    style={{ borderColor: 'currentColor' }}
+                                >
+                                    <div className="truncate">{arg.event.title}</div>
+                                </div>
+                            );
+                        }}
+                        events={holidayCalendarData.map((row, index) => ({
+                            id: row.id || index,
+                            title: row.holidayName,
+                            start: row.startDay,
+                            end: row.endDay,
+                            extendedProps: {
+                                description: row.description,
+                                region: row.regionName,
+                                location: row.locations,
+                                attachement: row.attachment,
+                                status: row.status,
+                                calendarType: row.calendarType
+                            },
+                        }))}
+
+                        eventClick={(info) => {
+                            const { title, extendedProps, start, end } = info.event;
+
+                            const formattedStart = new Date(start).toLocaleDateString("en-US", {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                            });
+                            const formattedEnd =
+                                end &&
+                                new Date(end).toLocaleDateString("en-US", {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "numeric",
+                                });
+
+                            const overlay = document.createElement("div");
+                            overlay.className =
+                                "fixed inset-0 flex items-center justify-center bg-black/50 z-50 animate-fadeIn";
+
+                            overlay.innerHTML = `
+    <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-5/12">
+      <div class="w-full">
+        <div class="px-5 py-1 bg-white rounded-xl">
+          
+          <!-- Header -->
+          <div class="border-b border-gray-300 pb-3 mb-4">
+            <div class="flex justify-between">
+              <h2 class="text-lg font-semibold text-gray-800">${title}</h2>
+              <span class="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-green-100 text-green-700">
+                                                ${extendedProps.status}
+                                            </span>
             </div>
-          `;
-          document.body.appendChild(popup);
-          popup.querySelector('button').onclick = () => popup.remove();
-        }}
-      />
+            <p class="text-xxs text-gray-500">
+              ${formattedEnd && formattedStart !== formattedEnd
+                                    ? `${formattedStart} → ${formattedEnd}`
+                                    : formattedStart}
+            </p>
+          </div>
+
+          <!-- Basic Info -->
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+            <div>
+              <p class="text-xxs text-gray-500 font-medium">Region</p>
+              <p class="text-xs font-semibold text-gray-800">${extendedProps.region || "-"
+                                }</p>
+            </div>
+            <div>
+              <p class="text-xxs text-gray-500 font-medium">Location</p>
+              <p class="text-xs text-gray-800">${extendedProps.location || "-"
+                                }</p>
+            </div>
+            <div>
+              <p class="text-xxs text-gray-500 font-medium">Holiday Type</p>
+              <p class="text-xs text-gray-800">${extendedProps.calendarType || "Public Holiday"
+                                }</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+            <div>
+              <p class="text-xxs text-gray-500 font-medium">Calendar Type</p>
+              <p class="text-xs text-gray-800">${extendedProps.calendarType || "National"
+                                }</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          ${extendedProps.description
+                                    ? `
+          <div class="border-t border-gray-300 pt-4 mb-4">
+            <p class="text-xxs text-gray-500 font-medium mb-1">Description</p>
+            <p class="text-xs text-gray-800 text-justify">
+              ${extendedProps.description}
+            </p>
+          </div>`
+                                    : ""
+                                }
+
+          <!-- Attachment -->
+          ${extendedProps.attachement
+                                    ? `
+          <div class="border-t border-gray-300 pt-4 mb-4">
+            <p class="text-xxs text-gray-500 font-medium mb-2">Attachment</p>
+            <div class="bg-gray-50 border border-gray-200 rounded px-2 py-1 flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.364 6.364a4 4 0 105.657 5.657l6.364-6.364a4 4 0 00-5.657-5.657z" />
+                </svg>
+                <span class="text-xxs text-gray-700 truncate max-w-[120px]">Attachment</span>
+              </div>
+              <a href="${extendedProps.attachement}" target="_blank" class="text-xxs text-blue-600 hover:underline">View</a>
+            </div>
+          </div>`
+                                    : ""
+                                }
+
+          <!-- Footer -->
+          <div class="flex justify-end border-t border-gray-300 pt-4">
+            <button id="closePopupBtn" style="background-color: var(--color-gray)" class="text-gray-800 px-4 py-2 rounded text-xxs cursor-pointer transition">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+                            document.body.appendChild(overlay);
+
+                            // Close handler
+                            overlay.querySelector("#closePopupBtn").onclick = () => overlay.remove();
+                        }}
+
+                    />
+
                 </div>)}
 
                 {isOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-5/12">
+                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-6/12">
+                            <h3 className="text-lg text-center font-semibold mb-4">Add Holiday</h3>
 
                             <div className="w-full">
-                                <div className="px-5 py-1 bg-white rounded-xl">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                                    <CustomSelect
+                                        name="region"
+                                        label="Region"
+                                        value={regionVal}
+                                        placeholder="Select Region"
+                                        onChange={setRegionVal}
+                                        options={regions}
+                                        controlHeight="2rem"
+                                        error={showErrors && !regionVal ? "Region is required" : ""}
+                                    />
+                                    <CustomSelect
+                                        name="location"
+                                        label="Location"
+                                        value={locationVal}
+                                        placeholder="Select Location"
+                                        onChange={setLocationVal}
+                                        options={locations}
+                                        controlHeight="2rem"
+                                        error={showErrors && !locationVal ? "Location is required" : ""}
+                                    />
+                                    <CustomSelect
+                                        name="cType"
+                                        label="Calendar Type"
+                                        value={cTypeVal}
+                                        placeholder="Select Location"
+                                        onChange={setCTypeVal}
+                                        options={calendarTypes}
+                                        controlHeight="2rem"
+                                        error={showErrors && !cTypeVal ? "Calendar Type is required" : ""}
+                                    />
 
-                                    <div className="border-b border-gray-400 pb-3 mb-4">
-                                        <div className="flex justify-between">
-                                            <h2 className="text-lg font-semibold text-gray-800">Leave Request Details</h2>
-                                            <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-yellow-100 text-yellow-700">
-                                                Pending
-                                            </span>
-                                        </div>
-                                        <p className="text-xxs text-gray-500">Applied on Oct 20, 2025 at 09:10 AM</p>
-                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                                    <Input
+                                        type="text"
+                                        name="name"
+                                        placeholder="Enter holiday name"
+                                        label="Holiday Name"
+                                        noMargin={true}
+                                        value={holidayName}
+                                        onChange={(e) => setHolidayName(e.target.value)}
+                                        error={showErrors && !holidayName ? "Name is required" : ""}
+                                    />
+                                    <div className="w-full flex items-center justify-center">
 
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Employee Name</p>
-                                            <p className="text-xs font-semibold text-gray-800">Muhammad Khan</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Employee ID</p>
-                                            <p className="text-xs text-gray-800">EMP-102</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Department</p>
-                                            <p className="text-xs text-gray-800">Sales</p>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Shift</p>
-                                            <p className="text-xs text-gray-800">Morning (9:00 AM - 6:00 PM)</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Leave Type</p>
-                                            <p className="text-xs text-gray-800">Sick Leave</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Leave Days</p>
-                                            <p className="text-xs text-gray-800">3 Days</p>
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-1 mb-4">
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Applied Dates</p>
-                                            <div className="flex text-xxs">
-                                                <p className="text-gray-800">17 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                                <p className="text-gray-800">18 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                                <p className="text-gray-800">19 Feb 2025</p>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="border-t border-gray-400 pt-4 mb-4">
-
-                                        <p className="text-xxs text-gray-500 font-medium mb-1">Reason Provided</p>
-                                        <p className="text-xs text-gray-800 text-justify">
-                                            Relocation and house shifting.
-                                        </p>
-                                    </div>
-
-                                    <div className="border-t border-gray-400 pt-4 mb-4">
-                                        <p className="text-xxs text-gray-500 font-medium mb-2">Attachment</p>
-                                        <div className="bg-gray-50 border border-gray-200 rounded px-2 py-1 flex items-center justify-between">
-                                            <div className="flex items-center space-x-2">
-                                                <FaDotCircle className="h-2 w-2 text-gray-500" />
-                                                <span className="text-xxs text-gray-700">Card.jpg</span>
-                                            </div>
-                                            <button className="text-xxs text-blue-600 hover:underline">View</button>
+                                        <div className="w-full md:w-37 md:mt-4">
+                                            <ToggleSwitch
+                                                label="Active Status"
+                                                checked={status}
+                                                onChange={setStatus}
+                                            />
                                         </div>
                                     </div>
 
-                                    <div className="flex justify-end border-t border-gray-400 pt-4">
-                                        <Button variant="cancel" onClick={handleCloseModal}>
-                                            Close
-                                        </Button>
-                                        {/* <Button variant="success" onClick={handleSave}>
-                                        Save
-                                    </Button> */}
-                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                                    <Input
+                                        type="date"
+                                        name="sdate"
+                                        placeholder="Enter Start Date"
+                                        label="Start Date"
+                                        noMargin={true}
+                                        value={sDate}
+                                        onChange={(e) => setSDate(e.target.value)}
+                                        error={showErrors && !sDate ? "Start date is required" : ""}
+                                    />
+                                    <Input
+                                        type="date"
+                                        name="edate"
+                                        placeholder="Enter End Date"
+                                        label="End Date"
+                                        noMargin={true}
+                                        value={eDate}
+                                        onChange={(e) => setEDate(e.target.value)}
+                                        error={showErrors && !eDate ? "End date is required" : ""}
+                                    />
+                                    <CustomSelect
+                                        name="holidayType"
+                                        label="Holiday Type"
+                                        value={holidayType}
+                                        placeholder="Select Type"
+                                        onChange={setHolidayType}
+                                        options={holidayTypes}
+                                        controlHeight="2rem"
+                                        error={showErrors && !holidayType ? "Holiday Type is required" : ""}
+                                    />
+
+
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                                     <FileUpload
+                                        label="Attachment"
+                                        name="attachment"
+                                        onChange={(e) => setAttach(e.target.files[0])}
+                                        value={attach}
+                                    />
+
+
+                                </div>
+                                <div className="w-full mb-3">
+                                    <label
+                                        htmlFor="pDesc"
+                                        className="block text-xxs text-gray-700 mb-2"
+                                    >
+                                        Description
+                                    </label>
+                                    <textarea
+                                        id="pDesc"
+                                        rows="4"
+                                        placeholder="Enter description..."
+                                        className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
+                                        focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
+                                    />
                                 </div>
 
 
 
+                                <div className="flex justify-end gap-2">
+                                    <Button variant="cancel" onClick={handleCloseModal}>
+                                        Cancel
+                                    </Button>
+                                    <Button variant="success" >
+                                        Add Holiday
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 )}
-                <ReasonModal
+
+                {/* <ReasonModal
                     isOpen={isReasonOpen}
                     title="Reject Leave Request"
                     infoSection={
@@ -608,7 +788,7 @@ export default function HolidaysCalender() {
                     // onSubmit={handleReject}
                     submitLabel="Reject Request"
                     reasonTitle="Please provide a reason for rejecting this request. The reason will be shared with the employee."
-                />
+                /> */}
             </div>
         </Layout>
     );
