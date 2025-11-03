@@ -6,10 +6,9 @@ import { CiServer } from "react-icons/ci";
 import { AiOutlineWifi } from "react-icons/ai";
 import { BsWifiOff } from "react-icons/bs";
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
-import { FiAlertOctagon } from "react-icons/fi";
+import { FiAlertOctagon, FiEdit3 } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { GoDeviceDesktop } from "react-icons/go";
-import { FaRegEdit } from "react-icons/fa";
 import { MdSync, MdDone } from "react-icons/md";
 import { BsTrash3 } from "react-icons/bs";
 import { LuTestTubeDiagonal } from "react-icons/lu";
@@ -533,7 +532,7 @@ setShowErrors(true);
                                                     </li>
                                                     <li>
                                                         <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FaRegEdit className="mr-2 text-xs" /> Edit Device
+                                                            <FiEdit3 className="mr-2 text-xs" /> Edit Device
                                                         </button>
                                                     </li>
                                                     <li>

@@ -23,7 +23,7 @@ import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
 import FileUpload from "y@/app/components/FileUpload";
-export default function HolidaysCalender() {
+export default function TeamLeave() {
     const [date, setDate] = useState("");
     const [selectRegion, setSelectRegion] = useState("");
     const [search, setSearch] = useState("");
@@ -105,158 +105,150 @@ export default function HolidaysCalender() {
         setOpenMenuId((prev) => (prev === id ? null : id));
     };
 
-    const holidayCalendarData = [
-        {
-            id: 1,
-            holidayName: "New Year’s Day",
-            startDay: "2025-11-01",
-            endDay: "2025-11-01",
-            day: "Wednesday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["All Offices"],
-            calendarType: "National",
-            description: "Celebration of the beginning of the new year.",
-            attachment: "new_year_notice.pdf",
-            statusId: 1,
-            status: "Active",
-        },
-        {
-            id: 2,
-            holidayName: "Pakistan Day",
-            startDay: "2025-03-23",
-            endDay: "2025-03-23",
-            day: "Sunday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["All Offices"],
-            calendarType: "National",
-            description: "Commemorates the Lahore Resolution of 1940.",
-            attachment: "pakistan_day_notice.pdf",
-            statusId: 1,
-            status: "Active",
-        },
-        {
-            id: 3,
-            holidayName: "Eid-ul-Fitr",
-            startDay: "2025-11-01",
-            endDay: "2025-11-04", // end date +1 day for FullCalendar
-            day: "Tuesday – Thursday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["All Offices"],
-            calendarType: "Religious",
-            description: "Marks the end of Ramadan fasting month.",
-            attachment: "eid_fitr_notice.pdf",
-            statusId: 1,
-            status: "Active",
-        },
-        {
-            id: 4,
-            holidayName: "Labour Day",
-            startDay: "2025-10-02",
-            endDay: "2025-10-02", // end date +1 day for FullCalendar
-            day: "Thursday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["All Offices"],
-            calendarType: "National",
-            description: "International Workers' Day celebration.",
-            attachment: null,
-            statusId: 2,
-            status: "Inactive",
-        },
-        {
-            id: 5,
-            holidayName: "Eid-ul-Adha",
-            startDay: "2025-06-07",
-            endDay: "2025-06-10", // +1 day for FullCalendar
-            day: "Saturday – Monday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["All Offices"],
-            calendarType: "Religious",
-            description: "Festival of Sacrifice.",
-            attachment: "eid_adha_notice.pdf",
-            statusId: 1,
-            status: "Active",
-        },
-        {
-            id: 6,
-            holidayName: "Independence Day",
-            startDay: "2025-08-14",
-            endDay: "2025-08-14",
-            day: "Thursday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["All Offices"],
-            calendarType: "National",
-            description: "Commemorates Pakistan’s independence in 1947.",
-            attachment: "independence_day.pdf",
-            statusId: 1,
-            status: "Active",
-        },
-        {
-            id: 7,
-            holidayName: "Regional Foundation Day",
-            startDay: "2025-09-10",
-            endDay: "2025-09-10",
-            day: "Wednesday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["Sindh Region", "Karachi Office"],
-            calendarType: "Regional",
-            description: "Marks the foundation of the Sindh office branch.",
-            attachment: "sindh_foundation_notice.pdf",
-            statusId: 2,
-            status: "Inactive",
-        },
-        {
-            id: 8,
-            holidayName: "Eid Milad-un-Nabi",
-            startDay: "2025-09-17",
-            endDay: "2025-09-17",
-            day: "Wednesday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["All Offices"],
-            calendarType: "Religious",
-            description: "Birthday of Prophet Muhammad (PBUH).",
-            attachment: null,
-            statusId: 1,
-            status: "Active",
-        },
-        {
-            id: 9,
-            holidayName: "Quaid-e-Azam Day",
-            startDay: "2025-12-25",
-            endDay: "2025-12-25",
-            day: "Thursday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["All Offices"],
-            calendarType: "National",
-            description: "Commemorates the birthday of Quaid-e-Azam Muhammad Ali Jinnah.",
-            attachment: "quaid_day_notice.pdf",
-            statusId: 1,
-            status: "Active",
-        },
-        {
-            id: 10,
-            holidayName: "Christmas Day",
-            startDay: "2025-12-25",
-            endDay: "2025-12-25",
-            day: "Thursday",
-            regionId: 1,
-            regionName: "Pakistan",
-            locations: ["All Offices", "Karachi Office", "Lahore HQ"],
-            calendarType: "Optional",
-            description: "Observed by Christian employees.",
-            attachment: "christmas_notice.pdf",
-            statusId: 1,
-            status: "Active",
-        },
-    ];
+const teamLeaveCalendarData = [
+  {
+    id: 1,
+    employeeName: "Ali Khan",
+    location: "Lahore Office",
+    department: "Finance",
+    workingShift: "Morning",
+    leaveTypeId: 1,
+    leaveType: "Sick Leave",
+    startDay: "2025-11-01",
+    endDay: "2025-11-03",
+    leaveDays: 3,
+    reason: "Flu and fever",
+    attachment: "medical_certificate_ali.pdf",
+  },
+  {
+    id: 2,
+    employeeName: "Sara Ahmed",
+    location: "Karachi Office",
+    department: "Marketing",
+    workingShift: "Evening",
+    leaveTypeId: 2,
+    leaveType: "Casual Leave",
+    startDay: "2025-11-05",
+    endDay: "2025-11-06",
+    leaveDays: 2,
+    reason: "Family event",
+    attachment: "",
+  },
+  {
+    id: 3,
+    employeeName: "Usman Ali",
+    location: "Islamabad Office",
+    department: "IT",
+    workingShift: "Night",
+    leaveTypeId: 3,
+    leaveType: "Annual Leave",
+    startDay: "2025-11-10",
+    endDay: "2025-11-15",
+    leaveDays: 6,
+    reason: "Vacation",
+    attachment: "",
+  },
+  {
+    id: 4,
+    employeeName: "Fatima Noor",
+    location: "Lahore Office",
+    department: "HR",
+    workingShift: "Morning",
+    leaveTypeId: 4,
+    leaveType: "Work From Home",
+    startDay: "2025-11-12",
+    endDay: "2025-11-13",
+    leaveDays: 2,
+    reason: "Personal work",
+    attachment: "",
+  },
+  {
+    id: 5,
+    employeeName: "Bilal Hussain",
+    location: "Karachi Office",
+    department: "Operations",
+    workingShift: "Evening",
+    leaveTypeId: 5,
+    leaveType: "Training",
+    startDay: "2025-11-20",
+    endDay: "2025-11-22",
+    leaveDays: 3,
+    reason: "Professional development",
+    attachment: "training_schedule_bilal.pdf",
+  },
+  {
+    id: 6,
+    employeeName: "Maryam Khan",
+    location: "Lahore Office",
+    department: "Finance",
+    workingShift: "Morning",
+    leaveTypeId: 6,
+    leaveType: "Unpaid Leave",
+    startDay: "2025-11-25",
+    endDay: "2025-11-26",
+    leaveDays: 2,
+    reason: "Personal reasons",
+    attachment: "",
+  },
+  {
+    id: 7,
+    employeeName: "Ahmed Raza",
+    location: "Islamabad Office",
+    department: "Marketing",
+    workingShift: "Night",
+    leaveTypeId: 2,
+    leaveType: "Casual Leave",
+    startDay: "2025-12-02",
+    endDay: "2025-12-03",
+    leaveDays: 2,
+    reason: "Wedding ceremony",
+    attachment: "",
+  },
+  {
+    id: 8,
+    employeeName: "Ayesha Siddiqui",
+    location: "Karachi Office",
+    department: "IT",
+    workingShift: "Evening",
+    leaveTypeId: 1,
+    leaveType: "Sick Leave",
+    startDay: "2025-12-10",
+    endDay: "2025-12-12",
+    leaveDays: 3,
+    reason: "Migraine",
+    attachment: "medical_certificate_ayesha.pdf",
+  },
+  {
+    id: 9,
+    employeeName: "Hassan Iqbal",
+    location: "Lahore Office",
+    department: "Operations",
+    workingShift: "Morning",
+    leaveTypeId: 3,
+    leaveType: "Annual Leave",
+    startDay: "2025-12-20",
+    endDay: "2025-12-30",
+    leaveDays: 11,
+    reason: "Family trip",
+    attachment: "",
+  },
+  {
+    id: 10,
+    employeeName: "Zara Nadeem",
+    location: "Islamabad Office",
+    department: "HR",
+    workingShift: "Night",
+    leaveTypeId: 4,
+    leaveType: "Work From Home",
+    startDay: "2025-12-28",
+    endDay: "2025-12-31",
+    leaveDays: 4,
+    reason: "House renovation",
+    attachment: "",
+  },
+];
+
+
 
     const holidayTypes = mapSelectOptions(
         [
@@ -307,6 +299,16 @@ export default function HolidaysCalender() {
         "id",
         "name"
     );
+    const leaveEmojis = {
+        1 : "🤧",
+        2 : "⛱️",
+        3 : "🗓️",
+        4 : "🎉",
+        5 : "🏠",
+        6 : "📚",
+        7 : "💸",
+    };
+
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 
@@ -315,10 +317,10 @@ export default function HolidaysCalender() {
             <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
-                        Holiday Calendar
+                        Team Leave Calendar
                     </h2>
                     <Button type="button" onClick={handleOpenModal} variant="success">
-                        Add Holiday
+                        Add Leave
                     </Button>
                 </div>
 
@@ -332,16 +334,7 @@ export default function HolidaysCalender() {
                         />
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className="mb-1 w-[9rem]">
-                            <CustomSelect
-                                name="region"
-                                value={selectRegion}
-                                placeholder="Region"
-                                onChange={setSelectRegion}
-                                options={regions}
-                                controlHeight="2rem"
-                            />
-                        </div>
+
                         <div className="mb-1 w-[9rem]">
                             <CustomSelect
                                 name="location"
@@ -380,93 +373,11 @@ export default function HolidaysCalender() {
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
                         />
-                        {viewMode == 'calendar' &&
-                            <IoIosList onClick={() => setViewMode('table')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Table View" />}
-                        {viewMode == 'table' && <CiGrid41 onClick={() => setViewMode('calendar')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Calendar View" />}
-                        <TbFilterOff className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Reset Filter" />
                     </div>
                 </div>
 
 
-                {viewMode === 'table' ? (<div className="overflow-x-auto -mt-2">
-                    <table className="w-full text-xs border-collapse">
-                        <thead>
-                            <tr className="bg-gray-100 text-gray-700">
-                                <th className="px-4 py-3 text-left rounded-tl-md">ID</th>
-                                <th className="px-4 py-3 text-left">Holiday Name</th>
-                                <th className="px-4 py-3 text-left">Date</th>
-                                <th className="px-4 py-3 text-left">Day</th>
-                                <th className="px-4 py-3 text-left">Region</th>
-                                <th className="px-4 py-3 text-left">Locations</th>
-                                <th className="px-4 py-3 text-left">Calendar Type</th>
-                                <th className="px-4 py-3 text-left">Description</th>
-                                <th className="px-4 py-3 text-left">Attachement</th>
-                                <th className="px-4 py-3 text-left">Status</th>
-                                <th className="px-4 py-3 text-left">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-xxs">
-                            {holidayCalendarData.map((row, idx) => (
-                                <tr
-                                    key={idx}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                        } hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-4 py-3">{row.id}</td>
-                                    <td className="px-4 py-3">{row.holidayName}</td>
-                                    <td className="px-4 py-3">
-                                        {row.startDay}{row.startDay !== row.endDay ? ` – ${row.endDay}` : ''}
-                                    </td>
-                                    <td className="px-4 py-3">{row.day}</td>
-                                    <td className="px-4 py-3">{row.regionName}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.locations}>{row.locations}</td>
-                                    <td className="px-4 py-3">{row.calendarType}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.description}>{row.description}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]">{row.attachment}</td>
-                                    <td className="px-4 py-3">
-                                        <StatusDesign statusId={row.statusId} label={row.status} />
-                                    </td>
-
-                                    <td className="px-4 py-3 relative">
-                                        <button
-                                            onClick={() => handleMenuToggle(row.id)}
-                                            className="p-1 rounded-full hover:bg-gray-100 transition cursor-pointer"
-                                        >
-                                            <BiDotsVerticalRounded className="text-gray-600 text-sm" />
-                                        </button>
-
-                                        {openMenuId === row.id && (
-                                            <div
-                                                ref={menuRef}
-                                                className="absolute top-5 right-16 mt-1 z-50 w-37 bg-white border border-gray-200 rounded-xl shadow-lg"
-                                            >
-                                                <ul className="py-2 text-xxs text-gray-700">
-                                                    <li>
-                                                        <button onClick={handleOpenModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEye className="mr-2 text-sm" /> View Holiday
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 hover:text-green-700">
-                                                            <FiEdit3 className="mr-2 text-sm" /> Edit Holiday
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-500">
-                                                            <RxCross2 className="mr-2 text-sm" /> Deactivate
-                                                        </button>
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </td>
-
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>) : (<div className="bg-white rounded border border-gray-200 p-4 -mt-2">
+                <div className="bg-white rounded border border-gray-200 p-4 -mt-2">
 
 
                     <div>
@@ -557,33 +468,36 @@ export default function HolidaysCalender() {
                                 'bg-indigo-200 text-indigo-800',
                                 'bg-amber-200 text-amber-800',
                             ];
-
+                            const emoji = leaveEmojis[arg.event.extendedProps.leaveTypeId];
                             const colorClass =
                                 colorPalette[arg.event.id % colorPalette.length] ||
                                 'bg-gray-200 text-gray-800';
 
                             return (
                                 <div
-                                    className={`group ${colorClass} text-[11px] font-medium rounded px-2 py-[3px] 
-        shadow-sm cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-150 border-l-4`}
+                                    className={`group ${colorClass} text-[11px] font-medium rounded px-1 py-[3px] 
+        shadow-sm cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-150`}
                                     style={{ borderColor: 'currentColor' }}
                                 >
-                                    <div className="truncate">{arg.event.title}</div>
+                                    <span className="me-1">{emoji}</span>
+                                    <span className="truncate">{arg.event.title}</span>
                                 </div>
                             );
                         }}
-                        events={holidayCalendarData.map((row, index) => ({
+                        events={teamLeaveCalendarData.map((row, index) => ({
                             id: row.id || index,
-                            title: row.holidayName,
+                            title: row.employeeName,
                             start: row.startDay,
                             end: row.endDay,
                             extendedProps: {
-                                description: row.description,
-                                region: row.regionName,
-                                location: row.locations,
+                                leaveTypeId: row.leaveTypeId,
+                                leaveType: row.leaveType,
+                                location: row.location,
+                                department: row.department,
+                                leaveDays: row.leaveDays,
                                 attachement: row.attachment,
-                                status: row.status,
-                                calendarType: row.calendarType
+                                description: row.reason,
+                                shift: row.workingShift,
                             },
                         }))}
 
@@ -607,7 +521,7 @@ export default function HolidaysCalender() {
                             overlay.className =
                                 "fixed inset-0 flex items-center justify-center bg-black/50 z-50 animate-fadeIn";
 
-                            overlay.innerHTML = `
+                          overlay.innerHTML = `
     <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-5/12">
       <div class="w-full">
         <div class="px-5 py-1 bg-white rounded-xl">
@@ -616,9 +530,7 @@ export default function HolidaysCalender() {
           <div class="border-b border-gray-300 pb-3 mb-4">
             <div class="flex justify-between">
               <h2 class="text-lg font-semibold text-gray-800">${title}</h2>
-              <span class="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-green-100 text-green-700">
-                                                ${extendedProps.status}
-                                            </span>
+              
             </div>
             <p class="text-xxs text-gray-500">
               ${formattedEnd && formattedStart !== formattedEnd
@@ -628,28 +540,36 @@ export default function HolidaysCalender() {
           </div>
 
           <!-- Basic Info -->
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-            <div>
-              <p class="text-xxs text-gray-500 font-medium">Region</p>
-              <p class="text-xs font-semibold text-gray-800">${extendedProps.region || "-"
-                                }</p>
-            </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-1">
+            
             <div>
               <p class="text-xxs text-gray-500 font-medium">Location</p>
               <p class="text-xs text-gray-800">${extendedProps.location || "-"
                                 }</p>
             </div>
+             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
             <div>
-              <p class="text-xxs text-gray-500 font-medium">Holiday Type</p>
-              <p class="text-xs text-gray-800">${extendedProps.calendarType || "Public Holiday"
+              <p class="text-xxs text-gray-500 font-medium">Department</p>
+              <p class="text-xs text-gray-800">${extendedProps.department || "-"
+                                }</p>
+            </div>
+          </div>
+            <div>
+              <p class="text-xxs text-gray-500 font-medium">Leave Type</p>
+              <p class="text-xs text-gray-800">${extendedProps.leaveType || "Casual Leave"
                                 }</p>
             </div>
           </div>
 
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
             <div>
-              <p class="text-xxs text-gray-500 font-medium">Calendar Type</p>
-              <p class="text-xs text-gray-800">${extendedProps.calendarType || "National"
+              <p class="text-xxs text-gray-500 font-medium">Working Shift</p>
+              <p class="text-xs text-gray-800">${extendedProps.shift || "Morning"
+                                }</p>
+            </div>
+             <div>
+              <p class="text-xxs text-gray-500 font-medium">Leave Days</p>
+              <p class="text-xs text-gray-800">${extendedProps.leaveDays + " Days" || "-"
                                 }</p>
             </div>
           </div>
@@ -695,6 +615,7 @@ export default function HolidaysCalender() {
     </div>
   `;
 
+
                             document.body.appendChild(overlay);
 
                             // Close handler
@@ -712,12 +633,12 @@ export default function HolidaysCalender() {
 
                     />
 
-                </div>)}
+                </div>
 
                 {isOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
                         <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-6/12">
-                            <h3 className="text-lg text-center font-semibold mb-4">Add Holiday</h3>
+                            <h3 className="text-lg text-center font-semibold mb-4">Add Leave</h3>
 
                             <div className="w-full">
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">

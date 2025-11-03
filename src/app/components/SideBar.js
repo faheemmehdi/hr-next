@@ -57,7 +57,7 @@ const menuItems = [
       { label: "Leave Requests", href: "/leave/requests", },
       { label: "Leave Types & Policies", href: "/leave/settings", },
       { label: "Holiday Calendars", href: "/leave/holidays", },
-      { label: "Team Leave Calendar", href: "/leave/calendar", },
+      { label: "Team Leave Calendar", href: "/leave/team", },
       { label: "Leave Balances", href: "/leave/balances", },
     ],
   },
