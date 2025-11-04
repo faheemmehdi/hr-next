@@ -67,6 +67,7 @@ const menuItems = [
     label: "Payroll",
     description: "Handle salary, bonuses, and deductions",
     dropdown: [
+      { label: "Payrolls", href: "/payroll/list" },
       { label: "Salary Slip", href: "/payroll/salary-slip" },
       { label: "Bonuses", href: "/payroll/bonuses" },
       { label: "Tax", href: "/payroll/tax" },

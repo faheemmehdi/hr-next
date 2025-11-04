@@ -34,11 +34,11 @@ export default function TeamLeave() {
 
     const [regionVal, setRegionVal] = useState("");
     const [locationVal, setLocationVal] = useState("");
-    const [holidayName, setHolidayName] = useState("");
-    const [status, setStatus] = useState(true);
+    const [empVal, setEmpVal] = useState("");
+    const [leaveTypeVal, setLeaveTypeVal] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
-    const [cTypeVal, setCTypeVal] = useState("");
+    const [departmentVal, setDepartmentVal] = useState("");
     const [attach, setAttach] = useState("");
     const [sDate, setSDate] = useState("");
     const [eDate, setEDate] = useState("");
@@ -105,151 +105,195 @@ export default function TeamLeave() {
         setOpenMenuId((prev) => (prev === id ? null : id));
     };
 
-const teamLeaveCalendarData = [
-  {
-    id: 1,
-    employeeName: "Ali Khan",
-    location: "Lahore Office",
-    department: "Finance",
-    workingShift: "Morning",
-    leaveTypeId: 1,
-    leaveType: "Sick Leave",
-    startDay: "2025-11-01",
-    endDay: "2025-11-03",
-    leaveDays: 3,
-    reason: "Flu and fever",
-    attachment: "medical_certificate_ali.pdf",
-  },
-  {
-    id: 2,
-    employeeName: "Sara Ahmed",
-    location: "Karachi Office",
-    department: "Marketing",
-    workingShift: "Evening",
-    leaveTypeId: 2,
-    leaveType: "Casual Leave",
-    startDay: "2025-11-05",
-    endDay: "2025-11-06",
-    leaveDays: 2,
-    reason: "Family event",
-    attachment: "",
-  },
-  {
-    id: 3,
-    employeeName: "Usman Ali",
-    location: "Islamabad Office",
-    department: "IT",
-    workingShift: "Night",
-    leaveTypeId: 3,
-    leaveType: "Annual Leave",
-    startDay: "2025-11-10",
-    endDay: "2025-11-15",
-    leaveDays: 6,
-    reason: "Vacation",
-    attachment: "",
-  },
-  {
-    id: 4,
-    employeeName: "Fatima Noor",
-    location: "Lahore Office",
-    department: "HR",
-    workingShift: "Morning",
-    leaveTypeId: 4,
-    leaveType: "Work From Home",
-    startDay: "2025-11-12",
-    endDay: "2025-11-13",
-    leaveDays: 2,
-    reason: "Personal work",
-    attachment: "",
-  },
-  {
-    id: 5,
-    employeeName: "Bilal Hussain",
-    location: "Karachi Office",
-    department: "Operations",
-    workingShift: "Evening",
-    leaveTypeId: 5,
-    leaveType: "Training",
-    startDay: "2025-11-20",
-    endDay: "2025-11-22",
-    leaveDays: 3,
-    reason: "Professional development",
-    attachment: "training_schedule_bilal.pdf",
-  },
-  {
-    id: 6,
-    employeeName: "Maryam Khan",
-    location: "Lahore Office",
-    department: "Finance",
-    workingShift: "Morning",
-    leaveTypeId: 6,
-    leaveType: "Unpaid Leave",
-    startDay: "2025-11-25",
-    endDay: "2025-11-26",
-    leaveDays: 2,
-    reason: "Personal reasons",
-    attachment: "",
-  },
-  {
-    id: 7,
-    employeeName: "Ahmed Raza",
-    location: "Islamabad Office",
-    department: "Marketing",
-    workingShift: "Night",
-    leaveTypeId: 2,
-    leaveType: "Casual Leave",
-    startDay: "2025-12-02",
-    endDay: "2025-12-03",
-    leaveDays: 2,
-    reason: "Wedding ceremony",
-    attachment: "",
-  },
-  {
-    id: 8,
-    employeeName: "Ayesha Siddiqui",
-    location: "Karachi Office",
-    department: "IT",
-    workingShift: "Evening",
-    leaveTypeId: 1,
-    leaveType: "Sick Leave",
-    startDay: "2025-12-10",
-    endDay: "2025-12-12",
-    leaveDays: 3,
-    reason: "Migraine",
-    attachment: "medical_certificate_ayesha.pdf",
-  },
-  {
-    id: 9,
-    employeeName: "Hassan Iqbal",
-    location: "Lahore Office",
-    department: "Operations",
-    workingShift: "Morning",
-    leaveTypeId: 3,
-    leaveType: "Annual Leave",
-    startDay: "2025-12-20",
-    endDay: "2025-12-30",
-    leaveDays: 11,
-    reason: "Family trip",
-    attachment: "",
-  },
-  {
-    id: 10,
-    employeeName: "Zara Nadeem",
-    location: "Islamabad Office",
-    department: "HR",
-    workingShift: "Night",
-    leaveTypeId: 4,
-    leaveType: "Work From Home",
-    startDay: "2025-12-28",
-    endDay: "2025-12-31",
-    leaveDays: 4,
-    reason: "House renovation",
-    attachment: "",
-  },
-];
+    const teamLeaveCalendarData = [
+        {
+            id: 1,
+            employeeName: "Ali Khan",
+            location: "Lahore Office",
+            department: "Finance",
+            workingShift: "Morning",
+            leaveTypeId: 1,
+            leaveType: "Sick Leave",
+            startDay: "2025-11-01",
+            endDay: "2025-11-03",
+            leaveDays: 3,
+            reason: "Flu and fever",
+            attachment: "medical_certificate_ali.pdf",
+        },
+        {
+            id: 2,
+            employeeName: "Sara Ahmed",
+            location: "Karachi Office",
+            department: "Marketing",
+            workingShift: "Evening",
+            leaveTypeId: 2,
+            leaveType: "Casual Leave",
+            startDay: "2025-11-05",
+            endDay: "2025-11-06",
+            leaveDays: 2,
+            reason: "Family event",
+            attachment: "",
+        },
+        {
+            id: 3,
+            employeeName: "Usman Ali",
+            location: "Islamabad Office",
+            department: "IT",
+            workingShift: "Night",
+            leaveTypeId: 3,
+            leaveType: "Annual Leave",
+            startDay: "2025-11-10",
+            endDay: "2025-11-15",
+            leaveDays: 6,
+            reason: "Vacation",
+            attachment: "",
+        },
+        {
+            id: 4,
+            employeeName: "Fatima Noor",
+            location: "Lahore Office",
+            department: "HR",
+            workingShift: "Morning",
+            leaveTypeId: 4,
+            leaveType: "Work From Home",
+            startDay: "2025-11-12",
+            endDay: "2025-11-13",
+            leaveDays: 2,
+            reason: "Personal work",
+            attachment: "",
+        },
+        {
+            id: 5,
+            employeeName: "Bilal Hussain",
+            location: "Karachi Office",
+            department: "Operations",
+            workingShift: "Evening",
+            leaveTypeId: 5,
+            leaveType: "Training",
+            startDay: "2025-11-20",
+            endDay: "2025-11-22",
+            leaveDays: 3,
+            reason: "Professional development",
+            attachment: "training_schedule_bilal.pdf",
+        },
+        {
+            id: 6,
+            employeeName: "Maryam Khan",
+            location: "Lahore Office",
+            department: "Finance",
+            workingShift: "Morning",
+            leaveTypeId: 6,
+            leaveType: "Unpaid Leave",
+            startDay: "2025-11-25",
+            endDay: "2025-11-26",
+            leaveDays: 2,
+            reason: "Personal reasons",
+            attachment: "",
+        },
+        {
+            id: 7,
+            employeeName: "Ahmed Raza",
+            location: "Islamabad Office",
+            department: "Marketing",
+            workingShift: "Night",
+            leaveTypeId: 2,
+            leaveType: "Casual Leave",
+            startDay: "2025-12-02",
+            endDay: "2025-12-03",
+            leaveDays: 2,
+            reason: "Wedding ceremony",
+            attachment: "",
+        },
+        {
+            id: 8,
+            employeeName: "Ayesha Siddiqui",
+            location: "Karachi Office",
+            department: "IT",
+            workingShift: "Evening",
+            leaveTypeId: 1,
+            leaveType: "Sick Leave",
+            startDay: "2025-12-10",
+            endDay: "2025-12-12",
+            leaveDays: 3,
+            reason: "Migraine",
+            attachment: "medical_certificate_ayesha.pdf",
+        },
+        {
+            id: 9,
+            employeeName: "Hassan Iqbal",
+            location: "Lahore Office",
+            department: "Operations",
+            workingShift: "Morning",
+            leaveTypeId: 3,
+            leaveType: "Annual Leave",
+            startDay: "2025-12-20",
+            endDay: "2025-12-30",
+            leaveDays: 11,
+            reason: "Family trip",
+            attachment: "",
+        },
+        {
+            id: 10,
+            employeeName: "Zara Nadeem",
+            location: "Islamabad Office",
+            department: "HR",
+            workingShift: "Night",
+            leaveTypeId: 4,
+            leaveType: "Work From Home",
+            startDay: "2025-12-28",
+            endDay: "2025-12-31",
+            leaveDays: 4,
+            reason: "House renovation",
+            attachment: "",
+        },
+    ];
 
-
-
+    const departments = mapSelectOptions(
+        [
+            { id: 1, name: "Human Resources" },
+            { id: 2, name: "Finance" },
+            { id: 3, name: "Marketing" },
+            { id: 4, name: "Sales" },
+            { id: 5, name: "Customer Support" },
+            { id: 6, name: "Operations" },
+            { id: 7, name: "IT & Infrastructure" },
+            { id: 8, name: "Research & Development" },
+            { id: 9, name: "Design" },
+            { id: 10, name: "Administration" },
+        ],
+        "id",
+        "name"
+    );
+    const employees = mapSelectOptions(
+        [
+            { id: 1, name: "Human Resources" },
+            { id: 2, name: "Finance" },
+            { id: 3, name: "Marketing" },
+            { id: 4, name: "Sales" },
+            { id: 5, name: "Customer Support" },
+            { id: 6, name: "Operations" },
+            { id: 7, name: "IT & Infrastructure" },
+            { id: 8, name: "Research & Development" },
+            { id: 9, name: "Design" },
+            { id: 10, name: "Administration" },
+        ],
+        "id",
+        "name"
+    );
+    const leaveTypes = mapSelectOptions(
+        [
+            { id: 1, name: "Annual Leave" },
+            { id: 2, name: "Sick Leave" },
+            { id: 3, name: "Casual Leave" },
+            { id: 4, name: "Maternity Leave" },
+            { id: 5, name: "Paternity Leave" },
+            { id: 6, name: "Emergency Leave" },
+            { id: 7, name: "Work From Home" },
+            { id: 8, name: "Unpaid Leave" },
+        ],
+        "id",
+        "name"
+    );
     const holidayTypes = mapSelectOptions(
         [
             { id: 1, name: "Public Holiday" },
@@ -300,13 +344,13 @@ const teamLeaveCalendarData = [
         "name"
     );
     const leaveEmojis = {
-        1 : "🤧",
-        2 : "⛱️",
-        3 : "🗓️",
-        4 : "🎉",
-        5 : "🏠",
-        6 : "📚",
-        7 : "💸",
+        1: "🤧",
+        2: "⛱️",
+        3: "🗓️",
+        4: "🎉",
+        5: "🏠",
+        6: "📚",
+        7: "💸",
     };
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -521,7 +565,7 @@ const teamLeaveCalendarData = [
                             overlay.className =
                                 "fixed inset-0 flex items-center justify-center bg-black/50 z-50 animate-fadeIn";
 
-                          overlay.innerHTML = `
+                            overlay.innerHTML = `
     <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-5/12">
       <div class="w-full">
         <div class="px-5 py-1 bg-white rounded-xl">
@@ -663,38 +707,74 @@ const teamLeaveCalendarData = [
                                         error={showErrors && !locationVal ? "Location is required" : ""}
                                     />
                                     <CustomSelect
-                                        name="cType"
-                                        label="Calendar Type"
-                                        value={cTypeVal}
-                                        placeholder="Select Location"
-                                        onChange={setCTypeVal}
-                                        options={calendarTypes}
+                                        name="dept"
+                                        label="Department"
+                                        value={departmentVal}
+                                        placeholder="Select Department"
+                                        onChange={setDepartmentVal}
+                                        options={departments}
                                         controlHeight="2rem"
-                                        error={showErrors && !cTypeVal ? "Calendar Type is required" : ""}
+                                        error={showErrors && !departmentVal ? "Department is required" : ""}
                                     />
 
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                                    <Input
-                                        type="text"
-                                        name="name"
-                                        placeholder="Enter holiday name"
-                                        label="Holiday Name"
-                                        noMargin={true}
-                                        value={holidayName}
-                                        onChange={(e) => setHolidayName(e.target.value)}
-                                        error={showErrors && !holidayName ? "Name is required" : ""}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                                    <CustomSelect
+                                        name="emp"
+                                        label="Employee Name"
+                                        value={empVal}
+                                        placeholder="Select Employee"
+                                        onChange={setEmpVal}
+                                        options={employees}
+                                        controlHeight="2rem"
+                                        error={showErrors && !empVal ? "Employee is required" : ""}
                                     />
-                                    <div className="w-full flex items-center justify-center">
 
-                                        <div className="w-full md:w-37 md:mt-4">
-                                            <ToggleSwitch
-                                                label="Active Status"
-                                                checked={status}
-                                                onChange={setStatus}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 text-xxs">
+                                        <div>
+                                            <label className="text-gray-700">Designation</label>
+                                            <div className="border border-gray-300 text-gray-500 rounded mt-1" style={{ padding: "6px", height: "32px" }}>
+                                                Developer
+                                            </div>
+                                        </div>
+
+
+                                        <div>
+                                            <label className="text-gray-700">Working Shift</label>
+                                            <div className="border border-gray-300 text-gray-500 rounded mt-1" style={{ padding: "6px", height: "32px" }}>
+                                                Morning
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="col-span-2">
+                                            <CustomSelect
+                                                name="leaveType"
+                                                label="Leave Type"
+                                                value={leaveTypeVal}
+                                                placeholder="Select Type"
+                                                onChange={setLeaveTypeVal}
+                                                options={leaveTypes}
+                                                controlHeight="2rem"
+                                                error={showErrors && !leaveTypeVal ? "Leave Type is required" : ""}
                                             />
                                         </div>
+                                        <div className="text-xxs">
+                                            <label className="text-gray-700">Leave Balance</label>
+                                            <div className="border border-gray-300 rounded text-gray-500 mt-1" style={{ padding: "6px", height: "32px" }}>
+                                                0
+                                            </div>
+                                        </div>
                                     </div>
+                                    <FileUpload
+                                        label="Attachment"
+                                        name="attachment"
+                                        onChange={(e) => setAttach(e.target.files[0])}
+                                        value={attach}
+                                    />
 
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
@@ -718,40 +798,28 @@ const teamLeaveCalendarData = [
                                         onChange={(e) => setEDate(e.target.value)}
                                         error={showErrors && !eDate ? "End date is required" : ""}
                                     />
-                                    <CustomSelect
-                                        name="holidayType"
-                                        label="Holiday Type"
-                                        value={holidayType}
-                                        placeholder="Select Type"
-                                        onChange={setHolidayType}
-                                        options={holidayTypes}
-                                        controlHeight="2rem"
-                                        error={showErrors && !holidayType ? "Holiday Type is required" : ""}
-                                    />
+                                    <div className="text-xxs">
+                                        <label className="text-gray-700">Leave Duration</label>
+                                        <div className="border border-gray-300 text-gray-500 rounded mt-1" style={{ padding: "6px", height: "32px" }}>
+                                            3 Days
+                                        </div>
+                                    </div>
+
 
 
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-                                    <FileUpload
-                                        label="Attachment"
-                                        name="attachment"
-                                        onChange={(e) => setAttach(e.target.files[0])}
-                                        value={attach}
-                                    />
 
-
-                                </div>
                                 <div className="w-full mb-3">
                                     <label
                                         htmlFor="pDesc"
                                         className="block text-xxs text-gray-700 mb-2"
                                     >
-                                        Description
+                                        Reason / Remarks
                                     </label>
                                     <textarea
                                         id="pDesc"
                                         rows="4"
-                                        placeholder="Enter description..."
+                                        placeholder="Enter here..."
                                         className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
                                         focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
                                     />
@@ -764,7 +832,7 @@ const teamLeaveCalendarData = [
                                         Cancel
                                     </Button>
                                     <Button variant="success" >
-                                        Add Holiday
+                                        Add Leave
                                     </Button>
                                 </div>
                             </div>
