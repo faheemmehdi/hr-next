@@ -9,7 +9,7 @@ import { FaStar } from "react-icons/fa";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
 import Button from "y@/app/components/Button";
-
+import MonthPicker from "y@/app/components/MonthPicker";
 export default function MonthlyClient() {
 
     // --- State ---
@@ -21,7 +21,8 @@ export default function MonthlyClient() {
     const [days, setDays] = useState([]);
     const [attendanceData, setAttendanceData] = useState([]);
     const [search, setSearch] = useState("");
-  const [location, setLocation] = useState("");
+    const [location, setLocation] = useState("");
+    const [monthVal, setMonthVal] = useState("");
 
     // --- When month changes, recalculate days ---
     useEffect(() => {
@@ -118,22 +119,22 @@ export default function MonthlyClient() {
             row.empId.toLowerCase().includes(search.toLowerCase())
     );
 
-      const locations = mapSelectOptions(
+    const locations = mapSelectOptions(
         [
-          { id: 1, name: "Lahore" },
-          { id: 2, name: "Multan" },
-          { id: 3, name: "Karachi" },
-          { id: 3, name: "Islamabad" },
-          { id: 3, name: "Shaher Sultan" },
-          { id: 3, name: "Rawalpindi" },
-          { id: 3, name: "Kohat" },
+            { id: 1, name: "Lahore" },
+            { id: 2, name: "Multan" },
+            { id: 3, name: "Karachi" },
+            { id: 3, name: "Islamabad" },
+            { id: 3, name: "Shaher Sultan" },
+            { id: 3, name: "Rawalpindi" },
+            { id: 3, name: "Kohat" },
         ],
         "id",
         "name"
-      );
+    );
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    
+
 
     return (
         <Layout>
@@ -144,8 +145,8 @@ export default function MonthlyClient() {
                         Monthly Attendance
                     </h2>
                     <Button type="button" variant="success">
-                                Export Attendance
-                              </Button>
+                        Export Attendance
+                    </Button>
                 </div>
 
                 {/* Search + Date Filter */}
@@ -158,151 +159,149 @@ export default function MonthlyClient() {
                         />
                     </div>
                     <div className="flex items-center gap-2">
-                                     <div className="mb-1 w-[9rem]">
-                                      <CustomSelect
-                                        name="location"
-                                        value={location}
-                                        placeholder="Location"
-                                        onChange={setLocation}
-                                        options={locations}
-                                        controlHeight="2rem"
-                                      />
-                                    </div>
-                        <Input
-                            type="month"
-                            name="month"
-                            noMargin={true}
-                            value={selectedMonth}
-                            onChange={(e) => setSelectedMonth(e.target.value)}
-                        />
+                        <div className=" w-[9rem]">
+                            <CustomSelect
+                                name="location"
+                                value={location}
+                                placeholder="Location"
+                                onChange={setLocation}
+                                options={locations}
+                                controlHeight="2rem"
+                            />
+                        </div>
+                        <div className=" w-[9rem]">
+                            <MonthPicker monthVal={monthVal} setMonthVal={setMonthVal} />
+
+                        </div>
+
                     </div>
                 </div>
 
                 <div className="relative mt-2 border border-gray-200 rounded-md overflow-hidden">
                     <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
                         <div className="min-w-max">
-                        <table className="w-full text-xs border-collapse table-auto">
+                            <table className="w-full text-xs border-collapse table-auto">
 
-                            <thead className="bg-gray-100 text-gray-700">
-                                <tr>
-                                    <th className="sticky left-0 w-[80px] bg-gray-100 z-20 text-left px-2 py-3">Emp ID</th>
-                                    <th className="sticky left-[80px] w-[130px] bg-gray-100 z-20 text-left px-2 py-3">Name</th>
-                                    <th className="sticky left-[210px] w-[90px] bg-gray-100 z-20 text-left px-2 py-3">Location</th>
+                                <thead className="bg-gray-100 text-gray-700">
+                                    <tr>
+                                        <th className="sticky left-0 w-[80px] bg-gray-100 z-20 text-left px-2 py-3">Emp ID</th>
+                                        <th className="sticky left-[80px] w-[130px] bg-gray-100 z-20 text-left px-2 py-3">Name</th>
+                                        <th className="sticky left-[210px] w-[90px] bg-gray-100 z-20 text-left px-2 py-3">Location</th>
 
 
-                                    {/* Scrollable Day Columns */}
-                                    {days.map((d) => (
-                                        <th key={d} style={{ minWidth: "25px" }} className="text-center">
-                                            {d}
+                                        {/* Scrollable Day Columns */}
+                                        {days.map((d) => (
+                                            <th key={d} style={{ minWidth: "25px" }} className="text-center">
+                                                {d}
+                                            </th>
+                                        ))}
+
+                                        <th title="Working Hours" className="px-3 py-3 text-center sticky right-[145px] bg-gray-100 z-20">
+                                            WH
                                         </th>
-                                    ))}
+                                        <th className="px-3 py-3 text-center sticky right-[88px] bg-gray-100 z-20">
+                                            Present
+                                        </th>
+                                        <th className="px-3 py-3 text-center sticky right-[44px] bg-gray-100 z-20">
+                                            Absent
+                                        </th>
+                                        <th className="px-3 py-3 text-center sticky right-0 bg-gray-100 z-20">
+                                            Leave
+                                        </th>
 
-                                    <th title="Working Hours" className="px-3 py-3 text-center sticky right-[145px] bg-gray-100 z-20">
-                                        WH
-                                    </th>
-                                    <th className="px-3 py-3 text-center sticky right-[88px] bg-gray-100 z-20">
-                                        Present
-                                    </th>
-                                    <th className="px-3 py-3 text-center sticky right-[44px] bg-gray-100 z-20">
-                                        Absent
-                                    </th>
-                                    <th className="px-3 py-3 text-center sticky right-0 bg-gray-100 z-20">
-                                        Leave
-                                    </th>
+                                    </tr>
+                                </thead>
 
-                                </tr>
-                            </thead>
+                                <tbody className="text-xxs">
+                                    {filteredData.map((row, idx) => {
+                                        const totalPresent = Object.values(row.attendance).filter((s) => s === "P").length;
+                                        const totalAbsent = Object.values(row.attendance).filter((s) => s === "A").length;
+                                        const totalLeave = Object.values(row.attendance).filter((s) => s === "L").length;
 
-                            <tbody className="text-xxs">
-                                {filteredData.map((row, idx) => {
-                                    const totalPresent = Object.values(row.attendance).filter((s) => s === "P").length;
-                                    const totalAbsent = Object.values(row.attendance).filter((s) => s === "A").length;
-                                    const totalLeave = Object.values(row.attendance).filter((s) => s === "L").length;
+                                        return (
+                                            <tr
+                                                key={idx}
+                                                className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                                    } hover:bg-gray-100 transition-colors`}
+                                            >
+                                                {/* Sticky Left Columns */}
+                                                <td className="sticky left-0 w-[80px] bg-inherit z-10 px-2 py-3">{row.empId}</td>
+                                                <td className="sticky left-[80px] w-[130px] bg-inherit z-10 px-2 py-3 flex items-center gap-2">
+                                                    <img
+                                                        src={`${baseUrl}${row.imageUrl}`}
+                                                        alt={row.name}
+                                                        className="w-6 h-6 rounded-full object-cover border border-gray-300"
+                                                    />
+                                                    <span
+                                                        className="font-medium text-gray-700 truncate max-w-[100px]"
+                                                        title={row.name}
+                                                    >
+                                                        {row.name}
+                                                    </span>
+                                                </td>
+                                                <td className="sticky left-[210px] w-[80px] bg-inherit z-10 px-2 py-3">{row.location}</td>
 
-                                    return (
-                                        <tr
-                                            key={idx}
-                                            className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                                } hover:bg-gray-100 transition-colors`}
-                                        >
-                                            {/* Sticky Left Columns */}
-                                            <td className="sticky left-0 w-[80px] bg-inherit z-10 px-2 py-3">{row.empId}</td>
-                                            <td className="sticky left-[80px] w-[130px] bg-inherit z-10 px-2 py-3 flex items-center gap-2">
-                                                <img
-                                                    src={`${baseUrl}${row.imageUrl}`}
-                                                    alt={row.name}
-                                                    className="w-6 h-6 rounded-full object-cover border border-gray-300"
-                                                />
-                                                <span
-                                                    className="font-medium text-gray-700 truncate max-w-[100px]"
-                                                    title={row.name}
-                                                >
-                                                    {row.name}
-                                                </span>
-                                            </td>
-                                            <td className="sticky left-[210px] w-[80px] bg-inherit z-10 px-2 py-3">{row.location}</td>
+                                                {/* Scrollable Days */}
+                                                {days.map((d) => {
+                                                    const status = row.attendance[d];
+                                                    let icon, borderColor, textColor, title;
 
-                                            {/* Scrollable Days */}
-                                            {days.map((d) => {
-                                                const status = row.attendance[d];
-                                                let icon, borderColor, textColor, title;
+                                                    switch (status) {
+                                                        case "P":
+                                                            icon = <FiCheck size={8} strokeWidth={3} />;
+                                                            borderColor = "border-green-600";
+                                                            textColor = "text-green-600";
+                                                            title = "Present";
+                                                            break;
+                                                        case "A":
+                                                            icon = <IoMdClose size={9} strokeWidth={3} />;
+                                                            borderColor = "border-red-600";
+                                                            textColor = "text-red-600";
+                                                            title = "Absent";
+                                                            break;
+                                                        case "L":
+                                                            icon = <FaStar size={7} strokeWidth={3} />;
+                                                            borderColor = "border-yellow-500";
+                                                            textColor = "text-yellow-500";
+                                                            title = "Leave";
+                                                            break;
+                                                        default:
+                                                            icon = null;
+                                                    }
 
-                                                switch (status) {
-                                                    case "P":
-                                                        icon = <FiCheck size={8} strokeWidth={3} />;
-                                                        borderColor = "border-green-600";
-                                                        textColor = "text-green-600";
-                                                        title = "Present";
-                                                        break;
-                                                    case "A":
-                                                        icon = <IoMdClose size={9} strokeWidth={3} />;
-                                                        borderColor = "border-red-600";
-                                                        textColor = "text-red-600";
-                                                        title = "Absent";
-                                                        break;
-                                                    case "L":
-                                                        icon = <FaStar size={7} strokeWidth={3} />;
-                                                        borderColor = "border-yellow-500";
-                                                        textColor = "text-yellow-500";
-                                                        title = "Leave";
-                                                        break;
-                                                    default:
-                                                        icon = null;
-                                                }
+                                                    return (
+                                                        <td key={d} className="text-center py-[1px]">
+                                                            <div
+                                                                title={title}
+                                                                className={`w-3 h-3 flex items-center justify-center rounded-full border ${borderColor} ${textColor} mx-auto`}
+                                                                style={{
+                                                                    backgroundColor: "transparent",
+                                                                    fontWeight: 600,
+                                                                }}
+                                                            >
+                                                                {icon}
+                                                            </div>
+                                                        </td>
+                                                    );
+                                                })}
 
-                                                return (
-                                                    <td key={d} className="text-center py-[1px]">
-                                                        <div
-                                                            title={title}
-                                                            className={`w-3 h-3 flex items-center justify-center rounded-full border ${borderColor} ${textColor} mx-auto`}
-                                                            style={{
-                                                                backgroundColor: "transparent",
-                                                                fontWeight: 600,
-                                                            }}
-                                                        >
-                                                            {icon}
-                                                        </div>
-                                                    </td>
-                                                );
-                                            })}
-
-                                            <td title="Working Hours" className="text-center sticky right-[145px] bg-inherit z-10">
-                                                {row.workingHours}
-                                            </td>
-                                            <td className="px-3 py-3 font-bold text-green-600 text-center sticky right-[90px] bg-inherit z-10">
-                                                {totalPresent}
-                                            </td>
-                                            <td className="px-3 py-3 font-bold text-red-500 text-center sticky right-[45px] bg-inherit z-10">
-                                                {totalAbsent}
-                                            </td>
-                                            <td className="px-3 py-3 font-bold text-yellow-500 text-center sticky right-0 bg-inherit z-10">
-                                                {totalLeave}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
+                                                <td title="Working Hours" className="text-center sticky right-[145px] bg-inherit z-10">
+                                                    {row.workingHours}
+                                                </td>
+                                                <td className="px-3 py-3 font-bold text-green-600 text-center sticky right-[90px] bg-inherit z-10">
+                                                    {totalPresent}
+                                                </td>
+                                                <td className="px-3 py-3 font-bold text-red-500 text-center sticky right-[45px] bg-inherit z-10">
+                                                    {totalAbsent}
+                                                </td>
+                                                <td className="px-3 py-3 font-bold text-yellow-500 text-center sticky right-0 bg-inherit z-10">
+                                                    {totalLeave}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,6 @@
 "use client";
 import Layout from "y@/app/components/Layout";
 import Input from "y@/app/components/Input";
-import { monthOptions, getYearOptions } from "y@/app/constants/Filters";
 import { useState, useEffect, useRef } from "react";
 import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
@@ -23,6 +22,7 @@ import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
 import FileUpload from "y@/app/components/FileUpload";
+import MonthPicker from "y@/app/components/MonthPicker";
 export default function HolidaysCalender() {
     const [date, setDate] = useState("");
     const [selectRegion, setSelectRegion] = useState("");
@@ -31,9 +31,10 @@ export default function HolidaysCalender() {
     const [selectMonth, setSelectMonth] = useState("");
     const [selectYear, setSelectYear] = useState("");
     const [viewMode, setViewMode] = useState('table');
-
+    const [calendarTitle, setCalendarTitle] = useState('');
     const [regionVal, setRegionVal] = useState("");
     const [locationVal, setLocationVal] = useState("");
+    const [monthVal, setMonthVal] = useState("");
     const [holidayName, setHolidayName] = useState("");
     const [status, setStatus] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
@@ -63,44 +64,14 @@ export default function HolidaysCalender() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
 
     }, []);
-
     useEffect(() => {
-
-        if (!calendarRef.current) return;
-
-        const timer = setTimeout(() => {
+        if (calendarRef.current && monthVal) {
             const calendarApi = calendarRef.current.getApi();
-            const today = new Date();
-
-            let targetYear, targetMonth;
-
-            if (selectYear && selectMonth) {
-                targetYear = parseInt(selectYear);
-                targetMonth = parseInt(selectMonth) - 1;
-            } else if (selectYear && !selectMonth) {
-                targetYear = parseInt(selectYear);
-                targetMonth = 0;
-            } else if (!selectYear && selectMonth) {
-                targetYear = today.getFullYear();
-                targetMonth = parseInt(selectMonth) - 1;
-            } else {
-                targetYear = today.getFullYear();
-                targetMonth = today.getMonth();
-            }
-
-            calendarApi.gotoDate(new Date(targetYear, targetMonth, 1));
-
-            // 🔜 Later: Replace this with backend API
-            console.log("Fetch filtered holidays for:", {
-                year: targetYear,
-                month: targetMonth + 1,
-            });
-        }, 0);
-
-        return () => clearTimeout(timer);
-
-    }, [selectMonth, selectYear]);
-
+            setTimeout(() => {
+                calendarApi.gotoDate(monthVal);
+            }, 0);
+        }
+    }, [monthVal]);
     const handleMenuToggle = (id) => {
         setOpenMenuId((prev) => (prev === id ? null : id));
     };
@@ -322,7 +293,6 @@ export default function HolidaysCalender() {
                     </Button>
                 </div>
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
                 <div className="flex justify-between items-center my-3 mt-5">
                     <div className="w-1/5 flex items-center mb-1">
                         <SearchBar
@@ -352,27 +322,10 @@ export default function HolidaysCalender() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
-                            <CustomSelect
-                                name="year"
-                                value={selectYear}
-                                placeholder="Year"
-                                onChange={setSelectYear}
-                                options={getYearOptions()}
-                                controlHeight="2rem"
-                            />
-                        </div>
-                        <div className="mb-1 w-[9rem]">
-                            <CustomSelect
-                                name="month"
-                                value={selectMonth}
-                                placeholder="Month"
-                                onChange={setSelectMonth}
-                                options={monthOptions}
-                                controlHeight="2rem"
-                            />
-                        </div>
 
+                        <div className="mb-1 w-[9rem]">
+                            <MonthPicker monthVal={monthVal} setMonthVal={setMonthVal} />
+                        </div>
                         <Input
                             type="date"
                             name="date"
@@ -471,7 +424,7 @@ export default function HolidaysCalender() {
 
                     <div>
                         <div className="flex items-center justify-between mb-3">
-                            <h2 id="calendarTitle" className="text-sm font-semibold text-gray-800"></h2>
+                            <h2 id="calendarTitle" className="text-sm font-semibold text-gray-800">{calendarTitle}</h2>
                             <div className="flex items-center gap-2 ">
                                 <button
                                     onClick={() => calendarRef.current?.getApi().prev()} title="Previous Month"
@@ -546,7 +499,7 @@ export default function HolidaysCalender() {
                             }
                         }}
                         datesSet={(info) => {
-                            document.getElementById("calendarTitle").innerText = info.view.title;
+                            setCalendarTitle(info.view.title);
                         }}
                         eventContent={(arg) => {
                             const colorPalette = [

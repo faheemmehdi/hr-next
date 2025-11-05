@@ -1,12 +1,12 @@
 "use client";
 import Layout from "y@/app/components/Layout";
 import Input from "y@/app/components/Input";
-import { useState, useEffect, useRef, forwardRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
 import {
-    FiEdit3, FiEye
+    FiUser, FiEye
 } from "react-icons/fi";
 import { FaDotCircle } from "react-icons/fa";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -15,12 +15,10 @@ import StatusDesign from "y@/app/components/StatusColors";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
-import MonthPicker from "y@/app/components/MonthPicker";
-import DateRangePicker from "y@/app/components/DateRagePicker";
-import { useRouter } from "next/navigation";
-export default function PayRollList() {
+import { IoCheckmarkDone } from "react-icons/io5";
+export default function PayrollEmp() {
     const [date, setDate] = useState("");
-    const [dateVal, setDateVal] = useState("");
+    const [designationVal, setDesignationVal] = useState("");
     const [search, setSearch] = useState("");
     const [location, setLocation] = useState("");
     const [type, setType] = useState("");
@@ -31,7 +29,7 @@ export default function PayRollList() {
     const [status, setStatus] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
-    const [monthVal, setMonthVal] = useState("");
+    const [checkIn, setCheckIn] = useState("");
     const [checkOut, setCheckOut] = useState("");
     const [remarks, setRemarks] = useState("");
     const [showErrors, setShowErrors] = useState(false);
@@ -41,14 +39,6 @@ export default function PayRollList() {
     const openReasonModal = () => setIsReasonOpen(true);
     const closeReasonModal = () => setIsReasonOpen(false);
     const [openMenuId, setOpenMenuId] = useState(null);
-    const [range, setRange] = useState([
-        {
-            startDate: undefined,
-            endDate: undefined,
-            key: 'selection'
-        }
-    ]);
-    const router = useRouter();
     const menuRef = useRef();
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -63,188 +53,280 @@ export default function PayRollList() {
     const handleMenuToggle = (id) => {
         setOpenMenuId((prev) => (prev === id ? null : id));
     };
-    const handleRowClick = (id) => {
-        router.push(`/payroll/employees/`);
-    };
 
-    const payrollData = [
-        {
-            id: "PR-2025-001",
-            title: "August 2025 – Lahore HQ",
-            location: "Lahore HQ",
-            department: "All Departments",
-            totalEmployees: 58,
-            payPeriodStart: "2025-08-01",
-            payPeriodEnd: "2025-08-31",
-            generatedDate: "2025-09-02",
-            totalAmount: 4520000,
-            statusId: 1,
-            status: "Completed",
-            approvedBy: "Hhsan Qureshi",
-            approvedDate: "2025-09-03",
-            remarks: "Payroll processed successfully.",
-            payCycleType: "Monthly",
+  const payrollData = [
+    {
+        empId: "EMP301",
+        name: "Ahsan Qureshi",
+        imageUrl: "/api/portraits/men/28.jpg",
+        department: "Finance",
+        designation: "Senior Accountant",
+        basicSalary: 120000,
+        allowances: {
+            housing: 20000,
+            medical: 8000,
+            transport: 5000,
         },
-        {
-            id: "PR-2025-002",
-            title: "August 2025 – Karachi Office",
-            location: "Karachi Office",
-            department: "Engineering",
-            totalEmployees: 42,
-            payPeriodStart: "2025-08-01",
-            payPeriodEnd: "2025-08-31",
-            generatedDate: "2025-09-03",
-            totalAmount: 3890000,
-            statusId: 4,
-            status: "Approved",
-            approvedBy: "Sara Ahmed",
-            approvedDate: "2025-09-04",
-            remarks: "Waiting for finance transfer.",
-            payCycleType: "Monthly",
+        deductions: {
+            tax: 12000,
+            absences: 0,
+            lateArrival: 1000,
         },
-        {
-            id: "PR-2025-003",
-            title: "Aug–Sep 2025 – Islamabad Office",
-            location: "Islamabad Office",
-            department: "Sales",
-            totalEmployees: 35,
-            payPeriodStart: "2025-08-15",
-            payPeriodEnd: "2025-09-14",
-            generatedDate: "2025-09-16",
-            totalAmount: 3100000,
-            statusId: 3,
-            status: "Pending",
-            approvedBy: null,
-            approvedDate: null,
-            remarks: "Awaiting HR review.",
-            payCycleType: "Bi-weekly",
+        netPay: 140000,
+        payPeriod: "October 2025",
+        paymentDate: "Oct 31, 2025",
+        bankAccount: "Meezan Bank - 0213-5897212",
+        statusId: 1,
+        status: "Completed",
+        approvedBy: "Sarah Ahmed",
+    },
+    {
+        empId: "EMP302",
+        name: "Sana Imran",
+        imageUrl: "/api/portraits/women/34.jpg",
+        department: "HR",
+        designation: "HR Officer",
+        basicSalary: 95000,
+        allowances: {
+            housing: 15000,
+            medical: 5000,
+            transport: 4000,
         },
-        {
-            id: "PR-2025-004",
-            title: "September 2025 – Remote Staff",
-            location: "Remote (Hybrid)",
-            department: "Support",
-            totalEmployees: 22,
-            payPeriodStart: "2025-09-01",
-            payPeriodEnd: "2025-09-30",
-            generatedDate: "2025-10-02",
-            totalAmount: 1725000,
-            statusId: 1,
-            status: "Completed",
-            approvedBy: "HNimra Gul",
-            approvedDate: "2025-10-03",
-            remarks: "Includes remote incentives.",
-            payCycleType: "Monthly",
+        deductions: {
+            tax: 9500,
+            absences: 2,
+            lateArrival: 500,
         },
-        {
-            id: "PR-2025-005",
-            title: "September 2025 – Lahore HQ",
-            location: "Lahore HQ",
-            department: "Finance",
-            totalEmployees: 14,
-            payPeriodStart: "2025-09-01",
-            payPeriodEnd: "2025-09-30",
-            generatedDate: "2025-10-01",
-            totalAmount: 980000,
-            statusId: 4,
-            status: "Approved",
-            approvedBy: "Filal Hussain",
-            approvedDate: "2025-10-02",
-            remarks: "Approved for disbursement.",
-            payCycleType: "Monthly",
+        netPay: 110000,
+        payPeriod: "October 2025",
+        paymentDate: "Oct 31, 2025",
+        bankAccount: "HBL - 0325-9987111",
+        statusId: 2,
+        status: "Rejected",
+        approvedBy: "Ali Khan",
+    },
+    {
+        empId: "EMP303",
+        name: "Tahir Hussain",
+        imageUrl: "/api/portraits/men/19.jpg",
+        department: "IT",
+        designation: "Software Engineer",
+        basicSalary: 150000,
+        allowances: {
+            housing: 25000,
+            medical: 10000,
+            transport: 6000,
         },
-        {
-            id: "PR-2025-006",
-            title: "September 2025 – Karachi Office",
-            location: "Karachi Office",
-            department: "Operations",
-            totalEmployees: 26,
-            payPeriodStart: "2025-09-01",
-            payPeriodEnd: "2025-09-30",
-            generatedDate: "2025-10-01",
-            totalAmount: 2050000,
-            statusId: 3,
-            status: "Pending",
-            approvedBy: null,
-            approvedDate: null,
-            remarks: "Payroll draft created.",
-            payCycleType: "Monthly",
+        deductions: {
+            tax: 15000,
+            absences: 0,
+            lateArrival: 0,
         },
-        {
-            id: "PR-2025-007",
-            title: "Oct–Nov 2025 – Contractual Staff",
-            location: "Lahore HQ",
-            department: "Project Alpha",
-            totalEmployees: 18,
-            payPeriodStart: "2025-10-15",
-            payPeriodEnd: "2025-11-15",
-            generatedDate: "2025-11-17",
-            totalAmount: 1420000,
-            statusId: 2,
-            status: "Rejected",
-            approvedBy: null,
-            approvedDate: null,
-            remarks: "Rejected approval.",
-            payCycleType: "Custom",
+        netPay: 176000,
+        payPeriod: "October 2025",
+        paymentDate: "Pending",
+        bankAccount: "Allied Bank - 0456-778899",
+        statusId: 3,
+        status: "Pending",
+        approvedBy: "—",
+    },
+    {
+        empId: "EMP304",
+        name: "Nimra Gul",
+        imageUrl: "/api/portraits/women/41.jpg",
+        department: "Marketing",
+        designation: "Content Strategist",
+        basicSalary: 110000,
+        allowances: {
+            housing: 18000,
+            medical: 7000,
+            transport: 4000,
         },
-        {
-            id: "PR-2025-008",
-            title: "October 2025 – Lahore HQ",
-            location: "Lahore HQ",
-            department: "Admin",
-            totalEmployees: 9,
-            payPeriodStart: "2025-10-01",
-            payPeriodEnd: "2025-10-31",
-            generatedDate: "2025-11-01",
-            totalAmount: 720000,
-            statusId: 1,
-            status: "Completed",
-            approvedBy: "Ahsan Qureshi",
-            approvedDate: "2025-11-02",
-            remarks: "Processed successfully.",
-            payCycleType: "Monthly",
+        deductions: {
+            tax: 11000,
+            absences: 0,
+            lateArrival: 0,
         },
-        {
-            id: "PR-2025-009",
-            title: "October 2025 – Islamabad Office",
-            location: "Islamabad Office",
-            department: "Support",
-            totalEmployees: 19,
-            payPeriodStart: "2025-10-01",
-            payPeriodEnd: "2025-10-31",
-            generatedDate: "2025-11-01",
-            totalAmount: 1610000,
-            statusId: 4,
-            status: "Approved",
-            approvedBy: "Usman Ali",
-            approvedDate: "2025-11-03",
-            remarks: "Ready for processing.",
-            payCycleType: "Monthly",
+        netPay: 128000,
+        payPeriod: "October 2025",
+        paymentDate: "Oct 31, 2025",
+        bankAccount: "UBL - 0256-887799",
+        statusId: 4,
+        status: "Approved",
+        approvedBy: "Hassan Rafiq",
+    },
+    {
+        empId: "EMP305",
+        name: "Zeeshan Arif",
+        imageUrl: "/api/portraits/men/37.jpg",
+        department: "Operations",
+        designation: "Logistics Supervisor",
+        basicSalary: 90000,
+        allowances: {
+            housing: 12000,
+            medical: 5000,
+            transport: 3000,
         },
-        {
-            id: "PR-2025-010",
-            title: "October 2025 – Karachi HQ",
-            location: "Karachi HQ",
-            department: "IT & Development",
-            totalEmployees: 30,
-            payPeriodStart: "2025-10-01",
-            payPeriodEnd: "2025-10-31",
-            generatedDate: "2025-11-02",
-            totalAmount: 2700000,
-            statusId: 1,
-            status: "Completed",
-            approvedBy: "Sara Ahmed",
-            approvedDate: "2025-11-03",
-            remarks: "Payroll finalized.",
-            payCycleType: "Monthly",
+        deductions: {
+            tax: 9000,
+            absences: 1000,
+            lateArrival: 500,
         },
-    ];
+        netPay: 104500,
+        payPeriod: "October 2025",
+        paymentDate: "Pending",
+        bankAccount: "MCB - 0312-5544789",
+        statusId: 3,
+        status: "Pending",
+        approvedBy: "—",
+    },
+    {
+        empId: "EMP306",
+        name: "Amna Yousaf",
+        imageUrl: "/api/portraits/women/30.jpg",
+        department: "Customer Support",
+        designation: "Support Executive",
+        basicSalary: 80000,
+        allowances: {
+            housing: 10000,
+            medical: 5000,
+            transport: 3000,
+        },
+        deductions: {
+            tax: 8000,
+            absences: 0,
+            lateArrival: 0,
+        },
+        netPay: 90000,
+        payPeriod: "October 2025",
+        paymentDate: "Oct 31, 2025",
+        bankAccount: "Bank Alfalah - 0178-3312456",
+        statusId: 1,
+        status: "Completed",
+        approvedBy: "Sara Bukhari",
+    },
+    {
+        empId: "EMP307",
+        name: "Hassan Javed",
+        imageUrl: "/api/portraits/men/32.jpg",
+        department: "IT",
+        designation: "Frontend Developer",
+        basicSalary: 130000,
+        allowances: {
+            housing: 20000,
+            medical: 7000,
+            transport: 6000,
+        },
+        deductions: {
+            tax: 13000,
+            absences: 0,
+            lateArrival: 500,
+        },
+        netPay: 150500,
+        payPeriod: "October 2025",
+        paymentDate: "Oct 31, 2025",
+        bankAccount: "Standard Chartered - 0569-334455",
+        statusId: 4,
+        status: "Approved",
+        approvedBy: "Imran Tariq",
+    },
+    {
+        empId: "EMP308",
+        name: "Kiran Abbas",
+        imageUrl: "/api/portraits/women/38.jpg",
+        department: "Legal",
+        designation: "Compliance Officer",
+        basicSalary: 145000,
+        allowances: {
+            housing: 22000,
+            medical: 10000,
+            transport: 5000,
+        },
+        deductions: {
+            tax: 14500,
+            absences: 0,
+            lateArrival: 0,
+        },
+        netPay: 167500,
+        payPeriod: "October 2025",
+        paymentDate: "Oct 31, 2025",
+        bankAccount: "HBL - 0998-765432",
+        statusId: 1,
+        status: "Completed",
+        approvedBy: "HR Department",
+    },
+    {
+        empId: "EMP309",
+        name: "Usama Iqbal",
+        imageUrl: "/api/portraits/men/45.jpg",
+        department: "IT",
+        designation: "Backend Developer",
+        basicSalary: 155000,
+        allowances: {
+            housing: 25000,
+            medical: 9000,
+            transport: 5000,
+        },
+        deductions: {
+            tax: 15500,
+            absences: 1,
+            lateArrival: 0,
+        },
+        netPay: 178500,
+        payPeriod: "October 2025",
+        paymentDate: "Pending",
+        bankAccount: "Meezan Bank - 0334-556677",
+        statusId: 3,
+        status: "Pending",
+        approvedBy: "—",
+    },
+    {
+        empId: "EMP310",
+        name: "Hira Rehman",
+        imageUrl: "/api/portraits/women/47.jpg",
+        department: "Sales",
+        designation: "Sales Executive",
+        basicSalary: 100000,
+        allowances: {
+            housing: 15000,
+            medical: 5000,
+            transport: 5000,
+        },
+        deductions: {
+            tax: 10000,
+            absences: 0,
+            lateArrival: 0,
+        },
+        netPay: 110000,
+        payPeriod: "October 2025",
+        paymentDate: "Oct 31, 2025",
+        bankAccount: "MCB - 0444-223344",
+        statusId: 4,
+        status: "Approved",
+        approvedBy: "Sana Tariq",
+    },
+];
 
 
 
 
 
-
+    const departments = mapSelectOptions(
+        [
+            { id: 1, name: "Human Resources" },
+            { id: 2, name: "Finance" },
+            { id: 3, name: "Marketing" },
+            { id: 4, name: "Sales" },
+            { id: 5, name: "Customer Support" },
+            { id: 6, name: "Operations" },
+            { id: 7, name: "IT & Infrastructure" },
+            { id: 8, name: "Research & Development" },
+            { id: 9, name: "Design" },
+            { id: 10, name: "Administration" },
+        ],
+        "id",
+        "name"
+    );
 
 
     const locations = mapSelectOptions(
@@ -312,35 +394,44 @@ export default function PayRollList() {
             <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
-                        Payrolls
+                        August 2025 – Lahore (Lahore)
                     </h2>
-                    <Button type="button" variant="success">
-                        Generate Payroll
+                    <Button type="button" variant="transparent" color="red" bgColor="gray">
+                        Export Payroll
                     </Button>
                 </div>
 
                 {/* Search + Date Filter (UI only; logic handled in backend) */}
-                <div className="flex flex-col md:flex-row justify-between items-center my-3 mt-5">
-                    <div className="w-2/3 md:w-1/5 flex items-center mb-3 md:mb-1">
+                <div className="flex justify-between items-center my-3 mt-5">
+                    <div className="w-1/5 flex items-center mb-1">
                         <SearchBar
-                            placeholder="Search by title ..."
+                            placeholder="Search by name or ID..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex flex-col md:flex-row items-center gap-2">
-                        <div className="mb-1 w-full md:w-[9rem]">
+                    <div className="flex items-center gap-2">
+                        <div className="mb-1 w-[9rem]">
                             <CustomSelect
-                                name="location"
-                                value={location}
-                                placeholder="Location"
-                                onChange={setLocation}
-                                options={locations}
+                                name="department"
+                                value={department}
+                                placeholder="Department"
+                                onChange={setDepartment}
+                                options={departments}
                                 controlHeight="2rem"
                             />
                         </div>
-
-                        <div className="mb-1 w-full md:w-[9rem]">
+                        <div className="mb-1 w-[9rem]">
+                            <CustomSelect
+                                name="desig"
+                                value={designationVal}
+                                placeholder="Designation"
+                                onChange={setDesignationVal}
+                                options={departments}
+                                controlHeight="2rem"
+                            />
+                        </div>
+                        <div className="mb-1 w-[9rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -350,13 +441,13 @@ export default function PayRollList() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="w-full md:w-[9rem] mb-1">
-                            <MonthPicker monthVal={monthVal} setMonthVal={setMonthVal} />
-                        </div>
-                        <div className="relative w-49">
-
-                            <DateRangePicker range={range} setRange={setRange} />
-                        </div>
+                        <Input
+                            type="date"
+                            name="date"
+                            noMargin={true}
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                        />
                     </div>
                 </div>
 
@@ -366,16 +457,15 @@ export default function PayRollList() {
                     <table className="w-full text-xs border-collapse">
                         <thead>
                             <tr className="bg-gray-100 text-gray-700">
-                                <th className="px-4 py-3 text-left rounded-tl-md">Payroll ID</th>
-                                <th className="px-4 py-3 text-left">Title</th>
-                                <th className="px-4 py-3 text-left">Location</th>
+                                <th className="px-4 py-3 text-left rounded-tl-md">Emp ID</th>
+                                <th className="px-4 py-3 text-left">Name</th>
                                 <th className="px-4 py-3 text-left">Department</th>
-                                <th className="px-4 py-3 text-left">Total Employees</th>
-                                <th className="px-4 py-3 text-left">Pay Period</th>
-                                <th className="px-4 py-3 text-left">Total Amount</th>
-                                <th className="px-4 py-3 text-left">Pay Cycle</th>
-                                <th className="px-4 py-3 text-left">Approved By</th>
-                                <th className="px-4 py-3 text-left">Remarks</th>
+                                <th className="px-4 py-3 text-left">Designation</th>
+                                <th className="px-4 py-3 text-left">Basic Salary</th>
+                                <th className="px-4 py-3 text-left">Allowances</th>
+                                <th className="px-4 py-3 text-left">Deductions</th>
+                                <th className="px-4 py-3 text-left">Net Pay</th>
+                                <th className="px-4 py-3 text-left">Payment Date</th>
                                 <th className="px-4 py-3 text-left">Status</th>
                                 <th className="px-4 py-3 text-left">Action</th>
                             </tr>
@@ -384,59 +474,68 @@ export default function PayRollList() {
                             {payrollData.map((row, idx) => (
                                 <tr
                                     key={idx}
-                                    onClick={(e) => {
-                                        if (e.target.closest("button")) return;
-                                        handleRowClick(row.id);
-                                    }}
                                     className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
                                         } hover:bg-gray-100 transition-colors`}
                                 >
-                                    <td className="px-4 py-3">{row.id}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.title}>{row.title}</td>
-                                    <td className="px-4 py-3">{row.location}</td>
+                                    <td className="px-4 py-3">{row.empId}</td>
+                                    <td className="px-4 py-3 flex items-center gap-2">
+                                        {row.imageUrl ? (
+                                            <img
+                                                src={`${baseUrl}${row.imageUrl}`}
+                                                alt={row.name}
+                                                className="w-7 h-7 rounded-full object-cover border border-gray-300"
+                                            />
+                                        ) : (
+                                            <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center">
+                                                <FiUser className="text-gray-500" />
+                                            </div>
+                                        )}
+                                        <span className="truncate max-w-[120px]" title={row.name}>{row.name}</span>
+
+                                    </td>
                                     <td className="px-4 py-3">{row.department}</td>
-                                    <td className="px-4 py-3 text-center">{row.totalEmployees}</td>
-                                    <td className="px-4 py-3">{row.payPeriodStart} To {row.payPeriodEnd}</td>
-                                    <td className="px-4 py-3">{row.totalAmount}</td>
-                                    <td className="px-4 py-3">{row.payCycleType}</td>
-                                    <td className="px-4 py-3">{row.approvedBy}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.remarks}>{row.remarks}</td>
+                                    <td className="px-4 py-3">{row.designation}</td>
+                                    <td className="px-4 py-3">{row.basicSalary.toLocaleString()}</td>
+                                    <td className="px-4 py-3">{(row.allowances.housing + row.allowances.medical + row.allowances.transport).toLocaleString()}</td>
+                                    <td className="px-4 py-3">{(row.deductions.tax + row.deductions.absences + row.deductions.lateArrival).toLocaleString()}</td>
+                                    <td className="px-4 py-3">{row.netPay.toLocaleString()}</td>
+                                    <td className="px-4 py-3">{row.paymentDate}</td>
                                     <td className="px-4 py-3">
                                         <StatusDesign statusId={row.statusId} label={row.status} />
                                     </td>
 
                                     <td className="px-4 py-3 relative">
                                         <button
-                                            onClick={(e) => { e.stopPropagation(); handleMenuToggle(row.id) }}
+                                            onClick={() => handleMenuToggle(row.empId)}
                                             className="p-1 rounded-full hover:bg-gray-100 transition cursor-pointer"
                                         >
                                             <BiDotsVerticalRounded className="text-gray-600 text-sm" />
                                         </button>
 
-                                        {openMenuId === row.id && (
+                                        {openMenuId === row.empId && (
                                             <div
                                                 ref={menuRef}
                                                 className="absolute top-5 right-16 mt-1 z-50 w-37 bg-white border border-gray-200 rounded-xl shadow-lg"
                                             >
                                                 <ul className="py-2 text-xxs text-gray-700">
                                                     <li>
-                                                        <button onClick={(e) => { e.stopPropagation(); handleRowClick(row.id) }} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEye className="mr-2 text-sm" /> View Payroll
+                                                        <button onClick={handleOpenModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
+                                                            <FiEye className="mr-2 text-sm" /> View Detail
                                                         </button>
                                                     </li>
                                                     <li>
                                                         <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEdit3 className="mr-2 text-sm" /> Edit Payroll
+                                                            <MdDone className="mr-2 text-sm" /> Approve
                                                         </button>
                                                     </li>
                                                     <li>
                                                         <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 hover:text-green-700">
-                                                            <MdDone className="mr-2 text-sm" /> Approve Payrolll
+                                                            <IoCheckmarkDone className="mr-2 text-sm" /> Complete
                                                         </button>
                                                     </li>
                                                     <li>
                                                         <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-500">
-                                                            <RxCross2 className="mr-2 text-sm" /> Reject Payroll
+                                                            <RxCross2 className="mr-2 text-sm" /> Reject
                                                         </button>
                                                     </li>
 
