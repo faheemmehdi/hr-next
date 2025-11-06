@@ -8,14 +8,14 @@ import CustomSelect from "y@/app/components/CustomSelect";
 import {
     FiEdit3, FiEye
 } from "react-icons/fi";
-import { FaDotCircle } from "react-icons/fa";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineBlock } from "react-icons/md";
 import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
+import RowActions from "y@/app/components/RowActions";
 export default function LeaveSettings() {
     const [typeName, setTypeName] = useState("");
     const [typeCode, setTypeCode] = useState("");
@@ -42,22 +42,7 @@ export default function LeaveSettings() {
     const closeReasonModal = () => setIsReasonOpen(false);
     const openAddLeaveModal = () => setAddLeaveOpen(true);
     const closeAddLeaveModal = () => setAddLeaveOpen(false);
-    const [openMenuId, setOpenMenuId] = useState(null);
-    const menuRef = useRef();
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setOpenMenuId(null);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    const handleMenuToggle = (id) => {
-        setOpenMenuId((prev) => (prev === id ? null : id));
-    };
-
+    
     const leaveTypesData = [
         {
             typeId: 1,
@@ -315,46 +300,15 @@ export default function LeaveSettings() {
                                         <StatusDesign statusId={row.statusId} label={row.status} />
                                     </td>
 
-                                    <td className="px-4 py-3 relative">
-                                        <button
-                                            onClick={() => handleMenuToggle(row.typeId)}
-                                            className="p-1 rounded-full hover:bg-gray-100 transition cursor-pointer"
-                                        >
-                                            <BiDotsVerticalRounded className="text-gray-600 text-sm" />
-                                        </button>
-
-                                        {openMenuId === row.typeId && (
-                                            <div
-                                                ref={menuRef}
-                                                className="absolute top-5 right-16 mt-1 z-50 w-40 bg-white border border-gray-200 rounded-xl shadow-lg"
-                                            >
-                                                <ul className="py-2 text-xxs text-gray-700">
-                                                    <li>
-                                                        <button onClick={handleOpenModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEye className="mr-2 text-sm" /> View Leave Type
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEdit3 className="mr-2 text-sm" /> Edit Leave Type
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-500">
-                                                            <MdOutlineBlock className="mr-2 text-sm" /> Deactivate Type
-                                                        </button>
-                                                    </li>
-                                                    {/* <li>
-                                                        <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-500">
-                                                            <RxCross2 className="mr-2 text-sm" /> Delete Leave Type
-                                                        </button>
-                                                    </li> */}
-
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </td>
-
+                                  
+<RowActions
+                                        row={row}
+                                        actions={[
+                                            { label: "View Leave Type", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal},
+                                            { label: "Edit Leave Type", icon: FiEdit3 },
+                                            { label: "Deactivate Type", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                        ]}
+                                    />
                                 </tr>
                             ))}
                         </tbody>

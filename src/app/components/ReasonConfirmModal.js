@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "./Button";
+import Modal from "./ModalShell";
 
 const ReasonModal = ({
   isOpen,
@@ -9,14 +10,15 @@ const ReasonModal = ({
   onSubmit,
   submitLabel = "Submit",
   showReason = true,
+  variant = 'success',
+  reasonHeading = 'Reason',
   reasonTitle = 'Please provide a reason for this action.'
 }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-4/12">
-        <div className="flex items-center justify-between mb-2">
+    <Modal width="w-11/12 md:w-4/12">
+      <div className="flex items-center justify-between mb-2">
           <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
         </div>
         <div className="w-full text-xxs">
@@ -34,7 +36,7 @@ const ReasonModal = ({
                 htmlFor="reasonText"
                 className="block text-xxs text-gray-700 mb-2"
               >
-                Reason <span className="text-red-500">*</span>
+                {reasonHeading} <span className="text-red-500">*</span>
               </label>
               <textarea
                 id="reasonText"
@@ -48,14 +50,13 @@ const ReasonModal = ({
         )}
         <div className="flex justify-end gap-2">
           <Button variant="cancel" onClick={onClose}>
-            Close
+            Cancel
           </Button>
-          <Button variant="danger" onClick={onSubmit}>
+          <Button variant={`${variant}`} onClick={onSubmit}>
             {submitLabel}
           </Button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 };
 

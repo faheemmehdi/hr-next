@@ -10,11 +10,13 @@ import {
     FiUser, FiEye
 } from "react-icons/fi";
 import { FaDotCircle } from "react-icons/fa";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
+import RowActions from "y@/app/components/RowActions";
+import Modal from "y@/app/components/ModalShell";
 export default function Regularization() {
     const [date, setDate] = useState("");
     const [dateVal, setDateVal] = useState("");
@@ -36,22 +38,7 @@ export default function Regularization() {
     const handleCloseModal = () => setIsOpen(false);
     const openReasonModal = () => setIsReasonOpen(true);
     const closeReasonModal = () => setIsReasonOpen(false);
-    const [openMenuId, setOpenMenuId] = useState(null);
-    const menuRef = useRef();
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setOpenMenuId(null);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    const handleMenuToggle = (id) => {
-        setOpenMenuId((prev) => (prev === id ? null : id));
-    };
-
+  
     const regularizationData = [
         {
             empId: "EMP201",
@@ -363,54 +350,22 @@ export default function Regularization() {
                                         <StatusDesign statusId={row.statusId} label={row.status} />
                                     </td>
 
-                                    <td className="px-4 py-3 relative">
-                                        <button
-                                            onClick={() => handleMenuToggle(row.empId)}
-                                            className="p-1 rounded-full hover:bg-gray-100 transition cursor-pointer"
-                                        >
-                                            <BiDotsVerticalRounded className="text-gray-600 text-sm" />
-                                        </button>
-
-                                        {openMenuId === row.empId && (
-                                            <div
-                                                ref={menuRef}
-                                                className="absolute top-5 right-16 mt-1 z-50 w-37 bg-white border border-gray-200 rounded-xl shadow-lg"
-                                            >
-                                                <ul className="py-2 text-xxs text-gray-700">
-                                                    <li>
-                                                        <button onClick={handleOpenModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEye className="mr-2 text-sm" /> View Request
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 hover:text-green-700">
-                                                            <MdDone className="mr-2 text-sm" /> Approve Request
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-500">
-                                                            <RxCross2 className="mr-2 text-sm" /> Reject Request
-                                                        </button>
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </td>
-
+                                    <RowActions
+                                        row={row}
+                                        actions={[
+                                            { label: "View Request", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                                            { label: "Approve Request", icon: MdDone, color: "green" },
+                                            { label: "Reject Request", icon: RxCross2, color: "red", onClick: openReasonModal },
+                                        ]}
+                                    />
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
                 {isOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-5/12">
-
-                            <div className="w-full">
-                                <div className="px-5 py-1 bg-white rounded-xl">
-
-                                    <div className="border-b border-gray-400 pb-3 mb-4">
+                    <Modal width="w-10/12 md:w-5/12">
+                         <div className="border-b border-gray-400 pb-3 mb-4">
                                         <div className="flex justify-between">
                                             <h2 className="text-lg font-semibold text-gray-800">Regularization Request Details</h2>
                                             <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-green-100 text-green-700">
@@ -479,13 +434,7 @@ export default function Regularization() {
                                         Save
                                     </Button> */}
                                     </div>
-                                </div>
-
-
-
-                            </div>
-                        </div>
-                    </div>
+                    </Modal>
                 )}
 
                 <ReasonModal

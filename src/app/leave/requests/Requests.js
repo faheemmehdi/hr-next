@@ -9,12 +9,13 @@ import {
     FiUser, FiEye
 } from "react-icons/fi";
 import { FaDotCircle } from "react-icons/fa";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
+import RowActions from "y@/app/components/RowActions";
 export default function LeaveRequests() {
     const [date, setDate] = useState("");
     const [dateVal, setDateVal] = useState("");
@@ -37,174 +38,160 @@ export default function LeaveRequests() {
     const handleCloseModal = () => setIsOpen(false);
     const openReasonModal = () => setIsReasonOpen(true);
     const closeReasonModal = () => setIsReasonOpen(false);
-    const [openMenuId, setOpenMenuId] = useState(null);
-    const menuRef = useRef();
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setOpenMenuId(null);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
 
-    const handleMenuToggle = (id) => {
-        setOpenMenuId((prev) => (prev === id ? null : id));
-    };
 
-const leaveRequestsData = [
-  {
-    empId: "EMP301",
-    name: "Ahsan Qureshi",
-    imageUrl: "/api/portraits/men/28.jpg",
-    location: "Lahore HQ",
-    leaveType: "Annual Leave",
-    dates: "Mar 3 – Mar 5",
-    appliedDays: 3,
-    reason: "Family trip to northern areas.",
-    attachments: ["travel-plan.pdf"],
-    statusId: 1,
-    status: "Approved",
-    appliedOn: "Feb 25, 2025",
-    approvedBy: "Sarah Ahmed",
-  },
-  {
-    empId: "EMP302",
-    name: "Sana Imran",
-    imageUrl: "/api/portraits/women/34.jpg",
-    location: "Karachi HQ",
-    leaveType: "Sick Leave",
-    dates: "Apr 10 – Apr 12",
-    appliedDays: 3,
-    reason: "Viral fever and doctor's recommendation for rest.",
-    attachments: ["medical-certificate.jpg"],
-    statusId: 2,
-    status: "Rejected",
-    appliedOn: "Apr 8, 2025",
-    approvedBy: "Ali Khan",
-  },
-  {
-    empId: "EMP303",
-    name: "Tahir Hussain",
-    imageUrl: "/api/portraits/men/19.jpg",
-    location: "Islamabad Office",
-    leaveType: "Casual Leave",
-    dates: "May 20 – May 21",
-    appliedDays: 2,
-    reason: "Attending cousin’s wedding in Faisalabad.",
-    attachments: [],
-    statusId: 3,
-    status: "Pending",
-    appliedOn: "May 15, 2025",
-    approvedBy: "—",
-  },
-  {
-    empId: "EMP304",
-    name: "Nimra Gul",
-    imageUrl: "/api/portraits/women/41.jpg",
-    location: "Remote (Hybrid)",
-    leaveType: "Work From Home",
-    dates: "Jun 14 – Jun 14",
-    appliedDays: 1,
-    reason: "Power outage and commute issue.",
-    attachments: ["screenshot-powercut.png"],
-    statusId: 1,
-    status: "Approved",
-    appliedOn: "Jun 13, 2025",
-    approvedBy: "Hassan Rafiq",
-  },
-  {
-    empId: "EMP305",
-    name: "Zeeshan Arif",
-    imageUrl: "/api/portraits/men/37.jpg",
-    location: "Lahore HQ",
-    leaveType: "Emergency Leave",
-    dates: "Jul 2 – Jul 3",
-    appliedDays: 2,
-    reason: "Family medical emergency.",
-    attachments: ["hospital-slip.pdf"],
-    statusId: 3,
-    status: "Pending",
-    appliedOn: "Jul 1, 2025",
-    approvedBy: "—",
-  },
-  {
-    empId: "EMP306",
-    name: "Amna Yousaf",
-    imageUrl: "/api/portraits/women/30.jpg",
-    location: "Islamabad Office",
-    leaveType: "Annual Leave",
-    dates: "Aug 10 – Aug 14",
-    appliedDays: 5,
-    reason: "Personal travel plan.",
-    attachments: ["ticket-itinerary.pdf"],
-    statusId: 1,
-    status: "Approved",
-    appliedOn: "Aug 5, 2025",
-    approvedBy: "Sara Bukhari",
-  },
-  {
-    empId: "EMP307",
-    name: "Hassan Javed",
-    imageUrl: "/api/portraits/men/32.jpg",
-    location: "Karachi HQ",
-    leaveType: "Casual Leave",
-    dates: "Sep 18 – Sep 19",
-    appliedDays: 2,
-    reason: "Relocation and house shifting.",
-    attachments: [],
-    statusId: 2,
-    status: "Rejected",
-    appliedOn: "Sep 16, 2025",
-    approvedBy: "Nimra Asif",
-  },
-  {
-    empId: "EMP308",
-    name: "Kiran Abbas",
-    imageUrl: "/api/portraits/women/38.jpg",
-    location: "Remote (Home)",
-    leaveType: "Maternity Leave",
-    dates: "Oct 1 – Dec 30",
-    appliedDays: 91,
-    reason: "Maternity period.",
-    attachments: ["medical-report.pdf"],
-    statusId: 1,
-    status: "Approved",
-    appliedOn: "Sep 15, 2025",
-    approvedBy: "HR Department",
-  },
-  {
-    empId: "EMP309",
-    name: "Usama Iqbal",
-    imageUrl: "/api/portraits/men/45.jpg",
-    location: "Lahore HQ",
-    leaveType: "Sick Leave",
-    dates: "Nov 5 – Nov 6",
-    appliedDays: 2,
-    reason: "Flu and fever.",
-    attachments: ["doctor-note.jpg"],
-    statusId: 3,
-    status: "Pending",
-    appliedOn: "Nov 4, 2025",
-    approvedBy: "—",
-  },
-  {
-    empId: "EMP310",
-    name: "Hira Rehman",
-    imageUrl: "/api/portraits/women/47.jpg",
-    location: "Karachi HQ",
-    leaveType: "Casual Leave",
-    dates: "Dec 22 – Dec 23",
-    appliedDays: 2,
-    reason: "Attending friend’s engagement.",
-    attachments: ["invitation-card.jpg"],
-    statusId: 1,
-    status: "Approved",
-    appliedOn: "Dec 20, 2025",
-    approvedBy: "Sana Tariq",
-  },
-];
+    const leaveRequestsData = [
+        {
+            empId: "EMP301",
+            name: "Ahsan Qureshi",
+            imageUrl: "/api/portraits/men/28.jpg",
+            location: "Lahore HQ",
+            leaveType: "Annual Leave",
+            dates: "Mar 3 – Mar 5",
+            appliedDays: 3,
+            reason: "Family trip to northern areas.",
+            attachments: ["travel-plan.pdf"],
+            statusId: 1,
+            status: "Approved",
+            appliedOn: "Feb 25, 2025",
+            approvedBy: "Sarah Ahmed",
+        },
+        {
+            empId: "EMP302",
+            name: "Sana Imran",
+            imageUrl: "/api/portraits/women/34.jpg",
+            location: "Karachi HQ",
+            leaveType: "Sick Leave",
+            dates: "Apr 10 – Apr 12",
+            appliedDays: 3,
+            reason: "Viral fever and doctor's recommendation for rest.",
+            attachments: ["medical-certificate.jpg"],
+            statusId: 2,
+            status: "Rejected",
+            appliedOn: "Apr 8, 2025",
+            approvedBy: "Ali Khan",
+        },
+        {
+            empId: "EMP303",
+            name: "Tahir Hussain",
+            imageUrl: "/api/portraits/men/19.jpg",
+            location: "Islamabad Office",
+            leaveType: "Casual Leave",
+            dates: "May 20 – May 21",
+            appliedDays: 2,
+            reason: "Attending cousin’s wedding in Faisalabad.",
+            attachments: [],
+            statusId: 3,
+            status: "Pending",
+            appliedOn: "May 15, 2025",
+            approvedBy: "—",
+        },
+        {
+            empId: "EMP304",
+            name: "Nimra Gul",
+            imageUrl: "/api/portraits/women/41.jpg",
+            location: "Remote (Hybrid)",
+            leaveType: "Work From Home",
+            dates: "Jun 14 – Jun 14",
+            appliedDays: 1,
+            reason: "Power outage and commute issue.",
+            attachments: ["screenshot-powercut.png"],
+            statusId: 1,
+            status: "Approved",
+            appliedOn: "Jun 13, 2025",
+            approvedBy: "Hassan Rafiq",
+        },
+        {
+            empId: "EMP305",
+            name: "Zeeshan Arif",
+            imageUrl: "/api/portraits/men/37.jpg",
+            location: "Lahore HQ",
+            leaveType: "Emergency Leave",
+            dates: "Jul 2 – Jul 3",
+            appliedDays: 2,
+            reason: "Family medical emergency.",
+            attachments: ["hospital-slip.pdf"],
+            statusId: 3,
+            status: "Pending",
+            appliedOn: "Jul 1, 2025",
+            approvedBy: "—",
+        },
+        {
+            empId: "EMP306",
+            name: "Amna Yousaf",
+            imageUrl: "/api/portraits/women/30.jpg",
+            location: "Islamabad Office",
+            leaveType: "Annual Leave",
+            dates: "Aug 10 – Aug 14",
+            appliedDays: 5,
+            reason: "Personal travel plan.",
+            attachments: ["ticket-itinerary.pdf"],
+            statusId: 1,
+            status: "Approved",
+            appliedOn: "Aug 5, 2025",
+            approvedBy: "Sara Bukhari",
+        },
+        {
+            empId: "EMP307",
+            name: "Hassan Javed",
+            imageUrl: "/api/portraits/men/32.jpg",
+            location: "Karachi HQ",
+            leaveType: "Casual Leave",
+            dates: "Sep 18 – Sep 19",
+            appliedDays: 2,
+            reason: "Relocation and house shifting.",
+            attachments: [],
+            statusId: 2,
+            status: "Rejected",
+            appliedOn: "Sep 16, 2025",
+            approvedBy: "Nimra Asif",
+        },
+        {
+            empId: "EMP308",
+            name: "Kiran Abbas",
+            imageUrl: "/api/portraits/women/38.jpg",
+            location: "Remote (Home)",
+            leaveType: "Maternity Leave",
+            dates: "Oct 1 – Dec 30",
+            appliedDays: 91,
+            reason: "Maternity period.",
+            attachments: ["medical-report.pdf"],
+            statusId: 1,
+            status: "Approved",
+            appliedOn: "Sep 15, 2025",
+            approvedBy: "HR Department",
+        },
+        {
+            empId: "EMP309",
+            name: "Usama Iqbal",
+            imageUrl: "/api/portraits/men/45.jpg",
+            location: "Lahore HQ",
+            leaveType: "Sick Leave",
+            dates: "Nov 5 – Nov 6",
+            appliedDays: 2,
+            reason: "Flu and fever.",
+            attachments: ["doctor-note.jpg"],
+            statusId: 3,
+            status: "Pending",
+            appliedOn: "Nov 4, 2025",
+            approvedBy: "—",
+        },
+        {
+            empId: "EMP310",
+            name: "Hira Rehman",
+            imageUrl: "/api/portraits/women/47.jpg",
+            location: "Karachi HQ",
+            leaveType: "Casual Leave",
+            dates: "Dec 22 – Dec 23",
+            appliedDays: 2,
+            reason: "Attending friend’s engagement.",
+            attachments: ["invitation-card.jpg"],
+            statusId: 1,
+            status: "Approved",
+            appliedOn: "Dec 20, 2025",
+            approvedBy: "Sana Tariq",
+        },
+    ];
 
 
 
@@ -236,20 +223,20 @@ const leaveRequestsData = [
         "id",
         "name"
     );
-const leaveTypes = mapSelectOptions(
-  [
-    { id: 1, name: "Annual Leave" },
-    { id: 2, name: "Sick Leave" },
-    { id: 3, name: "Casual Leave" },
-    { id: 4, name: "Maternity Leave" },
-    { id: 5, name: "Paternity Leave" },
-    { id: 6, name: "Emergency Leave" },
-    { id: 7, name: "Work From Home" },
-    { id: 8, name: "Unpaid Leave" },
-  ],
-  "id",
-  "name"
-);
+    const leaveTypes = mapSelectOptions(
+        [
+            { id: 1, name: "Annual Leave" },
+            { id: 2, name: "Sick Leave" },
+            { id: 3, name: "Casual Leave" },
+            { id: 4, name: "Maternity Leave" },
+            { id: 5, name: "Paternity Leave" },
+            { id: 6, name: "Emergency Leave" },
+            { id: 7, name: "Work From Home" },
+            { id: 8, name: "Unpaid Leave" },
+        ],
+        "id",
+        "name"
+    );
 
     const employees = mapSelectOptions(
         [
@@ -268,7 +255,7 @@ const leaveTypes = mapSelectOptions(
         "name"
     );
 
-   
+
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 
@@ -381,47 +368,21 @@ const leaveTypes = mapSelectOptions(
                                     <td className="px-4 py-3">{row.dates}</td>
                                     <td className="px-4 py-3">{row.appliedDays} Days</td>
                                     <td className="px-4 py-3 truncate max-w-[120px]" title={row.reason}>{row.reason}</td>
-                                 
+
                                     <td className="px-4 py-3">{row.appliedOn}</td>
                                     <td className="px-4 py-3">{row.approvedBy}</td>
                                     <td className="px-4 py-3">
                                         <StatusDesign statusId={row.statusId} label={row.status} />
                                     </td>
 
-                                    <td className="px-4 py-3 relative">
-                                        <button
-                                            onClick={() => handleMenuToggle(row.empId)}
-                                            className="p-1 rounded-full hover:bg-gray-100 transition cursor-pointer"
-                                        >
-                                            <BiDotsVerticalRounded className="text-gray-600 text-sm" />
-                                        </button>
-
-                                        {openMenuId === row.empId && (
-                                            <div
-                                                ref={menuRef}
-                                                className="absolute top-5 right-16 mt-1 z-50 w-37 bg-white border border-gray-200 rounded-xl shadow-lg"
-                                            >
-                                                <ul className="py-2 text-xxs text-gray-700">
-                                                    <li>
-                                                        <button onClick={handleOpenModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEye className="mr-2 text-sm" /> View Request
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 hover:text-green-700">
-                                                            <MdDone className="mr-2 text-sm" /> Approve Request
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-500">
-                                                            <RxCross2 className="mr-2 text-sm" /> Reject Request
-                                                        </button>
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </td>
+                                    <RowActions
+                                        row={row}
+                                        actions={[
+                                            { label: "View Request", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                                            { label: "Approve Request", icon: MdDone, color: "green" },
+                                            { label: "Reject Request", icon: RxCross2, color: "red", onClick: openReasonModal },
+                                        ]}
+                                    />
 
                                 </tr>
                             ))}
@@ -475,22 +436,22 @@ const leaveTypes = mapSelectOptions(
                                             <p className="text-xs text-gray-800">3 Days</p>
                                         </div>
                                     </div>
- <div className="grid grid-cols-1 md:grid-cols-1 mb-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-1 mb-4">
                                         <div>
                                             <p className="text-xxs text-gray-500 font-medium">Applied Dates</p>
                                             <div className="flex text-xxs">
-                                            <p className="text-gray-800">17 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                            <p className="text-gray-800">18 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                            <p className="text-gray-800">19 Feb 2025</p>
+                                                <p className="text-gray-800">17 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
+                                                <p className="text-gray-800">18 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
+                                                <p className="text-gray-800">19 Feb 2025</p>
 
                                             </div>
                                         </div>
                                     </div>
                                     <div className="border-t border-gray-400 pt-4 mb-4">
-                                       
+
                                         <p className="text-xxs text-gray-500 font-medium mb-1">Reason Provided</p>
                                         <p className="text-xs text-gray-800 text-justify">
-                                           Relocation and house shifting.
+                                            Relocation and house shifting.
                                         </p>
                                     </div>
 
@@ -521,27 +482,27 @@ const leaveTypes = mapSelectOptions(
                         </div>
                     </div>
                 )}
-<ReasonModal
+                <ReasonModal
                     isOpen={isReasonOpen}
                     title="Reject Leave Request"
                     infoSection={
-                       <div className="border-gray-300 border-b p-1 mb-4">
-                                <p className="text-xs text-gray-800 font-medium">
-                                    <span className="font-semibold">Muhammad Khan</span>
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Employee ID:</span> EMP-1024
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Applied Dates:</span> 3 Oct - 5 Oct (3 Days)
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Leave Type:</span> Casual Leave
-                                </p>
-                                <p className="text-xxs text-gray-600">
-                                    <span>Reason:</span> “Relocation and house shifting.”
-                                </p>
-                            </div>}
+                        <div className="border-gray-300 border-b p-1 mb-4">
+                            <p className="text-xs text-gray-800 font-medium">
+                                <span className="font-semibold">Muhammad Khan</span>
+                            </p>
+                            <p className="text-xxs text-gray-600">
+                                <span>Employee ID:</span> EMP-1024
+                            </p>
+                            <p className="text-xxs text-gray-600">
+                                <span>Applied Dates:</span> 3 Oct - 5 Oct (3 Days)
+                            </p>
+                            <p className="text-xxs text-gray-600">
+                                <span>Leave Type:</span> Casual Leave
+                            </p>
+                            <p className="text-xxs text-gray-600">
+                                <span>Reason:</span> “Relocation and house shifting.”
+                            </p>
+                        </div>}
                     onClose={closeReasonModal}
                     // onSubmit={handleReject}
                     submitLabel="Reject Request"

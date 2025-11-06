@@ -9,7 +9,7 @@ import {
     FiEdit3, FiEye
 } from "react-icons/fi";
 import { FaDotCircle } from "react-icons/fa";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
@@ -18,6 +18,7 @@ import { MdDone } from "react-icons/md";
 import MonthPicker from "y@/app/components/MonthPicker";
 import DateRangePicker from "y@/app/components/DateRagePicker";
 import { useRouter } from "next/navigation";
+import RowActions from "y@/app/components/RowActions";
 export default function PayRollList() {
     const [date, setDate] = useState("");
     const [dateVal, setDateVal] = useState("");
@@ -40,7 +41,6 @@ export default function PayRollList() {
     const handleCloseModal = () => setIsOpen(false);
     const openReasonModal = () => setIsReasonOpen(true);
     const closeReasonModal = () => setIsReasonOpen(false);
-    const [openMenuId, setOpenMenuId] = useState(null);
     const [range, setRange] = useState([
         {
             startDate: undefined,
@@ -49,20 +49,7 @@ export default function PayRollList() {
         }
     ]);
     const router = useRouter();
-    const menuRef = useRef();
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setOpenMenuId(null);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    const handleMenuToggle = (id) => {
-        setOpenMenuId((prev) => (prev === id ? null : id));
-    };
+   
     const handleRowClick = (id) => {
         router.push(`/payroll/employees/`);
     };
@@ -405,45 +392,15 @@ export default function PayRollList() {
                                         <StatusDesign statusId={row.statusId} label={row.status} />
                                     </td>
 
-                                    <td className="px-4 py-3 relative">
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); handleMenuToggle(row.id) }}
-                                            className="p-1 rounded-full hover:bg-gray-100 transition cursor-pointer"
-                                        >
-                                            <BiDotsVerticalRounded className="text-gray-600 text-sm" />
-                                        </button>
-
-                                        {openMenuId === row.id && (
-                                            <div
-                                                ref={menuRef}
-                                                className="absolute top-5 right-16 mt-1 z-50 w-37 bg-white border border-gray-200 rounded-xl shadow-lg"
-                                            >
-                                                <ul className="py-2 text-xxs text-gray-700">
-                                                    <li>
-                                                        <button onClick={(e) => { e.stopPropagation(); handleRowClick(row.id) }} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEye className="mr-2 text-sm" /> View Payroll
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEdit3 className="mr-2 text-sm" /> Edit Payroll
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 hover:text-green-700">
-                                                            <MdDone className="mr-2 text-sm" /> Approve Payrolll
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button onClick={openReasonModal} className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-500">
-                                                            <RxCross2 className="mr-2 text-sm" /> Reject Payroll
-                                                        </button>
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </td>
+                                    <RowActions
+                                        row={row}
+                                        actions={[
+                                            { label: "View Payroll", icon: MdOutlineRemoveRedEye, onClick: () => handleRowClick(row.id) },
+                                            { label: "Edit Payroll", icon: FiEdit3 },
+                                            { label: "Approve Payroll", icon: MdDone, color: "green" },
+                                            { label: "Reject Payroll", icon: RxCross2, color: "red", onClick: openReasonModal },
+                                        ]}
+                                    />
 
                                 </tr>
                             ))}

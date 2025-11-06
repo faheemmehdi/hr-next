@@ -18,6 +18,7 @@ import CustomSelect from "y@/app/components/CustomSelect";
 import Input from "y@/app/components/Input";
 import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import StatusDesign from "y@/app/components/StatusColors";
+import RowActions from "y@/app/components/RowActions";
 function Terminals() {
 
 
@@ -40,21 +41,7 @@ function Terminals() {
     const [isOpen, setIsOpen] = useState(false);
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false);
-    const [openMenuId, setOpenMenuId] = useState(null);
-    const menuRef = useRef();
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setOpenMenuId(null);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
 
-    const handleMenuToggle = (id) => {
-        setOpenMenuId((prev) => (prev === id ? null : id));
-    };
 
     const stats = [
         {
@@ -511,54 +498,20 @@ setShowErrors(true);
                                     <td className="px-4 py-3">
                                                        <StatusDesign statusId={row.statusId} label={row.status} />
                                     </td>
-                                    <td className="px-4 py-3 relative">
-                                        <button
-                                            onClick={() => handleMenuToggle(row.deviceId)}
-                                            className="p-1 rounded-full hover:bg-gray-100 transition cursor-pointer"
-                                        >
-                                            <BiDotsVerticalRounded className="text-gray-600 text-sm" />
-                                        </button>
 
-                                        {openMenuId === row.deviceId && (
-                                            <div
-                                                ref={menuRef}
-                                                className="absolute top-5 right-16 mt-1 z-50 w-35 bg-white border border-gray-200 rounded-xl shadow-lg"
-                                            >
-                                                <ul className="py-2 text-xxs text-gray-700">
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <GoDeviceDesktop className="mr-2 text-xs" /> View Device
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FiEdit3 className="mr-2 text-xs" /> Edit Device
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <MdSync className="mr-2 text-xs" /> Sync Device
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <LuTestTubeDiagonal className="mr-2 text-xs" /> Test Action
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-green-600">
-                                                            <MdDone className="mr-2 text-sm" />  Activate
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50 text-red-600">
-                                                            <BsTrash3 className="mr-2 text-xs" />  Delete Device
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </td>
+
+                                    <RowActions
+                                        row={row}
+                                        actions={[
+                                            { label: "View Device", icon: GoDeviceDesktop },
+                                            { label: "Edit Device", icon: FiEdit3 },
+                                            { label: "Sync Device", icon: MdSync },
+                                            { label: "Test Action", icon: LuTestTubeDiagonal },
+                                            { label: "Activate", icon: MdDone, color: "green" },
+                                            { label: "Delete Device", icon: BsTrash3, color: "red" },
+                                        ]}
+                                    />
+                               
 
 
                                 </tr>
