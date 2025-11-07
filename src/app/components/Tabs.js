@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const Tabs = ({ tabs, defaultTab, onTabChange, align = "left" }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || tabs[0].key);
- const alignmentClasses = {
+  const alignmentClasses = {
     left: "justify-start",
     center: "justify-center",
     right: "justify-end",
@@ -21,11 +21,10 @@ const Tabs = ({ tabs, defaultTab, onTabChange, align = "left" }) => {
           <button
             key={tab.key}
             onClick={() => handleTabClick(tab.key)}
-            className={`px-4 py-2 border-b-3 text-xs font-bold cursor-pointer transition-colors duration-200 ${
-              activeTab === tab.key
+            className={`px-4 py-2 border-b-3 text-sm font-bold cursor-pointer transition-colors duration-200 ${activeTab === tab.key
                 ? "border-[var(--active-tabs)] text-[var(--active-tabs)]"
                 : "border-transparent text-gray-600 hover:text-[var(--active-tabs)]"
-            }`}
+              }`}
           >
             {tab.label}
           </button>

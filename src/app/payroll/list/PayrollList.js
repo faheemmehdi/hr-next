@@ -33,13 +33,13 @@ export default function PayRollList() {
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
     const [monthVal, setMonthVal] = useState("");
-    const [checkOut, setCheckOut] = useState("");
+    const [selectedPayroll, setSelectedPayroll] = useState(null);
     const [remarks, setRemarks] = useState("");
     const [showErrors, setShowErrors] = useState(false);
 
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false);
-    const openReasonModal = () => setIsReasonOpen(true);
+    const openReasonModal = (row) => {setIsReasonOpen(true); setSelectedPayroll(row)};
     const closeReasonModal = () => setIsReasonOpen(false);
     const [range, setRange] = useState([
         {
@@ -398,7 +398,7 @@ export default function PayRollList() {
                                             { label: "View Payroll", icon: MdOutlineRemoveRedEye, onClick: () => handleRowClick(row.id) },
                                             { label: "Edit Payroll", icon: FiEdit3 },
                                             { label: "Approve Payroll", icon: MdDone, color: "green" },
-                                            { label: "Reject Payroll", icon: RxCross2, color: "red", onClick: openReasonModal },
+                                            { label: "Reject Payroll", icon: RxCross2, color: "red", onClick: () => openReasonModal(row) },
                                         ]}
                                     />
 
@@ -408,123 +408,35 @@ export default function PayRollList() {
                     </table>
                 </div>
                 {isOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-5/12">
-
-                            <div className="w-full">
-                                <div className="px-5 py-1 bg-white rounded-xl">
-
-                                    <div className="border-b border-gray-400 pb-3 mb-4">
-                                        <div className="flex justify-between">
-                                            <h2 className="text-lg font-semibold text-gray-800">Leave Request Details</h2>
-                                            <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-yellow-100 text-yellow-700">
-                                                Pending
-                                            </span>
-                                        </div>
-                                        <p className="text-xxs text-gray-500">Applied on Oct 20, 2025 at 09:10 AM</p>
-                                    </div>
-
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Employee Name</p>
-                                            <p className="text-xs font-semibold text-gray-800">Muhammad Khan</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Employee ID</p>
-                                            <p className="text-xs text-gray-800">EMP-102</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Department</p>
-                                            <p className="text-xs text-gray-800">Sales</p>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Shift</p>
-                                            <p className="text-xs text-gray-800">Morning (9:00 AM - 6:00 PM)</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Leave Type</p>
-                                            <p className="text-xs text-gray-800">Sick Leave</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Leave Days</p>
-                                            <p className="text-xs text-gray-800">3 Days</p>
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-1 mb-4">
-                                        <div>
-                                            <p className="text-xxs text-gray-500 font-medium">Applied Dates</p>
-                                            <div className="flex text-xxs">
-                                                <p className="text-gray-800">17 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                                <p className="text-gray-800">18 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                                <p className="text-gray-800">19 Feb 2025</p>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="border-t border-gray-400 pt-4 mb-4">
-
-                                        <p className="text-xxs text-gray-500 font-medium mb-1">Reason Provided</p>
-                                        <p className="text-xs text-gray-800 text-justify">
-                                            Relocation and house shifting.
-                                        </p>
-                                    </div>
-
-                                    <div className="border-t border-gray-400 pt-4 mb-4">
-                                        <p className="text-xxs text-gray-500 font-medium mb-2">Attachment</p>
-                                        <div className="bg-gray-50 border border-gray-200 rounded px-2 py-1 flex items-center justify-between">
-                                            <div className="flex items-center space-x-2">
-                                                <FaDotCircle className="h-2 w-2 text-gray-500" />
-                                                <span className="text-xxs text-gray-700">Card.jpg</span>
-                                            </div>
-                                            <button className="text-xxs text-blue-600 hover:underline">View</button>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex justify-end border-t border-gray-400 pt-4">
-                                        <Button variant="cancel" onClick={handleCloseModal}>
-                                            Close
-                                        </Button>
-                                        {/* <Button variant="success" onClick={handleSave}>
-                                        Save
-                                    </Button> */}
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-                        </div>
-                    </div>
+                    <div></div>
                 )}
                 <ReasonModal
                     isOpen={isReasonOpen}
-                    title="Reject Leave Request"
+                    title="Reject Payroll"
                     infoSection={
                         <div className="border-gray-300 border-b p-1 mb-4">
                             <p className="text-xs text-gray-800 font-medium">
-                                <span className="font-semibold">Muhammad Khan</span>
+                                <span className="font-semibold">{selectedPayroll?.title}</span>
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Employee ID:</span> EMP-1024
+                                <span>Department:</span> {selectedPayroll?.department}
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Applied Dates:</span> 3 Oct - 5 Oct (3 Days)
+                                <span>Total Employees:</span> {selectedPayroll?.totalEmployees}
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Leave Type:</span> Casual Leave
+                                <span>Total Amount</span> {selectedPayroll?.totalAmount}
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Reason:</span> “Relocation and house shifting.”
+                                <span>Pay Period:</span> {selectedPayroll?.payPeriodStart} To {selectedPayroll?.payPeriodEnd}
                             </p>
                         </div>}
                     onClose={closeReasonModal}
+                    variant="danger"
                     // onSubmit={handleReject}
-                    submitLabel="Reject Request"
-                    reasonTitle="Please provide a reason for rejecting this request. The reason will be shared with the employee."
+                    submitLabel="Reject Payroll"
+                    reasonHeading="Payroll Rejection"
+                    reasonTitle="Please provide a reason for rejecting this payroll."
                 />
             </div>
         </Layout>

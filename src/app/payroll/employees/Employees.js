@@ -24,7 +24,7 @@ import Tabs from "y@/app/components/Tabs";
 import All from "./tabs/All";
 import Modal from "y@/app/components/ModalShell";
 export default function PayrollEmp() {
-    const [activeTab, setActiveTab] = useState("info");
+    const [activeTab, setActiveTab] = useState("");
     const [date, setDate] = useState("");
     const [designationVal, setDesignationVal] = useState("");
     const [search, setSearch] = useState("");
@@ -127,7 +127,7 @@ export default function PayrollEmp() {
             },
             netPay: 176000,
             payPeriod: "October 2025",
-            paymentDate: "Pending",
+            paymentDate: "",
             bankAccount: "Allied Bank - 0456-778899",
             statusId: 3,
             status: "Pending",
@@ -177,7 +177,7 @@ export default function PayrollEmp() {
             },
             netPay: 104500,
             payPeriod: "October 2025",
-            paymentDate: "Pending",
+            paymentDate: "",
             bankAccount: "MCB - 0312-5544789",
             statusId: 3,
             status: "Pending",
@@ -277,7 +277,7 @@ export default function PayrollEmp() {
             },
             netPay: 178500,
             payPeriod: "October 2025",
-            paymentDate: "Pending",
+            paymentDate: "",
             bankAccount: "Meezan Bank - 0334-556677",
             statusId: 3,
             status: "Pending",
@@ -360,20 +360,21 @@ export default function PayrollEmp() {
 
     const employees = mapSelectOptions(
         [
-            { id: 1, name: "Human Resources" },
-            { id: 2, name: "Finance" },
-            { id: 3, name: "Marketing" },
-            { id: 4, name: "Sales" },
-            { id: 5, name: "Customer Support" },
-            { id: 6, name: "Operations" },
-            { id: 7, name: "IT & Infrastructure" },
-            { id: 8, name: "Research & Development" },
-            { id: 9, name: "Design" },
-            { id: 10, name: "Administration" },
+            { id: 1, name: "Ahmad Raza" },
+            { id: 2, name: "Fatima Khan" },
+            { id: 3, name: "Ali Qureshi" },
+            { id: 4, name: "Sara Malik" },
+            { id: 5, name: "Bilal Ahmed" },
+            { id: 6, name: "Zainab Iqbal" },
+            { id: 7, name: "Usman Tariq" },
+            { id: 8, name: "Hira Shah" },
+            { id: 9, name: "Hamza Sheikh" },
+            { id: 10, name: "Maryam Noor" },
         ],
         "id",
         "name"
     );
+
     const filters = {
         data: payrollData || [],
         departments,
@@ -393,10 +394,10 @@ export default function PayrollEmp() {
 
     }
     const tabs = [
-        { key: "all", label: "All", content: <All {...filters} /> },
-        { key: "pending", label: "Pending", content: <Pending /> },
-        { key: "approved", label: "Approved", content: <Approved /> },
-        { key: "paid", label: "Paid", content: <Paid /> },
+        { key: "all", label: "All Employees", content: <All {...filters} /> },
+        { key: "pending", label: "Pending", content: <Pending {...filters} /> },
+        { key: "approved", label: "Approved", content: <Approved {...filters} /> },
+        { key: "paid", label: "Paid", content: <Paid {...filters} /> },
     ];
 
     const modalConfig = {
@@ -440,96 +441,68 @@ export default function PayrollEmp() {
                     <h2 className="text-base font-semibold text-gray-700">
                         August 2025 – Lahore (Lahore)
                     </h2>
-                    <Button type="button" variant="transparent" color="red" bgColor="gray">
-                        Export Payroll
-                    </Button>
+                    <div className="flex gap-2">
+                        <Button type="button" variant="transparent" color="#7764e3" bgColor="transparent">
+                            Export Payroll
+                        </Button>
+
+                        {activeTab === 'pending' && <Button type="button" variant="success" onClick={handleOpenModal}>
+                            Approve All
+                        </Button>}
+                        {activeTab === 'approved' && <Button type="button" variant="success" onClick={handleOpenModal}>
+                            Mark All as Paid
+                        </Button>}
+                    </div>
+
                 </div>
 
                 <Tabs tabs={tabs} defaultTab="all" onTabChange={setActiveTab} align="center" />
 
                 {isOpen && (
-                    <Modal width="w-10/12 md:w-5/12">
-                        <div className="border-b border-gray-400 pb-3 mb-4">
+                    <Modal width="w-11/12 md:w-4/12">
+                        <div className="mb-1">
                             <div className="flex justify-between">
-                                <h2 className="text-lg font-semibold text-gray-800">Leave Request Details</h2>
-                                <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-yellow-100 text-yellow-700">
-                                    Pending
-                                </span>
-                            </div>
-                            <p className="text-xxs text-gray-500">Applied on Oct 20, 2025 at 09:10 AM</p>
-                        </div>
+                                <h2 className="text-lg font-semibold text-gray-800">{activeTab === 'pending' && "Approve All Employees"}{activeTab === 'approved' && "Mark All Employees as Paid"}</h2>
 
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                            <div>
-                                <p className="text-xxs text-gray-500 font-medium">Employee Name</p>
-                                <p className="text-xs font-semibold text-gray-800">Muhammad Khan</p>
-                            </div>
-                            <div>
-                                <p className="text-xxs text-gray-500 font-medium">Employee ID</p>
-                                <p className="text-xs text-gray-800">EMP-102</p>
-                            </div>
-                            <div>
-                                <p className="text-xxs text-gray-500 font-medium">Department</p>
-                                <p className="text-xs text-gray-800">Sales</p>
                             </div>
                         </div>
 
-
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                            <div>
-                                <p className="text-xxs text-gray-500 font-medium">Shift</p>
-                                <p className="text-xs text-gray-800">Morning (9:00 AM - 6:00 PM)</p>
-                            </div>
-                            <div>
-                                <p className="text-xxs text-gray-500 font-medium">Leave Type</p>
-                                <p className="text-xs text-gray-800">Sick Leave</p>
-                            </div>
-                            <div>
-                                <p className="text-xxs text-gray-500 font-medium">Leave Days</p>
-                                <p className="text-xs text-gray-800">3 Days</p>
-                            </div>
+                        <div className="text-xxs mb-3 text-gray-500 text-justify">Excluded employees will not be processed. You may exclude specific employees whose payroll requires further review, justification, or adjustments before processing.</div>
+                        <CustomSelect
+                            name="employee"
+                            label="Exclude Employees"
+                            value={employee}
+                            placeholder="Select Employee"
+                            onChange={setEmployee}
+                            options={employees}
+                            isMulti={true}
+                            controlHeight="2rem"
+                        />
+                        <div className="mt-4">
+                            <label
+                                htmlFor="reasonText"
+                                className="block text-xxs text-gray-700 mb-2"
+                            >
+                                Remarks / Description
+                            </label>
+                            <textarea
+                                id="reasonText"
+                                rows="4"
+                                placeholder="Write remarks here..."
+                                className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
+                  focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
+                            />
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-1 mb-4">
-                            <div>
-                                <p className="text-xxs text-gray-500 font-medium">Applied Dates</p>
-                                <div className="flex text-xxs">
-                                    <p className="text-gray-800">17 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                    <p className="text-gray-800">18 Feb 2025</p><strong className="px-3 text-gray-500">|</strong>
-                                    <p className="text-gray-800">19 Feb 2025</p>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div className="border-t border-gray-400 pt-4 mb-4">
-
-                            <p className="text-xxs text-gray-500 font-medium mb-1">Reason Provided</p>
-                            <p className="text-xs text-gray-800 text-justify">
-                                Relocation and house shifting.
-                            </p>
-                        </div>
-
-                        <div className="border-t border-gray-400 pt-4 mb-4">
-                            <p className="text-xxs text-gray-500 font-medium mb-2">Attachment</p>
-                            <div className="bg-gray-50 border border-gray-200 rounded px-2 py-1 flex items-center justify-between">
-                                <div className="flex items-center space-x-2">
-                                    <FaDotCircle className="h-2 w-2 text-gray-500" />
-                                    <span className="text-xxs text-gray-700">Card.jpg</span>
-                                </div>
-                                <button className="text-xxs text-blue-600 hover:underline">View</button>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-end border-t border-gray-400 pt-4">
+                        <div className="flex justify-end gap-2 pt-3">
                             <Button variant="cancel" onClick={handleCloseModal}>
-                                Close
+                                Cancel
                             </Button>
-                            {/* <Button variant="success" onClick={handleSave}>
-                                        Save
-                                    </Button> */}
+                            <Button variant="success">
+                                Update
+                            </Button>
                         </div>
                     </Modal>
                 )}
-
 
                 {isReasonOpen && modalType && (
                     <ReasonModal
@@ -543,17 +516,17 @@ export default function PayrollEmp() {
                                 <p className="text-xxs text-gray-600">
                                     <span>Employee ID:</span> {selectedRow?.empId}
                                 </p>
-                                 <p className="text-xxs text-gray-600">
+                                <p className="text-xxs text-gray-600">
                                     <span>Designation:</span> {selectedRow?.designation}
                                 </p>
-                                
+
                                 <p className="text-xxs text-gray-600">
                                     <span>Net Pay:</span> {selectedRow?.netPay}
                                 </p>
                                 <p className="text-xxs text-gray-600">
                                     <span>Payroll Period:</span> August - 2025
                                 </p>
-                               
+
                             </div>}
                         onClose={closeReasonModal}
                         // onSubmit={handleReject}
