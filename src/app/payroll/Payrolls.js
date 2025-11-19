@@ -17,6 +17,7 @@ import { FaMoneyBillWave, FaUserSlash, FaUserCheck } from "react-icons/fa";
 import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import MonthPicker from "../components/MonthPicker";
+import { ChartCard } from "../components/ChartCard";
 
 
 ChartJS.register(
@@ -31,7 +32,6 @@ ChartJS.register(
     Legend
 );
 
-const FILTERS = ["Monthly", "Yearly"];
 const stats = [
     {
         title: "Total Payroll Cost",
@@ -63,31 +63,57 @@ const stats = [
 
 const COLORS = {
     blue: [
-        "rgba(59, 130, 246, 0.8)",
-        "rgba(96, 165, 250, 0.7)",
-        "rgba(37, 99, 235, 0.9)",
+        "rgba(59, 130, 246, 0.8)",    // blue-500
+        "rgba(96, 165, 250, 0.7)",    // blue-400
+        "rgba(37, 99, 235, 0.9)",     // blue-600
     ],
     green: [
-        "rgba(22, 163, 74, 0.85)",
-        "rgba(34, 197, 94, 0.75)",
-        "rgba(21, 128, 61, 0.9)",
+        "rgba(22, 163, 74, 0.85)",    // green-600
+        "rgba(34, 197, 94, 0.75)",    // green-500
+        "rgba(21, 128, 61, 0.9)",     // green-700
     ],
     red: [
-        "rgba(239, 68, 68, 0.85)",
-        "rgba(248, 113, 113, 0.7)",
-        "rgba(220, 38, 38, 0.9)",
+        "rgba(239, 68, 68, 0.85)",    // red-500
+        "rgba(248, 113, 113, 0.7)",   // red-400
+        "rgba(220, 38, 38, 0.9)",     // red-600
     ],
     orange: [
-        "rgba(249, 115, 22, 0.85)",
-        "rgba(251, 191, 36, 0.7)",
-        "rgba(202, 138, 4, 0.9)",
+        "rgba(249, 115, 22, 0.85)",   // orange-500
+        "rgba(251, 191, 36, 0.7)",    // yellow-400
+        "rgba(202, 138, 4, 0.9)",     // yellow-700
     ],
     gray: [
-        "rgba(107, 114, 128, 0.7)",
-        "rgba(75, 85, 99, 0.6)",
-        "rgba(55, 65, 81, 0.8)",
+        "rgba(107, 114, 128, 0.7)",   // gray-500
+        "rgba(75, 85, 99, 0.6)",      // gray-600
+        "rgba(55, 65, 81, 0.8)",      // gray-700
+    ],
+    purple: [
+        "rgba(139, 92, 246, 0.85)",   // purple-500
+        "rgba(165, 180, 252, 0.7)",   // purple-400
+        "rgba(124, 58, 237, 0.9)",    // purple-600
+    ],
+    teal: [
+        "rgba(20, 184, 166, 0.85)",   // teal-500
+        "rgba(94, 234, 212, 0.7)",    // teal-400
+        "rgba(13, 148, 136, 0.9)",    // teal-600
+    ],
+    pink: [
+        "rgba(236, 72, 153, 0.85)",   // pink-500
+        "rgba(251, 207, 232, 0.7)",   // pink-400
+        "rgba(219, 39, 119, 0.9)",    // pink-600
+    ],
+    yellow: [
+        "rgba(234, 179, 8, 0.85)",    // yellow-500
+        "rgba(253, 224, 71, 0.7)",    // yellow-400
+        "rgba(202, 138, 4, 0.9)",     // yellow-600
+    ],
+    cyan: [
+        "rgba(6, 182, 212, 0.85)",    // cyan-500
+        "rgba(165, 243, 252, 0.7)",   // cyan-400
+        "rgba(8, 145, 178, 0.9)",     // cyan-600
     ],
 };
+
 
 const dummyData = {
     totalPayrollExpense: {
@@ -99,7 +125,7 @@ const dummyData = {
             {
                 label: "Payroll Expense (₨ thousands)",
                 data: [12000, 13000, 12500, 14000, 15000, 14500, 13500, 15500, 16000, 15800, 17000, 18000],
-                backgroundColor: COLORS.blue[0],
+                backgroundColor: COLORS.gray[0],
                 borderRadius: 5,
                 maxBarThickness: 24,
             },
@@ -156,7 +182,7 @@ const dummyData = {
         datasets: [
             {
                 label: "Count",
-                data: [280, 40, 10],
+                data: [80, 10, 20],
                 backgroundColor: [COLORS.green[0], COLORS.orange[1], COLORS.red[0]],
                 borderWidth: 1,
             },
@@ -226,9 +252,9 @@ const dummyData = {
             {
                 label: "Payroll Cost (₨ thousands)",
                 data: [4800, 4200, 4000, 3500, 3000],
-                backgroundColor: COLORS.blue,
+                backgroundColor: COLORS.red,
                 borderRadius: 6,
-                maxBarThickness: 30,
+                maxBarThickness: 24,
             },
         ],
     },
@@ -236,10 +262,6 @@ const dummyData = {
 
 
 export default function PayRoll() {
-    const [payrollFilter, setPayrollFilter] = useState("Monthly");
-    const [bonusFilter, setBonusFilter] = useState("Monthly");
-    const [taxFilter, setTaxFilter] = useState("Monthly");
-    const [employeeFilter, setEmployeeFilter] = useState("Yearly");
     const [topDeptFilter, setTopDeptFilter] = useState("Monthly");
     const [monthVal, setMonthVal] = useState("");
 
@@ -248,8 +270,11 @@ export default function PayRoll() {
         <>
             <div className="flex justify-between text-lg p-1 mb-2">
                 <h2>Payroll Dashboard</h2>
+                <div className="w-full md:w-[11rem]">
+                    <MonthPicker monthVal={monthVal} setMonthVal={setMonthVal} />
+                </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-2 mb-4">
                 {stats.map((stat, idx) => (
                     <div
                         key={idx}
@@ -267,20 +292,13 @@ export default function PayRoll() {
                     </div>
                 ))}
             </div>
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-2 flex justify-between items-center my-4">
-                <span className="font-medium text-sm">Monthly Record</span>
-                <div className="w-full md:w-[11rem] mb-1">
-                    <MonthPicker monthVal={monthVal} setMonthVal={setMonthVal} />
-                </div>
-            </div>
-            <div className="min-h-screen max-w-7xl mx-auto">
+
+            <div className="min-h-screen w-full">
 
 
-                <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <ChartCard
                         title="Monthly Payroll Expense"
-                        filter={{ value: payrollFilter }}
-                        onFilterChange={setPayrollFilter}
                         className="md:col-span-2"
                     >
                         <Bar
@@ -309,37 +327,104 @@ export default function PayRoll() {
                     </ChartCard>
 
                     <ChartCard title="Earnings Breakdown">
-                       <div className="w-full flex justify-center">
-<div className="" style={{ width: 300, height: 300 }}>
-                         <Doughnut
-                            data={dummyData.earningsBreakdown}
-                            options={{
-                                responsive: true,
-                                cutout: "72%",
-                                plugins: {
-                                    legend: { position: "bottom", labels: { font: { size: 11 } } },
-                                    tooltip: {
-                                        callbacks: {
-                                            label: (ctx) =>
-                                                `${ctx.label}: ₨${ctx.parsed.toLocaleString()}`,
+                        <div className="w-full flex justify-center">
+                            <div className="" style={{ width: 300, height: 300 }}>
+                                <Doughnut
+                                    data={dummyData.earningsBreakdown}
+                                    options={{
+                                        responsive: true,
+                                        cutout: "72%",
+                                        plugins: {
+                                            legend: { position: "bottom", labels: { font: { size: 11 } } },
+                                            tooltip: {
+                                                callbacks: {
+                                                    label: (ctx) =>
+                                                        `${ctx.label}: ₨${ctx.parsed.toLocaleString()}`,
+                                                },
+                                            },
                                         },
-                                    },
-                                },
-                            }}
-                            width={160}
-                            height={160}
-                        />
-                       </div>
-                       </div>
+                                    }}
+                                    width={160}
+                                    height={160}
+                                />
+                            </div>
+                        </div>
                     </ChartCard>
 
                 </section>
 
-                {/* <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
+
+
+
+                    <ChartCard title="Net Pay Distribution">
+                        <div className="w-full flex justify-center">
+                            <div className="" style={{ width: 300, height: 300 }}>
+                                <Radar
+                                    data={dummyData.netPayDistribution}
+                                    options={{
+                                        responsive: true,
+                                        scales: {
+                                            r: { angleLines: { display: true }, suggestedMin: 0, suggestedMax: 70 },
+                                        },
+                                        plugins: { legend: { display: false }, tooltip: { enabled: true } },
+                                    }}
+                                    height={180}
+                                />
+                            </div></div>
+                    </ChartCard>
+                    <ChartCard title="Payroll Status Overview">
+                        <div className="w-full flex justify-center">
+                            <div className="" style={{ width: 400, height: 330 }}>
+                                <PolarArea
+                                    data={dummyData.payrollStatus}
+                                    options={{
+                                        responsive: true,
+                                        plugins: {
+                                            legend: { position: "right", labels: { font: { size: 11 } } },
+                                        },
+                                    }}
+                                    height={130}
+                                />
+                            </div></div>
+                    </ChartCard>
+
+                    <ChartCard
+                        title="Top 5 Departments by Payroll Cost"
+                        filter={{ value: topDeptFilter }}
+                        onFilterChange={setTopDeptFilter}
+                    >
+                        <div className="w-full flex justify-center">
+                            <div className="" style={{ width: 400, height: 330 }}>
+                                <Bar
+                                    data={dummyData.topDepartmentsPayroll}
+                                    options={{
+                                        responsive: true,
+                                        indexAxis: "y",
+                                        plugins: {
+                                            legend: { display: false },
+                                            tooltip: { mode: "nearest" },
+                                        },
+                                        scales: {
+                                            x: {
+                                                beginAtZero: true,
+                                                ticks: { font: { size: 11 } },
+                                            },
+                                            y: {
+                                                ticks: { font: { size: 11 } },
+                                            },
+                                        },
+                                    }}
+                                    height={200}
+                                />
+                            </div></div>
+                    </ChartCard>
+
+                </section>
+
+                <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <ChartCard
                         title="Monthly Payroll Expense"
-                        filter={{ value: payrollFilter }}
-                        onFilterChange={setPayrollFilter}
                     >
                         <Bar
                             data={dummyData.totalPayrollExpense}
@@ -436,8 +521,6 @@ export default function PayRoll() {
 
                     <ChartCard
                         title="Bonus Distribution by Department"
-                        filter={{ value: bonusFilter }}
-                        onFilterChange={setBonusFilter}
                     >
                         <Bar
                             data={dummyData.bonusDistribution}
@@ -463,8 +546,6 @@ export default function PayRoll() {
 
                     <ChartCard
                         title="Monthly Tax Contribution"
-                        filter={{ value: taxFilter }}
-                        onFilterChange={setTaxFilter}
                     >
                         <Line
                             data={dummyData.taxContribution}
@@ -507,8 +588,6 @@ export default function PayRoll() {
 
                     <ChartCard
                         title="Employee Payroll Count Over Years"
-                        filter={{ value: employeeFilter }}
-                        onFilterChange={setEmployeeFilter}
                     >
                         <Line
                             data={dummyData.employeePayrollCount}
@@ -531,8 +610,6 @@ export default function PayRoll() {
 
                     <ChartCard
                         title="Top 5 Departments by Payroll Cost"
-                        filter={{ value: topDeptFilter }}
-                        onFilterChange={setTopDeptFilter}
                     >
                         <Bar
                             data={dummyData.topDepartmentsPayroll}
@@ -555,20 +632,11 @@ export default function PayRoll() {
                             height={160}
                         />
                     </ChartCard>
-                </section> */}
+                </section>
             </div>
         </>
     );
 }
-function ChartCard({ title, children, className = "" }) {
-    return (
-        <div className={`bg-white rounded-lg shadow-lg p-6 flex flex-col h-96 ${className}`}>
-            <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold text-sm text-gray-900">{title}</h3>
-            </div>
-            {children}
-        </div>
-    );
-}
+
 
 
