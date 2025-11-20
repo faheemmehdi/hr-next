@@ -199,24 +199,47 @@ const dummyData = {
         ],
     },
 
-    taxContribution: {
+    monthlyHolidays: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [
+            {
+                label: "Holidays",
+                data: [1, 0, 3, 0, 0, 0, 1, 0, 2, 0, 0, 3],
+                fill: true,
+                borderColor: "#db5e48",         // Orange smooth line
+                backgroundColor: "#db5e48",
+                borderWidth: 2,
+                tension: 0.45,
+                pointRadius: 6,
+                pointBackgroundColor: "rgba(249,115,22,0.6)", // semi-transparent bubbles
+                pointBorderColor: "#db5e48",
+                pointBorderWidth: 2,
+            },
+        ],
+    }
+    ,
+    monthlyLeaves: {
         labels: [
             "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
         ],
         datasets: [
             {
                 label: "Leaves",
                 data: [10, 20, 33, 10, 50, 70, 99, 111, 130, 158, 170, 88],
                 fill: true,
-                backgroundColor: "rgba(239, 68, 68, 0.2)",
-                borderColor: COLORS.orange[2],
-                borderWidth: 2,
+                backgroundColor: "rgba(16, 185, 129, 0.15)", // green tint
+                borderColor: "#10B981", // emerald
+                borderWidth: 3,
                 tension: 0.4,
+                pointRadius: 5,
+                pointBackgroundColor: "#10B981",
+                pointBorderColor: "#ffffff",
+                pointBorderWidth: 2,
             },
         ],
-    },
-
+    }
+    ,
     paymentModes: {
         labels: ["Approved", "Pending", "Rejected"],
         datasets: [
@@ -448,7 +471,28 @@ export default function Leaves() {
 
                 <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
 
-
+                    <ChartCard title="Leaves Per Month">
+                        <div className="w-full flex justify-center">
+                            <div className="" style={{ width: 400, height: 330 }}>
+                                <Line
+                                    data={dummyData.monthlyLeaves}
+                                    options={{
+                                        responsive: true,
+                                        plugins: { legend: { display: false }, tooltip: { mode: "nearest" } },
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                ticks: { font: { size: 11 } },
+                                            },
+                                            x: {
+                                                ticks: { font: { size: 11 } },
+                                            },
+                                        },
+                                    }}
+                                    height={230}
+                                />
+                            </div></div>
+                    </ChartCard>
 
                     <ChartCard title="Leave Requests">
                         <div className="w-full flex justify-center">
@@ -472,11 +516,15 @@ export default function Leaves() {
                                 />
                             </div></div>
                     </ChartCard>
-                    <ChartCard title="Leaves Per Month">
+
+
+                    <ChartCard
+                        title="Holidays Per Month"
+                    >
                         <div className="w-full flex justify-center">
                             <div className="" style={{ width: 400, height: 330 }}>
                                 <Line
-                                    data={dummyData.taxContribution}
+                                    data={dummyData.monthlyHolidays}
                                     options={{
                                         responsive: true,
                                         plugins: { legend: { display: false }, tooltip: { mode: "nearest" } },
@@ -491,37 +539,6 @@ export default function Leaves() {
                                         },
                                     }}
                                     height={230}
-                                />
-                            </div></div>
-                    </ChartCard>
-
-                    <ChartCard
-                        title="Top 5 Departments by Payroll Cost"
-                        filter={{ value: topDeptFilter }}
-                        onFilterChange={setTopDeptFilter}
-                    >
-                        <div className="w-full flex justify-center">
-                            <div className="" style={{ width: 400, height: 330 }}>
-                                <Bar
-                                    data={dummyData.topDepartmentsPayroll}
-                                    options={{
-                                        responsive: true,
-                                        indexAxis: "y",
-                                        plugins: {
-                                            legend: { display: false },
-                                            tooltip: { mode: "nearest" },
-                                        },
-                                        scales: {
-                                            x: {
-                                                beginAtZero: true,
-                                                ticks: { font: { size: 11 } },
-                                            },
-                                            y: {
-                                                ticks: { font: { size: 11 } },
-                                            },
-                                        },
-                                    }}
-                                    height={200}
                                 />
                             </div></div>
                     </ChartCard>
