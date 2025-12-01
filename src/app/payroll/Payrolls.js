@@ -11,6 +11,7 @@ import {
     RadialLinearScale,
     Tooltip,
     Legend,
+    Filler,
 } from "chart.js";
 import { Bar, Doughnut, Pie, Radar, PolarArea, Line } from "react-chartjs-2";
 import { FaMoneyBillWave, FaUserSlash, FaUserCheck } from "react-icons/fa";
@@ -29,7 +30,8 @@ ChartJS.register(
     ArcElement,
     RadialLinearScale,
     Tooltip,
-    Legend
+    Legend,
+    Filler
 );
 
 const stats = [
@@ -61,60 +63,6 @@ const stats = [
 ];
 
 
-const COLORS = {
-    blue: [
-        "rgba(59, 130, 246, 0.8)",    // blue-500
-        "rgba(96, 165, 250, 0.7)",    // blue-400
-        "rgba(37, 99, 235, 0.9)",     // blue-600
-    ],
-    green: [
-        "rgba(22, 163, 74, 0.85)",    // green-600
-        "rgba(34, 197, 94, 0.75)",    // green-500
-        "rgba(21, 128, 61, 0.9)",     // green-700
-    ],
-    red: [
-        "rgba(239, 68, 68, 0.85)",    // red-500
-        "rgba(248, 113, 113, 0.7)",   // red-400
-        "rgba(220, 38, 38, 0.9)",     // red-600
-    ],
-    orange: [
-        "rgba(249, 115, 22, 0.85)",   // orange-500
-        "rgba(251, 191, 36, 0.7)",    // yellow-400
-        "rgba(202, 138, 4, 0.9)",     // yellow-700
-    ],
-    gray: [
-        "rgba(107, 114, 128, 0.7)",   // gray-500
-        "rgba(75, 85, 99, 0.6)",      // gray-600
-        "rgba(55, 65, 81, 0.8)",      // gray-700
-    ],
-    purple: [
-        "rgba(139, 92, 246, 0.85)",   // purple-500
-        "rgba(165, 180, 252, 0.7)",   // purple-400
-        "rgba(124, 58, 237, 0.9)",    // purple-600
-    ],
-    teal: [
-        "rgba(20, 184, 166, 0.85)",   // teal-500
-        "rgba(94, 234, 212, 0.7)",    // teal-400
-        "rgba(13, 148, 136, 0.9)",    // teal-600
-    ],
-    pink: [
-        "rgba(236, 72, 153, 0.85)",   // pink-500
-        "rgba(251, 207, 232, 0.7)",   // pink-400
-        "rgba(219, 39, 119, 0.9)",    // pink-600
-    ],
-    yellow: [
-        "rgba(234, 179, 8, 0.85)",    // yellow-500
-        "rgba(253, 224, 71, 0.7)",    // yellow-400
-        "rgba(202, 138, 4, 0.9)",     // yellow-600
-    ],
-    cyan: [
-        "rgba(6, 182, 212, 0.85)",    // cyan-500
-        "rgba(165, 243, 252, 0.7)",   // cyan-400
-        "rgba(8, 145, 178, 0.9)",     // cyan-600
-    ],
-};
-
-
 const dummyData = {
     totalPayrollExpense: {
         labels: [
@@ -125,25 +73,49 @@ const dummyData = {
             {
                 label: "Payroll Expense (₨ thousands)",
                 data: [12000, 13000, 12500, 14000, 15000, 14500, 13500, 15500, 16000, 15800, 17000, 18000],
-                backgroundColor: COLORS.gray[0],
+                backgroundColor: function (context) {
+                    const chart = context.chart;
+                    const { ctx, chartArea } = chart;
+
+                    if (!chartArea) {
+                        return null; // initial load fallback
+                    }
+
+                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    gradient.addColorStop(0, "rgba(59, 130, 246, 0.6)");  // Blue 500 (medium bright, moderate transparency)
+                    gradient.addColorStop(1, "rgba(147, 197, 253, 0.9)"); // Light Blue 300 (lighter and brighter)
+
+                    return gradient;
+
+                },
+
                 borderRadius: 5,
                 maxBarThickness: 24,
             },
         ],
     },
-
     earningsBreakdown: {
         labels: ["Basic Salary", "Allowances", "Bonuses"],
         datasets: [
             {
                 data: [12000000, 3500000, 1500000],
-                backgroundColor: COLORS.blue,
+                backgroundColor: [
+                    "rgba(59, 130, 246, 0.85)",  // Blue - Basic Salary
+                    "rgba(96, 165, 250, 0.7)",   // Light Blue - Allowances
+                    "rgba(147, 197, 253, 0.6)",  // Very Light Blue - Bonuses
+                ],
+                hoverBackgroundColor: [
+                    "rgba(37, 99, 235, 1)",
+                    "rgba(59, 130, 246, 1)",
+                    "rgba(147, 197, 253, 0.85)",
+                ],
                 hoverOffset: 20,
             },
         ],
     },
 
-    
+
+
 
     netPayDistribution: {
         labels: [
@@ -158,44 +130,71 @@ const dummyData = {
             {
                 label: "Employees",
                 data: [15, 40, 60, 45, 30, 10],
-                fill: true,
-                backgroundColor: "rgba(16, 185, 129, 0.35)",
-                borderColor: COLORS.green[2],
+                fill: true, // for fill area
+                backgroundColor: "rgba(59, 130, 246, 0.3)",  // blue with some transparency
+                borderColor: "rgba(37, 99, 235, 0.5)",         // solid blue border
                 borderWidth: 2,
-                pointBackgroundColor: COLORS.green[1],
-                tension: 0.3,
-            },
+                pointBackgroundColor: "rgba(29, 78, 216, 0.5)", // darker blue points
+                tension: 0.4,
+            }
+            ,
         ],
     },
+
+
 
     payrollStatus: {
         labels: ["Paid", "Pending", "Rejected"],
         datasets: [
             {
                 label: "Count",
-                data: [80, 10, 20],
-                backgroundColor: [COLORS.green[0], COLORS.orange[1], COLORS.red[0]],
+                data: [40, 15, 20],
+                backgroundColor: [
+                    "rgba(34, 197, 94, 0.7)",    // Emerald Green (Paid) - pleasant & calm
+                    "rgba(251, 191, 36, 0.7)",   // Amber/Gold (Pending) - warm & noticeable
+                    "rgba(239, 68, 68, 0.7)",    // Soft Red (Rejected) - alert but not harsh
+                ],
+                borderColor: [
+                    "rgba(22, 163, 74, 1)",      // Darker green border
+                    "rgba(202, 138, 4, 1)",      // Darker amber border
+                    "rgba(185, 28, 28, 1)",      // Darker red border
+                ],
                 borderWidth: 1,
             },
         ],
     },
 
-   
-  
-   
-   
+
+
+
+
     topDepartmentsPayroll: {
         labels: ["IT", "Finance", "Operations", "Sales", "Marketing"],
         datasets: [
             {
                 label: "Payroll Cost (₨ thousands)",
                 data: [4800, 4200, 4000, 3500, 3000],
-                backgroundColor: COLORS.red,
+                backgroundColor: [
+                    "rgba(59, 130, 246, 0.75)",  // Blue (IT)
+                    "rgba(16, 185, 129, 0.75)",  // Green (Finance)
+                    "rgba(234, 179, 8, 0.75)",   // Amber (Operations)
+                    "rgba(239, 68, 68, 0.75)",   // Red (Sales)
+                    "rgba(139, 92, 246, 0.75)",  // Purple (Marketing)
+                ],
+                borderColor: [
+                    "rgba(37, 99, 235, 1)",
+                    "rgba(5, 150, 105, 1)",
+                    "rgba(202, 138, 4, 1)",
+                    "rgba(185, 28, 28, 1)",
+                    "rgba(124, 58, 237, 1)",
+                ],
+                borderWidth: 1.5,
                 borderRadius: 6,
                 maxBarThickness: 24,
             },
         ],
-    },
+    }
+
 };
 
 
@@ -271,7 +270,7 @@ export default function PayRoll() {
                                     data={dummyData.earningsBreakdown}
                                     options={{
                                         responsive: true,
-                                        cutout: "72%",
+                                        cutout: "70%",
                                         plugins: {
                                             legend: { position: "bottom", labels: { font: { size: 11 } } },
                                             tooltip: {
@@ -282,8 +281,8 @@ export default function PayRoll() {
                                             },
                                         },
                                     }}
-                                    width={160}
-                                    height={160}
+                                    width={180}
+                                    height={180}
                                 />
                             </div>
                         </div>
@@ -303,12 +302,25 @@ export default function PayRoll() {
                                     options={{
                                         responsive: true,
                                         scales: {
-                                            r: { angleLines: { display: true }, suggestedMin: 0, suggestedMax: 70 },
+                                            r: {
+                                                angleLines: { display: true },
+                                                suggestedMin: 0,
+                                                suggestedMax: 70,
+                                                ticks: {
+                                                    stepSize: 10,
+                                                    color: "#444",
+                                                    backdropColor: "transparent",
+                                                },
+                                            },
                                         },
-                                        plugins: { legend: { display: false }, tooltip: { enabled: true } },
+                                        plugins: {
+                                            legend: { display: false },
+                                            tooltip: { enabled: true },
+                                        },
                                     }}
                                     height={180}
                                 />
+
                             </div></div>
                     </ChartCard>
                     <ChartCard title="Payroll Status Overview">

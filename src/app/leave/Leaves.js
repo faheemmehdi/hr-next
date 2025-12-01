@@ -48,59 +48,6 @@ const leaveStats = [
     { title: "Employees Currently on Leave", value: 18, icon: <AiOutlineUser className="text-indigo-600" /> },
 ];
 
-const COLORS = {
-    blue: [
-        "rgba(59, 130, 246, 0.8)",    // blue-500
-        "rgba(96, 165, 250, 0.7)",    // blue-400
-        "rgba(37, 99, 235, 0.9)",     // blue-600
-    ],
-    green: [
-        "rgba(22, 163, 74, 0.85)",    // green-600
-        "rgba(34, 197, 94, 0.75)",    // green-500
-        "rgba(21, 128, 61, 0.9)",     // green-700
-    ],
-    red: [
-        "rgba(239, 68, 68, 0.85)",    // red-500
-        "rgba(248, 113, 113, 0.7)",   // red-400
-        "rgba(220, 38, 38, 0.9)",     // red-600
-    ],
-    orange: [
-        "rgba(249, 115, 22, 0.85)",   // orange-500
-        "rgba(251, 191, 36, 0.7)",    // yellow-400
-        "rgba(202, 138, 4, 0.9)",     // yellow-700
-    ],
-    gray: [
-        "rgba(107, 114, 128, 0.7)",   // gray-500
-        "rgba(75, 85, 99, 0.6)",      // gray-600
-        "rgba(55, 65, 81, 0.8)",      // gray-700
-    ],
-    purple: [
-        "rgba(139, 92, 246, 0.85)",   // purple-500
-        "rgba(165, 180, 252, 0.7)",   // purple-400
-        "rgba(124, 58, 237, 0.9)",    // purple-600
-    ],
-    teal: [
-        "rgba(20, 184, 166, 0.85)",   // teal-500
-        "rgba(94, 234, 212, 0.7)",    // teal-400
-        "rgba(13, 148, 136, 0.9)",    // teal-600
-    ],
-    pink: [
-        "rgba(236, 72, 153, 0.85)",   // pink-500
-        "rgba(251, 207, 232, 0.7)",   // pink-400
-        "rgba(219, 39, 119, 0.9)",    // pink-600
-    ],
-    yellow: [
-        "rgba(234, 179, 8, 0.85)",    // yellow-500
-        "rgba(253, 224, 71, 0.7)",    // yellow-400
-        "rgba(202, 138, 4, 0.9)",     // yellow-600
-    ],
-    cyan: [
-        "rgba(6, 182, 212, 0.85)",    // cyan-500
-        "rgba(165, 243, 252, 0.7)",   // cyan-400
-        "rgba(8, 145, 178, 0.9)",     // cyan-600
-    ],
-};
-
 
 const dummyData = {
     monthlyLeaveRequests: {
@@ -109,95 +56,30 @@ const dummyData = {
             {
                 label: "Casual",
                 data: [12, 15, 14, 18, 20, 25, 22, 17, 19, 23, 26, 30],
-                backgroundColor: COLORS.teal[1],
+                backgroundColor: "rgba(59, 130, 246, 0.6)",  // Medium Blue
             },
             {
                 label: "Sick",
                 data: [5, 6, 7, 4, 8, 6, 7, 5, 6, 4, 8, 7],
-                backgroundColor: COLORS.orange[1],
+                backgroundColor: "rgba(202, 138, 4, 0.6)",   // Golden Yellow
             },
             {
                 label: "Paid",
                 data: [20, 25, 22, 28, 30, 35, 33, 31, 29, 30, 35, 38],
-                backgroundColor: COLORS.blue[1],
+                backgroundColor: "rgba(5, 150, 105, 0.6)",   // Deep Teal
             },
             {
                 label: "Unpaid",
                 data: [3, 2, 4, 3, 5, 4, 3, 4, 5, 6, 3, 4],
-                backgroundColor: COLORS.pink[1],
+                backgroundColor: "rgba(219, 39, 119, 0.6)",  // Rich Pink/Magenta
             },
         ],
+
     },
 
-    earningsBreakdown: {
-        labels: ["Basic Salary", "Allowances", "Bonuses"],
-        datasets: [
-            {
-                data: [12000000, 3500000, 1500000],
-                backgroundColor: COLORS.blue,
-                hoverOffset: 20,
-            },
-        ],
-    },
 
-    deductionsBreakdown: {
-        labels: ["Tax", "Social Security", "Loans", "Other"],
-        datasets: [
-            {
-                data: [1500000, 400000, 200000, 100000],
-                backgroundColor: COLORS.red,
-                hoverOffset: 20,
-            },
-        ],
-    },
 
-    netPayDistribution: {
-        labels: [
-            "Below 50k",
-            "50k-70k",
-            "70k-90k",
-            "90k-110k",
-            "110k-130k",
-            "130k+",
-        ],
-        datasets: [
-            {
-                label: "Employees",
-                data: [15, 40, 60, 45, 30, 10],
-                fill: true,
-                backgroundColor: "rgba(16, 185, 129, 0.35)",
-                borderColor: COLORS.green[2],
-                borderWidth: 2,
-                pointBackgroundColor: COLORS.green[1],
-                tension: 0.3,
-            },
-        ],
-    },
 
-    payrollStatus: {
-        labels: ["Paid", "Pending", "Rejected"],
-        datasets: [
-            {
-                label: "Count",
-                data: [80, 10, 20],
-                backgroundColor: [COLORS.green[0], COLORS.orange[1], COLORS.red[0]],
-                borderWidth: 1,
-            },
-        ],
-    },
-
-    bonusDistribution: {
-        labels: ["IT", "Finance", "Operations", "Sales", "Marketing"],
-        datasets: [
-            {
-                label: "Bonus Paid (₨ thousands)",
-                data: [600, 500, 400, 350, 300],
-                backgroundColor: COLORS.blue,
-                borderRadius: 6,
-                maxBarThickness: 28,
-            },
-        ],
-    },
 
     monthlyHolidays: {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -240,44 +122,23 @@ const dummyData = {
         ],
     }
     ,
-    paymentModes: {
+    leaveStatuses: {
         labels: ["Approved", "Pending", "Rejected"],
         datasets: [
             {
                 label: "Leaves",
                 data: [70, 30, 20],
-                backgroundColor: [COLORS.green[0], COLORS.orange[1], COLORS.red[0]],
+                backgroundColor: [
+                    "#48a090",  // Soft Teal
+                    "#f5b041",  // Warm Amber
+                    "#dc5a5a",  // Muted Coral Red
+                ],
+
                 hoverOffset: 20,
             },
         ],
     },
 
-    employeePayrollCount: {
-        labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
-        datasets: [
-            {
-                label: "Employees on Payroll",
-                data: [200, 220, 260, 280, 300, 320],
-                fill: false,
-                borderColor: COLORS.blue[2],
-                backgroundColor: COLORS.blue[2],
-                tension: 0.3,
-            },
-        ],
-    },
-
-    topDepartmentsPayroll: {
-        labels: ["IT", "Finance", "Operations", "Sales", "Marketing"],
-        datasets: [
-            {
-                label: "Payroll Cost (₨ thousands)",
-                data: [4800, 4200, 4000, 3500, 3000],
-                backgroundColor: COLORS.red,
-                borderRadius: 6,
-                maxBarThickness: 24,
-            },
-        ],
-    },
 };
 
 
@@ -498,7 +359,7 @@ export default function Leaves() {
                         <div className="w-full flex justify-center">
                             <div className="" style={{ width: 288, height: 288 }}>
                                 <Pie
-                                    data={dummyData.paymentModes}
+                                    data={dummyData.leaveStatuses}
                                     options={{
                                         responsive: true,
                                         plugins: {
