@@ -384,7 +384,7 @@ export default function PayRollList() {
                                     <td className="px-4 py-3">{row.department}</td>
                                     <td className="px-4 py-3 text-center">{row.totalEmployees}</td>
                                     <td className="px-4 py-3">{row.payPeriodStart} To {row.payPeriodEnd}</td>
-                                    <td className="px-4 py-3">{row.totalAmount}</td>
+                                    <td className="px-4 py-3">{row.totalAmount.toLocaleString()}</td>
                                     <td className="px-4 py-3">{row.payCycleType}</td>
                                     <td className="px-4 py-3">{row.approvedBy}</td>
                                     <td className="px-4 py-3 truncate max-w-[120px]" title={row.remarks}>{row.remarks}</td>
@@ -425,7 +425,7 @@ export default function PayRollList() {
                                 <span>Total Employees:</span> {selectedPayroll?.totalEmployees}
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Total Amount</span> {selectedPayroll?.totalAmount}
+                                <span>Total Amount</span> {selectedPayroll?.totalAmount.toLocaleString()}
                             </p>
                             <p className="text-xxs text-gray-600">
                                 <span>Pay Period:</span> {selectedPayroll?.payPeriodStart} To {selectedPayroll?.payPeriodEnd}

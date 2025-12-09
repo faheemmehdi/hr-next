@@ -453,7 +453,8 @@ export default function PaySlips() {
           </table>
         </div>
         {isOpen && (
-          <Modal width="w-10/12 md:w-5/12">
+          <Modal width="w-full max-w-[794px]">
+            <h2>Salary Slip</h2>
             <div className="flex justify-end pt-4">
               <Button variant="cancel" onClick={handleCloseModal}>
                 Close
