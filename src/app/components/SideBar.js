@@ -46,6 +46,7 @@ const menuItems = [
       { label: "Regularization Requests", href: "/attendance/regularizations" },
       { label: "Devices & Terminals", href: "/attendance/terminals" },
       { label: "Attendance Setting", href: "/attendance/settings" },
+      { label: "Shift Schedules", href: "/attendance/shifts" },
     ],
   },
    {

@@ -239,21 +239,22 @@ export default function LeaveRequests() {
     );
 
     const employees = mapSelectOptions(
-        [
-            { id: 1, name: "Human Resources" },
-            { id: 2, name: "Finance" },
-            { id: 3, name: "Marketing" },
-            { id: 4, name: "Sales" },
-            { id: 5, name: "Customer Support" },
-            { id: 6, name: "Operations" },
-            { id: 7, name: "IT & Infrastructure" },
-            { id: 8, name: "Research & Development" },
-            { id: 9, name: "Design" },
-            { id: 10, name: "Administration" },
-        ],
-        "id",
-        "name"
-    );
+    [
+        { id: 1, name: "Ahmad Khan" },
+        { id: 2, name: "Sara Ali" },
+        { id: 3, name: "Omar Malik" },
+        { id: 4, name: "Ayesha Siddiqui" },
+        { id: 5, name: "Bilal Shah" },
+        { id: 6, name: "Fatima Noor" },
+        { id: 7, name: "Usman Riaz" },
+        { id: 8, name: "Hina Javed" },
+        { id: 9, name: "Zain Qureshi" },
+        { id: 10, name: "Maria Hassan" },
+    ],
+    "id",
+    "name"
+);
+
 
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
