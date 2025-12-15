@@ -855,7 +855,7 @@ export default function ShiftSchedules() {
                         </div>
                         <div className="flex justify-end gap-2">
                             <Button variant="cancel" onClick={closeAddLeaveModal}>
-                                Close
+                                Cancel
                             </Button>
                             <Button variant="success">
                                 Create

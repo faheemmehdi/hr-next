@@ -9,7 +9,8 @@ import {
   FiUserPlus,
   FiBarChart2,
   FiSettings,
-  FiClock
+  FiClock,
+  FiActivity
 } from "react-icons/fi";
 import { LuCalendarDays } from "react-icons/lu";
 const menuItems = [
@@ -49,7 +50,20 @@ const menuItems = [
       { label: "Shift Schedules", href: "/attendance/shifts" },
     ],
   },
-   {
+  {
+    icon: <FiActivity className="text-md" />,
+    href: "/time",
+    label: "Time Tracking",
+    description: "Tasks, projects, and timesheets",
+    dropdown: [
+      { label: "Projects", href: "/time/projects" },
+      { label: "Tasks", href: "/time/tasks" },
+      { label: "Timesheets", href: "/time/timesheets" },
+      { label: "Approvals", href: "/time/approvals" },
+      { label: "Reports", href: "/time/reports" },
+    ],
+  },
+  {
     icon: <LuCalendarDays className="text-md" />,
     label: "Leave & Holidays",
     href: "/leave",
