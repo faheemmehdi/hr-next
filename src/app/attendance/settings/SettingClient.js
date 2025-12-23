@@ -186,7 +186,7 @@ function SettingClient() {
             <div className="flex justify-between text-lg p-1 mb-1">
                 <h2>Attendance Settings</h2>
             </div>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-screen p-5">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[80vh] p-5">
                 <Tabs tabs={tabs} defaultTab="general" onTabChange={settings.activeTab} align="left" />
 
             </div>
