@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
-const Tabs = ({ tabs, defaultTab, onTabChange, align = "left" }) => {
+const Tabs = ({ tabs, defaultTab, onTabChange, align = "left", isCol }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || tabs[0].key);
+  const flexDirectionClass = isCol ? "" : "bg-white rounded-lg shadow-md border border-gray-200 p-6";
   const alignmentClasses = {
     left: "justify-start",
     center: "justify-center",
@@ -32,7 +33,7 @@ const Tabs = ({ tabs, defaultTab, onTabChange, align = "left" }) => {
       </div>
 
       {/* Tab Content */}
-      <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 mt-4">
+      <div className={`${flexDirectionClass} mt-4`}>
         {tabs.find((t) => t.key === activeTab)?.content}
       </div>
     </div>
