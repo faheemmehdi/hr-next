@@ -11,6 +11,7 @@ import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import Tabs from "y@/app/components/Tabs";
 import TimeLine from "./tabs/TimeLine";
 import OverView from "./tabs/OverView";
+import Team from "./tabs/Team";
 
 const components = {
     CustomSelect, Input, ToggleSwitch
@@ -88,14 +89,26 @@ function CreateProject() {
             startDate: '',
             endDate: '',
             duration: '',
-            billable: '',
+            billable: 'true',
             billing_type: '',
             billing_rate: '',
             currency: '',
             estimated_budget: '',
             overtime_allow: '',
             overtime_rate: '',
-
+            milestones: [
+                { name: '', dueDate: '', linkedBilling: '', description: '' }
+            ],
+        },
+        team: {
+            startDate: '',
+            endDate: '',
+            duration: '',
+            billable: '',
+            billing_type: '',
+            billing_rate: '',
+            currency: '',
+           
         }
     });
 
@@ -110,6 +123,11 @@ function CreateProject() {
         {
             key: "timeline", label: "Schedule & Financials", content: <TimeLine components={components} data={projectData.timeline} updateData={(updateTimeline) =>
                 setProjectData((prev) => ({ ...prev, timeline: updateTimeline }))
+            } />
+        },
+         {
+            key: "team", label: "Team & Resources", content: <Team components={components} data={projectData.team} updateData={(updateTeam) =>
+                setProjectData((prev) => ({ ...prev, team: updateTeam }))
             } />
         },
     ];

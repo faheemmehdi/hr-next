@@ -1,4 +1,7 @@
+import Button from "y@/app/components/Button";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
+import { TiPlus } from "react-icons/ti";
+import { RxCross2 } from "react-icons/rx";
 const billingTypes = mapSelectOptions(
     [
         { id: 1, name: "Hourly (Time & Material)" },
@@ -51,12 +54,39 @@ const currencies = mapSelectOptions(
 
 export default function TimeLine({ components, data, employees, updateData }) {
     const { CustomSelect, Input, ToggleSwitch } = components;
+    const addMilestone = () => {
+        updateData({
+            ...data,
+            milestones: [...(data.milestones || []), { name: '', dueDate: '', linkedBilling: '' }],
+        });
+    };
+
+    // Update a milestone field by index
+    const onMilestoneChange = (index, field, value) => {
+        const updatedMilestones = data.milestones.map((ms, i) =>
+            i === index ? { ...ms, [field]: value } : ms
+        );
+        updateData({ ...data, milestones: updatedMilestones });
+    };
     const onChange = (field, value) => {
         updateData({
             ...data,
             [field]: value,
         });
     };
+function onRemoveMilestone(index) {
+  if (!data.milestones) return;
+
+  const newMilestones = [...data.milestones];
+  newMilestones.splice(index, 1);
+
+  updateData({
+    ...data,
+    milestones: newMilestones,
+  });
+}
+
+
 
 
     return (
@@ -64,9 +94,9 @@ export default function TimeLine({ components, data, employees, updateData }) {
             <div className="w-full text-xxs mt-5">
                 <div className="w-full flex flex-col md:flex-row items-stretch gap-6">
                     <div className="w-full md:w-8/12 rounded-lg shadow-md border border-gray-200 p-4 md:p-6 ">
-                        <strong className="font-bold text-sm text-center">Core Identity</strong>
-                        <div className="flex flex-col md:flex-row w-full gap-6">
-                            <div className="w-full md:w-1/2 mt-2">
+                        <strong className="font-bold text-sm text-center">Timeline</strong>
+                        <div className="flex flex-col md:flex-row w-full gap-6 mb-2">
+                            <div className="w-full md:w-1/3 mt-2">
                                 <Input
                                     type="date"
                                     label="Start Date"
@@ -76,7 +106,7 @@ export default function TimeLine({ components, data, employees, updateData }) {
                                     onChange={(e) => onChange('startDate', e.target.value)}
                                 />
                             </div>
-                            <div className="w-full md:w-1/2 mt-2">
+                            <div className="w-full md:w-1/3 mt-2">
                                 <Input
                                     type="date"
                                     label="End Date"
@@ -86,30 +116,80 @@ export default function TimeLine({ components, data, employees, updateData }) {
                                     onChange={(e) => onChange('endDate', e.target.value)}
                                 />
                             </div>
+                            <div className="w-full md:w-1/3 mt-2">
+                                <Input
+                                    type="number"
+                                    label="Estimated Duration (Days)"
+                                    name="edate"
+                                    placeholder="Estimated Days"
+                                    noMargin={true}
+                                    value={data.duration}
+                                    onChange={(e) => onChange('duration', e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <div className="flex flex-col md:flex-row w-full gap-6">
-                            <div className="w-full md:w-1/2 mt-2">
-                                <Input
-                                    type="number"
-                                    label="Estimated Duration (Days)"
-                                    name="edate"
-                                    placeholder="Estimated Days"
-                                    noMargin={true}
-                                    value={data.duration}
-                                    onChange={(e) => onChange('duration', e.target.value)}
-                                />
+                        {data.milestones?.map((milestone, index) => (
+                            <div
+                                style={{ paddingTop: "0px" }}
+                                key={index}
+                                className="mb-3 p-4 md:p-6 bg-white rounded shadow-md border border-gray-200"
+                            >
+                                <div className="flex justify-end pt-2 text-sm"><RxCross2 className="cursor-pointer" onClick={() => onRemoveMilestone(index)} /></div>
+                                <div className="flex flex-col md:flex-row w-full gap-6">
+                                    <div className="w-full md:w-1/3 mt-1">
+                                        <Input
+                                            type="text"
+                                            label="Milestone Name"
+                                            name={`milestoneName-${index}`}
+                                            placeholder="Milestone Name"
+                                            noMargin={true}
+                                            value={milestone.name || ""}
+                                            onChange={e => onMilestoneChange(index, 'name', e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="w-full md:w-1/3 mt-1">
+                                        <Input
+                                            type="date"
+                                            label="Due Date"
+                                            name={`milestoneDueDate-${index}`}
+                                            noMargin={true}
+                                            value={milestone.dueDate || ""}
+                                            onChange={e => onMilestoneChange(index, 'dueDate', e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="w-full md:w-1/3 mt-1">
+                                        <Input
+                                            type="text"
+                                            label="Linked Billing"
+                                            name={`linkedBilling-${index}`}
+                                            placeholder="e.g., 20% payment on completion"
+                                            noMargin={true}
+                                            value={milestone.linkedBilling || ""}
+                                            onChange={e => onMilestoneChange(index, 'linkedBilling', e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="w-full mt-4">
+                                    <label className="block text-xxs font-medium text-gray-700 mb-1">Notes</label>
+                                    <textarea
+                                        rows="3"
+                                        placeholder="Description"
+                                        className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none focus:outline-none focus:border-gray-600 transition-all duration-150"
+                                        value={milestone.description || ""}
+                                        onChange={e => onMilestoneChange(index, 'description', e.target.value)}
+                                    />
+                                </div>
                             </div>
-                            <div className="w-full md:w-1/2 mt-2">
-                                <Input
-                                    type="number"
-                                    label="Estimated Duration (Days)"
-                                    name="edate"
-                                    placeholder="Estimated Days"
-                                    noMargin={true}
-                                    value={data.duration}
-                                    onChange={(e) => onChange('duration', e.target.value)}
-                                />
-                            </div>
+                        ))}
+
+
+                        <div className="flex justify-end w-full mt-2">
+                            <Button type="button" variant="primary" onClick={addMilestone}>
+                                <span className="flex justify-center items-center gap-1"><TiPlus /> <span>Add Milestone</span></span>
+                            </Button>
                         </div>
                     </div>
                     <div className="w-full md:w-1/3 rounded-lg shadow-md border border-gray-200 p-4 md:p-6 ">
