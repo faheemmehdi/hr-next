@@ -74,17 +74,17 @@ export default function TimeLine({ components, data, employees, updateData }) {
             [field]: value,
         });
     };
-function onRemoveMilestone(index) {
-  if (!data.milestones) return;
+    function onRemoveMilestone(index) {
+        if (!data.milestones) return;
 
-  const newMilestones = [...data.milestones];
-  newMilestones.splice(index, 1);
+        const newMilestones = [...data.milestones];
+        newMilestones.splice(index, 1);
 
-  updateData({
-    ...data,
-    milestones: newMilestones,
-  });
-}
+        updateData({
+            ...data,
+            milestones: newMilestones,
+        });
+    }
 
 
 

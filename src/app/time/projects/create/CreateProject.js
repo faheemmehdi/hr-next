@@ -101,14 +101,16 @@ function CreateProject() {
             ],
         },
         team: {
-            startDate: '',
-            endDate: '',
-            duration: '',
-            billable: '',
-            billing_type: '',
-            billing_rate: '',
-            currency: '',
-           
+            assignedEmp: '',
+            assignedTeam: '',
+            assignedDept: '',
+            vendor: '',
+            resNote: '',
+            deliverSummary: '',
+            docType: '',
+            docFile: '',
+            externalLink: '',
+
         }
     });
 
@@ -125,8 +127,8 @@ function CreateProject() {
                 setProjectData((prev) => ({ ...prev, timeline: updateTimeline }))
             } />
         },
-         {
-            key: "team", label: "Team & Resources", content: <Team components={components} data={projectData.team} updateData={(updateTeam) =>
+        {
+            key: "team", label: "Team & Resources", content: <Team components={components} employees={employees} departments={departments} data={projectData.team} updateData={(updateTeam) =>
                 setProjectData((prev) => ({ ...prev, team: updateTeam }))
             } />
         },
@@ -143,6 +145,7 @@ function CreateProject() {
                     <Button type="button" variant="success">Save & Continue</Button>
                 </div>
             </div>
+            {/* {projectData.team.docFile.name} */}
         </Layout>
     )
 }
