@@ -16,32 +16,34 @@ import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import RowActions from "y@/app/components/RowActions";
 import Modal from "y@/app/components/ModalShell";
 import "react-datepicker/dist/react-datepicker.css";
+import FileUpload from "y@/app/components/FileUpload";
 export default function ProjectTasks() {
     const [taskName, setTaskName] = useState("");
     const [search, setSearch] = useState("");
     const [projects, setProjects] = useState("");
-    const [officeStart, setOfficeStart] = useState("");
-    const [officeEnd, setOfficeEnd] = useState("");
-    const [breakStart, setBreakStart] = useState("");
-    const [breakEnd, setBreakEnd] = useState("");
+    const [taskStartDate, setTaskStartDate] = useState("");
+    const [taskDueDate, setTaskDueDate] = useState("");
+    const [assignedEmp, setAssignedEmp] = useState("");
+    const [assignedTeam, setAssignedTeam] = useState("");
     const [selectProject, setSelectProject] = useState("");
-    const [employees, setEmployees] = useState("");
+    const [estimatedHours, setEstimatedHours] = useState("");
     const [date, setDate] = useState("");
-    const [eligTeam, setEligTeam] = useState("");
+    const [taskType, setTaskType] = useState("");
     const [eligEmp, setEligEmp] = useState("");
-    const [eligDept, setEligDept] = useState("");
-    const [rotation, setRotation] = useState("");
+    const [attach, setAttach] = useState("");
+    const [eligTeam, setEligTeam] = useState("");
     const [status, setStatus] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
     const [isAddBonusOpen, setAddBonusOpen] = useState(false);
     const [taskPriority, setTaskPriority] = useState("");
+    const [taskPrio, setTaskPrio] = useState("");
     const [showErrors, setShowErrors] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const [isAssignOpen, setAssignOpen] = useState(false);
     const [bulkAction, setBulkAction] = useState(null);
-    const [startDate, setStartDate] = useState(null);
+    const [taskAssignedEmp, setTaskAssignedEmp] = useState("");
     const [endDate, setEndDate] = useState(null);
     const [assignNote, setAssignNote] = useState('');
     const [assignStart, setAssignStart] = useState('');
@@ -218,7 +220,7 @@ export default function ProjectTasks() {
         "id",
         "name"
     );
-const priorities = mapSelectOptions(
+    const priorities = mapSelectOptions(
         [
             { id: 2, name: "High" },
             { id: 1, name: "Medium" },
@@ -246,6 +248,22 @@ const priorities = mapSelectOptions(
             { id: 4, name: "On Joining" },
             { id: 5, name: "On Application" },
             { id: 6, name: "Manual Adjustment" }
+        ],
+        "id",
+        "name"
+    );
+    const taskTypes = mapSelectOptions(
+        [
+            { id: 1, name: "Feature Development" },
+            { id: 2, name: "Bug Fix" },
+            { id: 3, name: "Improvement / Enhancement" },
+            { id: 4, name: "Research / Analysis" },
+            { id: 5, name: "Documentation" },
+            { id: 6, name: "Testing / QA" },
+            { id: 7, name: "Design / UI UX" },
+            { id: 8, name: "Support / Maintenance" },
+            { id: 9, name: "Deployment / Release" },
+            { id: 10, name: "Other" }
         ],
         "id",
         "name"
@@ -327,6 +345,16 @@ const priorities = mapSelectOptions(
                                 placeholder="Status"
                                 onChange={setStatus}
                                 options={statuses}
+                                controlHeight="2rem"
+                            />
+                        </div>
+                        <div className="mb-1 w-[9rem]">
+                            <CustomSelect
+                                name="taskEmp"
+                                value={taskAssignedEmp}
+                                placeholder="Assigned Emp"
+                                onChange={setTaskAssignedEmp}
+                                options={priorities}
                                 controlHeight="2rem"
                             />
                         </div>
@@ -439,7 +467,7 @@ const priorities = mapSelectOptions(
                         <h3 className="text-lg text-center font-semibold mb-4">Create Task</h3>
                         <div className="w-full">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                               
+
                                 <Input
                                     type="text"
                                     name="taskName"
@@ -450,7 +478,7 @@ const priorities = mapSelectOptions(
                                     onChange={(e) => setTaskName(e.target.value)}
                                     error={showErrors && !taskName ? "Task Name is required" : ""}
                                 />
-                           
+
                                 <CustomSelect
                                     name="projectName"
                                     label="Project"
@@ -465,90 +493,84 @@ const priorities = mapSelectOptions(
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
 
                                 <Input
-                                    type="time"
-                                    name="officeStart"
-                                    label="Office Start Time"
+                                    type="date"
+                                    name="taskStartDate"
+                                    label="Start Date"
                                     noMargin={true}
-                                    value={officeStart}
-                                    onChange={(e) => setOfficeStart(e.target.value)}
-                                    error={showErrors && !officeStart ? "Office Start Time is required" : ""}
+                                    value={taskStartDate}
+                                    onChange={(e) => setTaskStartDate(e.target.value)}
+                                    error={showErrors && !taskStartDate ? "Start Date is required" : ""}
                                 />
                                 <Input
-                                    type="time"
-                                    name="officeEnd"
-                                    label="Office End Time"
+                                    type="date"
+                                    name="taskDueDate"
+                                    label="Due Date"
                                     noMargin={true}
-                                    value={officeEnd}
-                                    onChange={(e) => setOfficeEnd(e.target.value)}
-                                    error={showErrors && !officeEnd ? "Office End Time is required" : ""}
+                                    value={taskDueDate}
+                                    onChange={(e) => setTaskDueDate(e.target.value)}
+                                    error={showErrors && !taskDueDate ? "Due date is required" : ""}
                                 />
-                                <CustomSelect
-                                    name="rotation"
-                                    label="Rotation Type"
-                                    value={rotation}
-                                    placeholder="Select Rotation"
-                                    onChange={setRotation}
-                                    options={rotations}
-                                    controlHeight="2rem"
-                                    error={showErrors && !rotation ? "Rotation is required" : ""}
+                                <Input
+                                    type="number"
+                                    name="estimatedHours"
+                                    label="Estimated Hours"
+                                    placeholder="Estimated Hours"
+                                    noMargin={true}
+                                    value={estimatedHours}
+                                    onChange={(e) => setEstimatedHours(e.target.value)}
+                                    error={showErrors && !estimatedHours ? "Estimated Hours is required" : ""}
                                 />
                             </div>
 
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
 
-                                <Input
-                                    type="time"
-                                    name="breakStart"
-                                    label="Break Start Time"
-                                    noMargin={true}
-                                    value={breakStart}
-                                    onChange={(e) => setBreakStart(e.target.value)}
-                                    error={showErrors && !breakStart ? "Break Start Time is required" : ""}
-                                />
-                                <Input
-                                    type="time"
-                                    name="breakEnd"
-                                    label="Break End Time"
-                                    noMargin={true}
-                                    value={breakEnd}
-                                    onChange={(e) => setBreakEnd(e.target.value)}
-                                    error={showErrors && !breakEnd ? "Break End Time is required" : ""}
+                                <CustomSelect
+                                    name="taskType"
+                                    label="Task Type / Category"
+                                    value={taskType}
+                                    placeholder="Select Type"
+                                    onChange={setTaskType}
+                                    options={taskTypes}
+                                    controlHeight="2rem"
                                 />
                                 <CustomSelect
-                                    name="eligTeam"
-                                    label="Eligible Team"
-                                    value={eligTeam}
-                                    placeholder="Select Team"
-                                    onChange={setEligTeam}
+                                    name="assignedEmp"
+                                    label="Assigned Employees"
+                                    value={assignedEmp}
+                                    placeholder="Select Employee"
+                                    onChange={setAssignedEmp}
                                     options={locations}
                                     isMulti={true}
+                                    controlHeight="2rem"
+                                />
+                                <CustomSelect
+                                    name="assignedTeam"
+                                    label="Assigned Team"
+                                    value={assignedTeam}
+                                    placeholder="Select Team"
+                                    onChange={setAssignedTeam}
+                                    options={locations}
                                     controlHeight="2rem"
                                 />
 
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                                 <CustomSelect
-                                    name="eligEmp"
-                                    label="Eligible Employees"
-                                    value={eligEmp}
-                                    placeholder="Select Employee"
-                                    onChange={setEligEmp}
-                                    options={locations}
-                                    isMulti={true}
+                                    name="taskPriority"
+                                    label="Priority"
+                                    value={taskPrio}
+                                    placeholder="Select Priority"
+                                    onChange={setTaskPrio}
+                                    options={priorities}
                                     controlHeight="2rem"
                                 />
-                                <CustomSelect
-                                    name="eligDept"
-                                    label="Eligible Department"
-                                    value={eligDept}
-                                    placeholder="Select Department"
-                                    onChange={setEligDept}
-                                    options={locations}
-                                    isMulti={true}
-                                    controlHeight="2rem"
+                                <FileUpload
+                                    label="Attachment"
+                                    name="attachment"
+                                    onChange={(e) => setAttach(e.target.files[0])}
+                                    value={attach}
                                 />
 
                             </div>
@@ -632,12 +654,11 @@ const priorities = mapSelectOptions(
 
                             <CustomSelect
                                 name="assignTeams"
-                                label="Assign to Teams"
+                                label="Assign to Team"
                                 value={eligTeam}
-                                placeholder="Select Teams"
+                                placeholder="Select Team"
                                 onChange={setEligTeam}
-                                options={locations} // replace with real team list
-                                isMulti={true}
+                                options={taskTypes}
                                 controlHeight="2rem"
                             />
 
@@ -661,7 +682,7 @@ const priorities = mapSelectOptions(
                                 name="taskPriority"
                                 label="Priority"
                                 value={taskPriority}
-                                placeholder="Select Teams"
+                                placeholder="Select Priority"
                                 onChange={setTaskPriority}
                                 options={priorities}
                                 controlHeight="2rem"
