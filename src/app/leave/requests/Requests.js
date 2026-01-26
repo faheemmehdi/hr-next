@@ -239,21 +239,21 @@ export default function LeaveRequests() {
     );
 
     const employees = mapSelectOptions(
-    [
-        { id: 1, name: "Ahmad Khan" },
-        { id: 2, name: "Sara Ali" },
-        { id: 3, name: "Omar Malik" },
-        { id: 4, name: "Ayesha Siddiqui" },
-        { id: 5, name: "Bilal Shah" },
-        { id: 6, name: "Fatima Noor" },
-        { id: 7, name: "Usman Riaz" },
-        { id: 8, name: "Hina Javed" },
-        { id: 9, name: "Zain Qureshi" },
-        { id: 10, name: "Maria Hassan" },
-    ],
-    "id",
-    "name"
-);
+        [
+            { id: 1, name: "Ahmad Khan" },
+            { id: 2, name: "Sara Ali" },
+            { id: 3, name: "Omar Malik" },
+            { id: 4, name: "Ayesha Siddiqui" },
+            { id: 5, name: "Bilal Shah" },
+            { id: 6, name: "Fatima Noor" },
+            { id: 7, name: "Usman Riaz" },
+            { id: 8, name: "Hina Javed" },
+            { id: 9, name: "Zain Qureshi" },
+            { id: 10, name: "Maria Hassan" },
+        ],
+        "id",
+        "name"
+    );
 
 
 
@@ -463,7 +463,7 @@ export default function LeaveRequests() {
                                                 <FaDotCircle className="h-2 w-2 text-gray-500" />
                                                 <span className="text-xxs text-gray-700">Card.jpg</span>
                                             </div>
-                                            <button className="text-xxs text-blue-600 hover:underline">View</button>
+                                            <button className="text-xxs text-blue-600 hover:underline cursor-pointer">View</button>
                                         </div>
                                     </div>
 
@@ -489,22 +489,23 @@ export default function LeaveRequests() {
                     infoSection={
                         <div className="border-gray-300 border-b p-1 mb-4">
                             <p className="text-xs text-gray-800 font-medium">
-                                <span className="font-semibold">Muhammad Khan</span>
+                                <strong className="font-semibold">Muhammad Khan</strong>
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Employee ID:</span> EMP-1024
+                                <strong>Employee ID:</strong> EMP-1024
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Applied Dates:</span> 3 Oct - 5 Oct (3 Days)
+                                <strong>Applied Dates:</strong> 3 Oct - 5 Oct (3 Days)
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Leave Type:</span> Casual Leave
+                                <strong>Leave Type:</strong> Casual Leave
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Reason:</span> “Relocation and house shifting.”
+                                <strong>Reason:</strong> “Relocation and house shifting.”
                             </p>
                         </div>}
                     onClose={closeReasonModal}
+                    variant="danger"
                     // onSubmit={handleReject}
                     submitLabel="Reject Request"
                     reasonTitle="Please provide a reason for rejecting this request. The reason will be shared with the employee."

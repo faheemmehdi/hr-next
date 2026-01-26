@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import Layout from "y@/app/components/Layout";
 import SearchBar from "y@/app/components/SearchBar";
 import Input from "y@/app/components/Input";
-import { FiUser, FiCheck } from "react-icons/fi";
-import { IoMdClose } from "react-icons/io";
+import { FiXCircle, FiCheckCircle } from "react-icons/fi";
+import { IoCloseSharp } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
@@ -24,7 +24,6 @@ export default function MonthlyClient() {
     const [location, setLocation] = useState("");
     const [monthVal, setMonthVal] = useState("");
 
-    // --- When month changes, recalculate days ---
     useEffect(() => {
         const [year, month] = selectedMonth.split("-").map(Number);
         const daysInMonth = new Date(year, month, 0).getDate();
@@ -248,19 +247,19 @@ export default function MonthlyClient() {
 
                                                     switch (status) {
                                                         case "P":
-                                                            icon = <FiCheck size={8} strokeWidth={3} />;
+                                                            icon = <FiCheckCircle size={13} strokeWidth={3} />;
                                                             borderColor = "border-green-600";
                                                             textColor = "text-green-600";
                                                             title = "Present";
                                                             break;
                                                         case "A":
-                                                            icon = <IoMdClose size={9} strokeWidth={3} />;
+                                                            icon = <FiXCircle size={13} strokeWidth={3} />;
                                                             borderColor = "border-red-600";
                                                             textColor = "text-red-600";
                                                             title = "Absent";
                                                             break;
                                                         case "L":
-                                                            icon = <FaStar size={7} strokeWidth={3} />;
+                                                            icon = <FaStar size={14} strokeWidth={3} />;
                                                             borderColor = "border-yellow-500";
                                                             textColor = "text-yellow-500";
                                                             title = "Leave";
@@ -273,7 +272,7 @@ export default function MonthlyClient() {
                                                         <td key={d} className="text-center py-[1px]">
                                                             <div
                                                                 title={title}
-                                                                className={`w-3 h-3 flex items-center justify-center rounded-full border ${borderColor} ${textColor} mx-auto`}
+                                                                className={`w-3 h-3 flex items-center justify-center ${textColor} mx-auto`}
                                                                 style={{
                                                                     backgroundColor: "transparent",
                                                                     fontWeight: 600,

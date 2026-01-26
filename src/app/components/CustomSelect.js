@@ -1,6 +1,8 @@
 "use client";
 import dynamic from "next/dynamic";
 import { RiInformation2Line } from "react-icons/ri";
+import Tooltip from "./Tooltip";
+import RequiredStar from "./RequiredStar";
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
@@ -19,6 +21,7 @@ export default function CustomSelect({
   controlHeight = "2.75rem",
   controlWidth,
   tooltip = "",
+  isRequired = false,
 }) {
   const handleChange = (selected) => {
     if (isMulti) {
@@ -37,13 +40,13 @@ export default function CustomSelect({
   const baseStyles = {
     menuPortal: (base) => ({ ...base, zIndex: 9999 }),
     placeholder: (base) => ({
-    ...base,
-    color: "#9ca3af",
-    display: "flex",
-    alignItems: "center",
-    height: "100%",
-    fontWeight: 500,
-  }),
+      ...base,
+      color: "#9ca3af",
+      display: "flex",
+      alignItems: "center",
+      height: "100%",
+      fontWeight: 500,
+    }),
     menu: (base) => ({
       ...base,
       borderRadius: "0.5rem",
@@ -65,11 +68,11 @@ export default function CustomSelect({
       fontSize: "0.700rem",
     }),
     dropdownIndicator: (base, state) => ({
-  ...base,
-  padding: "2px 6px",
-  color: "#9ca3af",
-  svg: { width: "14px", height: "14px" },
-}),
+      ...base,
+      padding: "2px 6px",
+      color: "#9ca3af",
+      svg: { width: "14px", height: "14px" },
+    }),
 
   };
 
@@ -82,14 +85,14 @@ export default function CustomSelect({
         color: "#111827",
         boxShadow: "none",
         borderRadius: "0.2rem",
-        width: "100%",               
-    maxWidth: controlWidth || "100%",
+        width: "100%",
+        maxWidth: controlWidth || "100%",
         height: isMulti ? 'auto' : controlHeight,
         minHeight: isMulti ? 'auto' : controlHeight,
         paddingTop: 0,
         paddingBottom: 0,
-        display: "flex",              
-        alignItems: "center",       
+        display: "flex",
+        alignItems: "center",
         justifyContent: "space-between",
         fontSize: "0.700rem",
       }),
@@ -141,31 +144,21 @@ export default function CustomSelect({
 
   return (
     <div className={`${variant === 'default' ? '' : 'mb-4'}`}>
-     {label && (
-  <label
-    htmlFor={name}
-    className={`text-xxs flex items-center gap-1 mb-1 ${
-      variant === "auth" || variant === "wizard"
-        ? "text-gray-200"
-        : "text-gray-700"
-    }`}
-  >
-    <span>{label}</span>
-    {tooltip && (
-      <div className="relative">
-        <RiInformation2Line className="text-gray-500 cursor-pointer hover:text-blue-500 transition-colors text-sm peer" />
-        {/* Tooltip shown only when icon hovered */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 mt-1 w-max max-w-[200px]
-          opacity-0 peer-hover:opacity-100 transition-opacity duration-200
-          bg-gray-800 text-white text-[10px] px-2 py-1 rounded shadow-md z-10 pointer-events-none"
+      {label && (
+        <label
+          htmlFor={name}
+          className={`text-xxs flex items-center gap-1 mb-1 ${variant === "auth" || variant === "wizard"
+              ? "text-gray-200"
+              : "text-gray-700"
+            }`}
         >
-          {tooltip}
-        </div>
-      </div>
-    )}
-  </label>
-)}
+          <span>{label}</span>
+          {isRequired && (<RequiredStar />)}
+          {tooltip && (
+            <Tooltip label={tooltip} />
+          )}
+        </label>
+      )}
 
 
       <Select

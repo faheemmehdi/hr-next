@@ -10,7 +10,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FaEye, FaEdit, FaCog, FaTrash, FaUserTie, FaTags } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import {
-    FiUser, FiEdit2, FiX
+    FiUser, FiEdit2, FiX, FiChevronDown, FiChevronUp
 } from "react-icons/fi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import Button from "y@/app/components/Button";
@@ -30,6 +30,7 @@ export default function EmployeesList() {
     const [selectTagEmp, setSelectTagEmp] = useState(null);
     const [showTagModal, setShowTagModal] = useState(false);
     const [openMenuId, setOpenMenuId] = useState(null);
+    const [showFilters, setShowFilters] = useState(false);
     const menuRef = useRef();
     const [editingTag, setEditingTag] = useState(null);
     const [tagEditVal, setTagEditVal] = useState({
@@ -350,7 +351,7 @@ export default function EmployeesList() {
         "name"
     );
 
-      const bulkActions = mapSelectOptions(
+    const bulkActions = mapSelectOptions(
         [
             { id: 'import', name: "Import Employees" },
             { id: 'export', name: "Export Employees" }
@@ -412,93 +413,122 @@ export default function EmployeesList() {
                             <CustomSelect
                                 name="savedFilter"
                                 value={savedFilter}
-                                placeholder="Select Filter"
+                                placeholder="Saved Filters"
                                 onChange={setSavedFilter}
                                 options={savedFilters}
                                 controlHeight="2rem"
                             />
                         </div>
                     </div>
-                    <div className="w-full mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                        <div className="w-full bg-amber-300">
+
+                    <div
+                        className={`overflow-hidden transition-[max-height,opacity] duration-500 ease-in-out
+                                ${showFilters ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"}
+                                `}
+                    >
+                        <div className="w-full mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            <div className="w-full bg-amber-300">
+                                <CustomSelect
+                                    name="location"
+                                    value={location}
+                                    placeholder="Location"
+                                    onChange={setLocation}
+                                    options={locations}
+                                    controlHeight="2rem"
+                                />
+                            </div>
+
                             <CustomSelect
-                                name="location"
-                                value={location}
-                                placeholder="Location"
-                                onChange={setLocation}
-                                options={locations}
+                                name="department"
+                                value={department}
+                                placeholder="Department"
+                                onChange={setDepartment}
+                                options={departments}
                                 controlHeight="2rem"
+                            />
+
+                            <CustomSelect
+                                name="team"
+                                value={team}
+                                placeholder="Team"
+                                onChange={setTeam}
+                                options={teams}
+                                controlHeight="2rem"
+                            />
+
+                            <CustomSelect
+                                name="manager"
+                                value={manager}
+                                placeholder="Manager"
+                                onChange={setManager}
+                                options={managers}
+                                controlHeight="2rem"
+                            />
+
+                            <CustomSelect
+                                name="type"
+                                value={type}
+                                placeholder="Type"
+                                onChange={setType}
+                                options={types}
+                                controlHeight="2rem"
+                            />
+
+                            <CustomSelect
+                                name="status"
+                                value={status}
+                                placeholder="Status"
+                                onChange={setStatus}
+                                options={statuses}
+                                controlHeight="2rem"
+                            />
+
+                            <CustomSelect
+                                name="tag"
+                                value={tag}
+                                placeholder="Tags"
+                                onChange={setTag}
+                                options={tags}
+                                controlHeight="2rem"
+                            />
+
+                            <Input
+                                type="date"
+                                name="date"
+                                noMargin={true}
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                                className="w-full"
                             />
                         </div>
 
-                        <CustomSelect
-                            name="department"
-                            value={department}
-                            placeholder="Department"
-                            onChange={setDepartment}
-                            options={departments}
-                            controlHeight="2rem"
-                        />
-
-                        <CustomSelect
-                            name="team"
-                            value={team}
-                            placeholder="Team"
-                            onChange={setTeam}
-                            options={teams}
-                            controlHeight="2rem"
-                        />
-
-                        <CustomSelect
-                            name="manager"
-                            value={manager}
-                            placeholder="Manager"
-                            onChange={setManager}
-                            options={managers}
-                            controlHeight="2rem"
-                        />
-
-                        <CustomSelect
-                            name="type"
-                            value={type}
-                            placeholder="Type"
-                            onChange={setType}
-                            options={types}
-                            controlHeight="2rem"
-                        />
-
-                        <CustomSelect
-                            name="status"
-                            value={status}
-                            placeholder="Status"
-                            onChange={setStatus}
-                            options={statuses}
-                            controlHeight="2rem"
-                        />
-
-                        <CustomSelect
-                            name="tag"
-                            value={tag}
-                            placeholder="Tags"
-                            onChange={setTag}
-                            options={tags}
-                            controlHeight="2rem"
-                        />
-
-                        <Input
-                            type="date"
-                            name="date"
-                            noMargin={true}
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                            className="w-full"
-                        />
+                        <div className="w-full text-xxs gap-3 flex justify-end mt-3">
+                            <button
+                                className="bg-gray-200 text-gray-800 border border-gray-400 rounded cursor-pointer hover:bg-gray-300"
+                                style={{ padding: "5px 12px" }}
+                            >
+                                Reset
+                            </button>
+                            <button
+                                className="bg-[#f0f7fc] hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-600 rounded cursor-pointer"
+                                style={{ padding: "5px 12px" }}
+                            >
+                                Save Filter
+                            </button>
+                        </div>
                     </div>
-                    <div className="w-full text-xxs gap-3 flex justify-end mt-3">
-                        <button className="bg-gray-200 text-gray-800 border border-gray-400 rounded cursor-pointer hover:bg-gray-300" style={{ padding: "5px 12px" }}>Reset</button>
-                        <button className="bg-[#f0f7fc] hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-600 rounded cursor-pointer " style={{ padding: "5px 12px" }}>Save Filter</button>
+
+                    <div className="w-full flex justify-end mt-3">
+                        <span
+                            onClick={() => setShowFilters(!showFilters)}
+                            className="flex items-center gap-1 text-xxs rounded px-2 py-1 hover:bg-gray-100 cursor-pointer text-gray-600"
+                        >
+                            {showFilters ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
+                            <span>Filters</span>
+                        </span>
                     </div>
                 </div>
+
 
                 <div className="flex justify-between items-center my-3 mt-5">
                     <div className="w-1/5 flex items-center mb-1">
@@ -509,8 +539,8 @@ export default function EmployeesList() {
                         />
                     </div>
                     <div className="flex items-center justify-end w-full gap-3">
-                        
-                         <div className="w-1/6">
+
+                        <div className="w-1/6">
                             <CustomSelect
                                 name="bulkActions"
                                 value={bulkAction}
@@ -521,13 +551,13 @@ export default function EmployeesList() {
                             />
                         </div>
                         <div className="w-1/6">
-                        <CheckboxDropdown
-                            columns={allColumns}
-                            selected={visibleColumns}
-                            onChange={setVisibleColumns}
-                        />
-                    </div>
-                    
+                            <CheckboxDropdown
+                                columns={allColumns}
+                                selected={visibleColumns}
+                                onChange={setVisibleColumns}
+                            />
+                        </div>
+
                     </div>
 
 
@@ -640,7 +670,7 @@ export default function EmployeesList() {
                                                         </button>
 
                                                     </li>
-                                                     <li>
+                                                    <li>
                                                         <button
                                                             onClick={() => {
                                                                 setSelectTagEmp(row);

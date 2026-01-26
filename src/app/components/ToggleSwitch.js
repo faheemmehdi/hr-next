@@ -14,7 +14,7 @@ const ToggleSwitch = ({ label, checked, onChange, error, className = "" }) => {
                     checked={checked}
                     onChange={onChange}
                     className={`${checked ? "bg-[var(--toggle-btn)]" : "bg-gray-300"
-                        } relative inline-flex h-4 w-8 items-center rounded-full transition-colors duration-300`}
+                        } relative inline-flex h-4 w-8 items-center cursor-pointer rounded-full transition-colors duration-300`}
                 >
                     <span
                         className={`${checked ? "translate-x-4" : "translate-x-1"

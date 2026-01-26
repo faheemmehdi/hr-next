@@ -128,8 +128,8 @@ const menuItems = [
     description: "Configure system preferences and user roles",
     dropdown: [
       { label: "General", href: "/settings/general" },
-      { label: "Roles", href: "/settings/roles" },
-      { label: "Permissions", href: "/settings/permissions" },
+      { label: "Role", href: "/settings/roles" },
+      { label: "Permission", href: "/settings/permissions" },
     ],
   },
 ];

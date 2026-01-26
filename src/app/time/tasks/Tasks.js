@@ -8,10 +8,10 @@ import CustomSelect from "y@/app/components/CustomSelect";
 import {
     FiEdit3, FiEye
 } from "react-icons/fi";
-import { MdOutlineAssignment, MdOutlineRemoveRedEye } from "react-icons/md";
+import { MdOutlineAssignment, MdOutlineRemoveRedEye, MdOutlineBlock } from "react-icons/md";
+import { FaDotCircle } from "react-icons/fa";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
-import { MdOutlineBlock } from "react-icons/md";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import RowActions from "y@/app/components/RowActions";
 import Modal from "y@/app/components/ModalShell";
@@ -111,87 +111,88 @@ export default function ProjectTasks() {
             id: 1,
             taskName: "Design Homepage",
             project: "Website Redesign",
-            rate: 50, // per hour or fixed
+            createdAt: "2025-11-28",
             loggedHours: 12,
             assignedTo: "Alice",
             dueDate: "2025-12-10",
             description: "Create the main landing page design for the new website.",
             statusId: 1,
             status: "Active",
-            workflowStatusId: 2,       // To Do
+            workflowStatusId: 2, // To Do
             workflowStatus: "To Do",
         },
         {
             id: 2,
             taskName: "Develop API Endpoints",
             project: "Mobile App Backend",
-            rate: 60,
+            createdAt: "2025-11-25",
             loggedHours: 20,
             assignedTo: "Bob",
             dueDate: "2025-12-15",
             description: "Develop RESTful API endpoints for user authentication and data.",
             statusId: 1,
             status: "Active",
-            workflowStatusId: 3,       // In Progress
+            workflowStatusId: 3, // In Progress
             workflowStatus: "In Progress",
         },
         {
             id: 3,
             taskName: "QA Testing",
             project: "Website Redesign",
-            rate: 40,
+            createdAt: "2025-11-26",
             loggedHours: 8,
             assignedTo: "Charlie",
             dueDate: "2025-12-12",
             description: "Test all new website features and report bugs.",
             statusId: 1,
             status: "Active",
-            workflowStatusId: 1,       // Complete
+            workflowStatusId: 1, // Complete
             workflowStatus: "Complete",
         },
         {
             id: 4,
             taskName: "Content Writing",
             project: "Blog Revamp",
-            rate: 30,
+            createdAt: "2025-11-27",
             loggedHours: 15,
             assignedTo: "Dana",
             dueDate: "2025-12-20",
             description: "Write new blog posts and update old content for SEO.",
             statusId: 1,
             status: "Active",
-            workflowStatusId: 2,       // To Do
+            workflowStatusId: 2, // To Do
             workflowStatus: "To Do",
         },
         {
             id: 5,
             taskName: "UI Improvements",
             project: "Mobile App",
-            rate: 55,
+            createdAt: "2025-11-24",
             loggedHours: 10,
             assignedTo: "Eva",
             dueDate: "2025-12-18",
             description: "Improve user interface based on feedback from beta users.",
             statusId: 2,
             status: "Inactive",
-            workflowStatusId: 3,       // In Progress
+            workflowStatusId: 3, // In Progress
             workflowStatus: "In Progress",
         },
         {
             id: 6,
             taskName: "Deploy to Production",
             project: "Mobile App Backend",
-            rate: 65,
+            createdAt: "2025-11-29",
             loggedHours: 5,
             assignedTo: "Frank",
             dueDate: "2025-12-25",
             description: "Deploy backend services and monitor performance post-deployment.",
             statusId: 1,
             status: "Active",
-            workflowStatusId: 2,       // To Do
+            workflowStatusId: 2, // To Do
             workflowStatus: "To Do",
         },
     ];
+
 
 
 
@@ -388,9 +389,9 @@ export default function ProjectTasks() {
                                 </th>
                                 <th className="px-4 py-3 text-left">Task Name</th>
                                 <th className="px-4 py-3 text-left">Project</th>
-                                <th className="px-4 py-3 text-left">Rate</th>
                                 <th className="px-4 py-3 text-left">Logged Hours</th>
                                 <th className="px-4 py-3 text-left">Assigned To</th>
+                                <th className="px-4 py-3 text-left">Created At</th>
                                 <th className="px-4 py-3 text-left">Due Date</th>
                                 <th className="px-4 py-3 text-left">Description</th>
                                 <th className="px-4 py-3 text-left">Status</th>
@@ -412,9 +413,9 @@ export default function ProjectTasks() {
                                     </td>
                                     <td className="px-4 py-3 truncate max-w-[120px]" title={row.taskName}>{row.taskName}</td>
                                     <td className="px-4 py-3">{row.project}</td>
-                                    <td className="px-4 py-3">{row.rate}</td>
                                     <td className="px-4 py-3">{row.loggedHours}</td>
                                     <td className="px-4 py-3">{row.assignedTo}</td>
+                                    <td className="px-4 py-3">{row.createdAt}</td>
                                     <td className="px-4 py-3">{row.dueDate}</td>
                                     <td className="px-4 py-3 truncate max-w-[120px]" title={row.description}>
                                         {row.description}
@@ -442,15 +443,58 @@ export default function ProjectTasks() {
                     <Modal width="w-full md:w-5/12">
                         <div className="border-b border-gray-400 pb-3 mb-4">
                             <div className="flex justify-between">
-                                <h2 className="text-lg font-semibold text-gray-800">Shift Details</h2>
+                                <h2 className="text-lg font-semibold text-gray-800">Task Details</h2>
                                 <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-green-100 text-green-700">
                                     Active
                                 </span>
                             </div>
                             <p className="text-xxs text-gray-500">Created At 20 Dec, 2025 at 09:10 AM</p>
                         </div>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <p className="text-xxs text-gray-500 font-medium">Task Name</p>
+                                <p className="text-xs font-semibold text-gray-800">Design Homepage</p>
+                            </div>
+                            <div>
+                                <p className="text-xxs text-gray-500 font-medium">Project Name</p>
+                                <p className="text-xs text-gray-800">Website Redesign</p>
+                            </div>
+                            <div>
+                                <p className="text-xxs text-gray-500 font-medium">Logged Hours</p>
+                                <p className="text-xs text-gray-800">23</p>
+                            </div>
+                        </div>
 
-                        <div className="flex justify-end pt-4">
+
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <p className="text-xxs text-gray-500 font-medium">Due Date</p>
+                                <p className="text-xs text-gray-800">2025-12-10</p>
+                            </div>
+                            <div>
+                                <p className="text-xxs text-gray-500 font-medium">Assigned To</p>
+                                <p className="text-xs text-gray-800">Charlie</p>
+                            </div>
+                        </div>
+                        <div className="border-t border-gray-400 pt-4 mb-4">
+
+                            <p className="text-xxs text-gray-500 font-medium mb-1">Description</p>
+                            <p className="text-xs text-gray-800 text-justify">
+                                This is very important task.
+                            </p>
+                        </div>
+
+                        <div className="border-t border-gray-400 pt-4 mb-4">
+                            <p className="text-xxs text-gray-500 font-medium mb-2">Attachment</p>
+                            <div className="bg-gray-50 border border-gray-200 rounded px-2 py-1 flex items-center justify-between">
+                                <div className="flex items-center space-x-2">
+                                    <FaDotCircle className="h-2 w-2 text-gray-500" />
+                                    <span className="text-xxs text-gray-700">Card.jpg</span>
+                                </div>
+                                <button className="text-xxs text-blue-600 hover:underline cursor-pointer">View</button>
+                            </div>
+                        </div>
+                        <div className="flex justify-end border-t border-gray-400 pt-4">
                             <Button variant="cancel" onClick={handleCloseModal}>
                                 Close
                             </Button>
@@ -605,30 +649,28 @@ export default function ProjectTasks() {
 
                 <ReasonModal
                     isOpen={isReasonOpen}
-                    title="Deactivate Shift"
+                    title="Deactivate Task"
                     infoSection={
                         <div className="border-gray-300 border-b py-1 mb-2">
                             <p className="text-xs text-gray-800 font-medium">
-                                <span className="font-semibold">Night Shift</span>
+                                <span className="font-semibold">QA Testing</span>
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Start Time:</span> 05:00 PM
+                                <span>Project:</span> Website Redesign
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>End Time:</span> 09:00 AM
+                                <span>Due Date:</span> 2025-12-15
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Location:</span> Multan
+                                <span>Assigned To:</span> Charlie
                             </p>
-                            <p className="text-xxs text-gray-600">
-                                <span>Rotation Type:</span> Fixed
-                            </p>
+                          
                         </div>}
                     onClose={closeReasonModal}
                     // onSubmit={handleReject}
                     variant="danger"
                     submitLabel="Deactivate"
-                    reasonTitle="Please provide a reason to deactivate this shift."
+                    reasonTitle="Please provide a reason to deactivate this task."
                 />
 
                 {isAssignOpen && (
