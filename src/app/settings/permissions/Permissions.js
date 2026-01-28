@@ -6,7 +6,7 @@ import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
 import {
-    FiUser, FiEye
+    FiUser, FiEye, FiEdit3
 } from "react-icons/fi";
 import { FaDotCircle } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
@@ -276,7 +276,7 @@ export default function Permissions() {
                 <div className="flex justify-between items-center my-3 mt-5">
                     <div className="w-1/5 flex items-center mb-1">
                         <SearchBar
-                            placeholder="Search by name..."
+                            placeholder="Search by name or category..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
@@ -327,8 +327,8 @@ export default function Permissions() {
                                     <RowActions
                                         row={row}
                                         actions={[
-                                            { label: "View Permissions", icon: MdOutlineRemoveRedEye },
-                                            { label: "Deactivate Role", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                            { label: "Edit Permission", icon: FiEdit3 },
+                                            { label: "Deactivate Permission", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
                                         ]}
                                     />
                                 </tr>
@@ -401,30 +401,28 @@ export default function Permissions() {
                 )}
                 <ReasonModal
                     isOpen={isReasonOpen}
-                    title="Deactivate Role"
+                    title="Deactivate Permission"
                     infoSection={
                         <div className="border-gray-300 border-b p-1 mb-4">
                             <p className="text-xs text-gray-800 font-medium">
-                                <strong className="font-semibold">HR Executive</strong>
+                                <strong className="font-semibold">View Employees</strong>
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <strong>Role ID:</strong> ROLE024
+                                <strong>Category:</strong> Employee Management
+                            </p>
+                             <p className="text-xxs text-gray-600">
+                                <strong>Key:</strong> employee.view
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <strong>Users Assigned:</strong> 34
+                                <strong>Created On:</strong> Aug 14, 2026
                             </p>
-                            <p className="text-xxs text-gray-600">
-                                <strong>Created On:</strong> Casual Leave
-                            </p>
-                            <p className="text-xxs text-gray-600">
-                                <strong>Description:</strong> Handle payroll and salary management.
-                            </p>
+                            
                         </div>}
                     onClose={closeReasonModal}
                     variant="danger"
                     // onSubmit={handleReject}
-                    submitLabel="Deactivate Role"
-                    reasonTitle="Please provide a reason for deactivating this role."
+                    submitLabel="Deactivate"
+                    reasonTitle="Please provide a reason for deactivating this permission."
                 />
             </div>
         </Layout>

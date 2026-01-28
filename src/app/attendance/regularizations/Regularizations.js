@@ -223,7 +223,7 @@ export default function Regularization() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Regularization Requests
@@ -233,17 +233,16 @@ export default function Regularization() {
                     </Button>
                 </div>
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name or ID..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className="mb-1 w-[9rem]">
+                    <div className="w-full flex justify-end flex-col md:flex-row mt-2 md:mt-0 items-center gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
                                 value={location}
@@ -254,7 +253,7 @@ export default function Regularization() {
                             />
                         </div>
 
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -264,21 +263,23 @@ export default function Regularization() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <Input
+                        <div className="mb-1 w-full md:w-[9rem] mt-0 md:mt-1">
+                            <Input
                             type="date"
                             name="date"
                             noMargin={true}
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
                         />
+                        </div>
+                       
                     </div>
                 </div>
 
 
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2">
+                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead>
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
                                 <th className="px-4 py-3 text-left rounded-tl-md">Emp ID</th>
                                 <th className="px-4 py-3 text-left">Name</th>
@@ -293,7 +294,8 @@ export default function Regularization() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {regularizationData.map((row, idx) => (
+                            {regularizationData && regularizationData.length > 0 ? (
+                            regularizationData.map((row, idx) => (
                                 <tr
                                     key={idx}
                                     className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
@@ -359,7 +361,14 @@ export default function Regularization() {
                                         ]}
                                     />
                                 </tr>
-                            ))}
+                            ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={10} className="text-center py-4 text-gray-500 italic">
+                                        No request found.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -457,6 +466,7 @@ export default function Regularization() {
                         </div>}
                     onClose={closeReasonModal}
                     // onSubmit={handleReject}
+                    variant="danger"
                     submitLabel="Reject Request"
                     reasonTitle="Please provide a reason for rejecting this request. The reason will be shared with the employee."
                 />

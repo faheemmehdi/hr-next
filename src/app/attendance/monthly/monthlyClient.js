@@ -21,7 +21,7 @@ export default function MonthlyClient() {
     const [days, setDays] = useState([]);
     const [attendanceData, setAttendanceData] = useState([]);
     const [search, setSearch] = useState("");
-    const [location, setLocation] = useState("");
+    const [depart, setDepart] = useState("");
     const [monthVal, setMonthVal] = useState("");
 
     useEffect(() => {
@@ -29,13 +29,12 @@ export default function MonthlyClient() {
         const daysInMonth = new Date(year, month, 0).getDate();
         setDays(Array.from({ length: daysInMonth }, (_, i) => i + 1));
 
-        // Dummy data (replace with your API call)
         const attendanceData = [
             {
                 empId: "EMP005",
                 name: "Usman Tariq This text is for long name",
                 imageUrl: "/api/portraits/men/21.jpg",
-                location: "Lahore",
+                department: "Human Resources",
                 workingHours: 168,
                 attendance: generateRandomAttendance(daysInMonth),
             },
@@ -43,7 +42,7 @@ export default function MonthlyClient() {
                 empId: "EMP006",
                 name: "Ayesha Noor",
                 imageUrl: "/api/portraits/women/39.jpg",
-                location: "Karachi",
+                department: "Finance",
                 workingHours: 160,
                 attendance: generateRandomAttendance(daysInMonth),
             },
@@ -51,7 +50,7 @@ export default function MonthlyClient() {
                 empId: "EMP007",
                 name: "Bilal Hussain",
                 imageUrl: "/api/portraits/men/52.jpg",
-                location: "Islamabad",
+                department: "IT Support",
                 workingHours: 174,
                 attendance: generateRandomAttendance(daysInMonth),
             },
@@ -59,7 +58,7 @@ export default function MonthlyClient() {
                 empId: "EMP008",
                 name: "Zainab Ali",
                 imageUrl: "/api/portraits/women/23.jpg",
-                location: "Remote (Home)",
+                department: "Remote Operations",
                 workingHours: 150,
                 attendance: generateRandomAttendance(daysInMonth),
             },
@@ -67,7 +66,7 @@ export default function MonthlyClient() {
                 empId: "EMP009",
                 name: "Rehan Malik",
                 imageUrl: "/api/portraits/men/47.jpg",
-                location: "Karachi ",
+                department: "Sales",
                 workingHours: 162,
                 attendance: generateRandomAttendance(daysInMonth),
             },
@@ -75,7 +74,7 @@ export default function MonthlyClient() {
                 empId: "EMP010",
                 name: "Hira Sheikh",
                 imageUrl: "/api/portraits/women/19.jpg",
-                location: "Lahore ",
+                department: "Marketing",
                 workingHours: 170,
                 attendance: generateRandomAttendance(daysInMonth),
             },
@@ -83,7 +82,7 @@ export default function MonthlyClient() {
                 empId: "EMP011",
                 name: "Taimoor Raza",
                 imageUrl: "/api/portraits/men/63.jpg",
-                location: "Islamabad ",
+                department: "Operations",
                 workingHours: 165,
                 attendance: generateRandomAttendance(daysInMonth),
             },
@@ -91,11 +90,12 @@ export default function MonthlyClient() {
                 empId: "EMP012",
                 name: "Nimra Javed",
                 imageUrl: "/api/portraits/women/56.jpg",
-                location: "Lahore Office",
+                department: "Product Management",
                 workingHours: 159,
                 attendance: generateRandomAttendance(daysInMonth),
             },
         ];
+
 
 
         setAttendanceData(attendanceData);
@@ -118,26 +118,28 @@ export default function MonthlyClient() {
             row.empId.toLowerCase().includes(search.toLowerCase())
     );
 
-    const locations = mapSelectOptions(
+    const departments = mapSelectOptions(
         [
-            { id: 1, name: "Lahore" },
-            { id: 2, name: "Multan" },
-            { id: 3, name: "Karachi" },
-            { id: 3, name: "Islamabad" },
-            { id: 3, name: "Shaher Sultan" },
-            { id: 3, name: "Rawalpindi" },
-            { id: 3, name: "Kohat" },
+            { id: 1, name: "Human Resources" },
+            { id: 2, name: "Finance" },
+            { id: 3, name: "Information Technology" },
+            { id: 4, name: "Sales" },
+            { id: 5, name: "Marketing" },
+            { id: 6, name: "Operations" },
+            { id: 7, name: "Customer Support" },
+            { id: 8, name: "Product Management" },
         ],
         "id",
         "name"
     );
+
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 {/* Header */}
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
@@ -148,27 +150,26 @@ export default function MonthlyClient() {
                     </Button>
                 </div>
 
-                {/* Search + Date Filter */}
-                <div className="flex justify-between items-center my-2 mt-5">
-                    <div className="w-1/5 flex items-center">
+                <div className="flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center">
                         <SearchBar
                             placeholder="Search by name or ID..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className=" w-[9rem]">
+                    <div className="w-full flex flex-col md:flex-row justify-end items-center mt-2 md:mt-0 gap-2">
+                        <div className="w-full md:w-[9rem]">
                             <CustomSelect
-                                name="location"
-                                value={location}
-                                placeholder="Location"
-                                onChange={setLocation}
-                                options={locations}
+                                name="dept"
+                                value={depart}
+                                placeholder="Department"
+                                onChange={setDepart}
+                                options={departments}
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className=" w-[9rem]">
+                        <div className="w-full md:w-[9rem]">
                             <MonthPicker monthVal={monthVal} setMonthVal={setMonthVal} />
 
                         </div>
@@ -178,14 +179,13 @@ export default function MonthlyClient() {
 
                 <div className="relative mt-2 border border-gray-200 rounded-md overflow-hidden">
                     <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-                        <div className="min-w-max">
-                            <table className="w-full text-xs border-collapse table-auto">
-
-                                <thead className="bg-gray-100 text-gray-700">
+                        <div className="overflow-x-auto min-w-max shadow-md border border-gray-200 rounded max-h-[72vh]">
+                            <table className="w-full text-xs border-collapse">
+                                <thead className="bg-gray-100 text-gray-700 sticky top-0 z-11">
                                     <tr>
-                                        <th className="sticky left-0 w-[80px] bg-gray-100 z-20 text-left px-2 py-3">Emp ID</th>
+                                        <th className="sticky left-0 w-[80px] bg-gray-100 z-20 text-left px-2 py-3">EMP ID</th>
                                         <th className="sticky left-[80px] w-[130px] bg-gray-100 z-20 text-left px-2 py-3">Name</th>
-                                        <th className="sticky left-[210px] w-[90px] bg-gray-100 z-20 text-left px-2 py-3">Location</th>
+                                        <th className="sticky left-[210px] w-[90px] bg-gray-100 z-20 text-left px-2 py-3">Department</th>
 
 
                                         {/* Scrollable Day Columns */}
@@ -212,7 +212,8 @@ export default function MonthlyClient() {
                                 </thead>
 
                                 <tbody className="text-xxs">
-                                    {filteredData.map((row, idx) => {
+                                    {filteredData && filteredData.length > 0 ? (
+                                    filteredData.map((row, idx) => {
                                         const totalPresent = Object.values(row.attendance).filter((s) => s === "P").length;
                                         const totalAbsent = Object.values(row.attendance).filter((s) => s === "A").length;
                                         const totalLeave = Object.values(row.attendance).filter((s) => s === "L").length;
@@ -238,7 +239,7 @@ export default function MonthlyClient() {
                                                         {row.name}
                                                     </span>
                                                 </td>
-                                                <td className="sticky left-[210px] w-[80px] bg-inherit z-10 px-2 py-3">{row.location}</td>
+                                                <td className="sticky left-[210px] w-[80px] bg-inherit z-10 px-2 py-3 border-r border-gray-200">{row.department}</td>
 
                                                 {/* Scrollable Days */}
                                                 {days.map((d) => {
@@ -284,7 +285,7 @@ export default function MonthlyClient() {
                                                     );
                                                 })}
 
-                                                <td title="Working Hours" className="text-center sticky right-[145px] bg-inherit z-10">
+                                                <td title="Working Hours" className="text-center sticky right-[145px] border-s border-gray-200 bg-inherit z-10">
                                                     {row.workingHours}
                                                 </td>
                                                 <td className="px-3 py-3 font-bold text-green-600 text-center sticky right-[90px] bg-inherit z-10">
@@ -298,7 +299,14 @@ export default function MonthlyClient() {
                                                 </td>
                                             </tr>
                                         );
-                                    })}
+                                    })
+                                    ) : (
+                                <tr>
+                                    <td colSpan={40} className="text-center py-4 text-gray-500 italic">
+                                        No attendance found.
+                                    </td>
+                                </tr>
+                            )}
                                 </tbody>
                             </table>
                         </div>

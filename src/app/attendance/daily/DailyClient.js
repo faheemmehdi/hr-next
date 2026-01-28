@@ -50,7 +50,7 @@ export default function DailyClient() {
   }, []);
 
 
-const stats = [
+  const stats = [
     {
       title: "Check-In Employees",
       value: 117,
@@ -314,7 +314,7 @@ const stats = [
 
   return (
     <Layout>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-2">
         {stats.map((stat, idx) => (
           <div
@@ -333,7 +333,7 @@ const stats = [
           </div>
         ))}
       </div>
-      <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6 mt-3">
+      <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[73vh] p-6 mt-3">
         <div className="flex justify-between items-center">
           <h2 className="text-base font-semibold text-gray-700">
             Daily Attendance
@@ -342,6 +342,129 @@ const stats = [
             Add Attendance
           </Button>
         </div>
+
+        <div className="flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+          <div className="w-full md:w-1/5 flex items-center mb-1">
+            <SearchBar
+              placeholder="Search by name or ID..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="w-full mt-2 md:mt-0 flex justify-end items-center flex-col md:flex-row gap-2">
+            <div className="mb-1 w-full md:w-[9rem]">
+              <CustomSelect
+                name="location"
+                value={location}
+                placeholder="Location"
+                onChange={setLocation}
+                options={locations}
+                controlHeight="2rem"
+              />
+            </div>
+            <div className="mb-1 w-full md:w-[9rem]">
+              <CustomSelect
+                name="department"
+                value={department}
+                placeholder="Department"
+                onChange={setDepartment}
+                options={departments}
+                controlHeight="2rem"
+              />
+            </div>
+            <div className="mb-1 w-full md:w-[9rem]">
+              <CustomSelect
+                name="status"
+                value={status}
+                placeholder="Status"
+                onChange={setStatus}
+                options={statuses}
+                controlHeight="2rem"
+              />
+            </div>
+            <div className="mb-1 w-full mt-0 md:mt-1 md:w-[9rem]">
+              <Input
+                type="date"
+                name="date"
+                noMargin={true}
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
+
+          </div>
+        </div>
+
+
+        <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[70vh]">
+          <table className="w-full text-xs border-collapse">
+            <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
+              <tr className="bg-gray-100 text-gray-700">
+                <th className="px-4 py-3 text-left rounded-tl-md">Emp ID</th>
+                <th className="px-4 py-3 text-left">Name</th>
+                <th className="px-4 py-3 text-left">Location</th>
+                <th className="px-4 py-3 text-left">Department</th>
+                <th className="px-4 py-3 text-left">Shift</th>
+                <th className="px-4 py-3 text-left">Check-in</th>
+                <th className="px-4 py-3 text-left">Check-out</th>
+                <th className="px-4 py-3 text-left">Working Hours</th>
+                <th className="px-4 py-3 text-left">Status</th>
+              </tr>
+            </thead>
+            <tbody className="text-xxs">
+              {attendanceData && attendanceData.length > 0 ? (
+                attendanceData.map((row, idx) => (
+                  <tr
+                    key={idx}
+                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      } hover:bg-gray-100 transition-colors`}
+                  >
+                    <td className="px-4 py-3">{row.empId}</td>
+                    <td className="px-4 py-3 flex items-center gap-2">
+                      {row.imageUrl ? (
+                        <img
+                          src={`${baseUrl}${row.imageUrl}`}
+                          alt={row.name}
+                          className="w-7 h-7 rounded-full object-cover border border-gray-300"
+                        />
+                      ) : (
+                        <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center">
+                          <FiUser className="text-gray-500" />
+                        </div>
+                      )}
+                      <span className="truncate max-w-[120px]" title={row.name}>{row.name}</span>
+
+                    </td>
+                    <td className="px-4 py-3">{row.location}</td>
+                    <td className="px-4 py-3">{row.department}</td>
+                    <td className="px-4 py-3">{row.shift}</td>
+
+                    <td className="px-4 py-3">
+                      {row.checkIn}
+                      {getMethodIcon(row.checkInMethodId)}
+                    </td>
+                    <td className="px-4 py-3">
+                      {row.checkOut}
+                      {getMethodIcon(row.checkOutMethodId)}
+                    </td>
+
+                    <td className="px-4 py-3">{row.hours}</td>
+                    <td className="px-4 py-3">
+                      <StatusDesign statusId={row.statusId} label={row.status} />
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={10} className="text-center py-4 text-gray-500 italic">
+                    No attendance found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
         {isOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
             <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-6/12">
@@ -432,8 +555,8 @@ const stats = [
                       value={remarks}
                       onChange={(e) => setRemarks(e.target.value)}
                       className={`w-full px-3 py-1 border rounded-md text-xxs focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none
-        ${showErrors && !remarks ? "border-red-500" : "border-gray-300"}
-      `}
+                        ${showErrors && !remarks ? "border-red-500" : "border-gray-300"}
+                      `}
                       placeholder="Enter remarks..."
                     ></textarea>
 
@@ -457,118 +580,6 @@ const stats = [
         )}
 
 
-        {/* Search + Date Filter (UI only; logic handled in backend) */}
-        <div className="flex justify-between items-center my-3 mt-5">
-          <div className="w-1/5 flex items-center mb-1">
-            <SearchBar
-              placeholder="Search by name or ID..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="mb-1 w-[9rem]">
-              <CustomSelect
-                name="location"
-                value={location}
-                placeholder="Location"
-                onChange={setLocation}
-                options={locations}
-                controlHeight="2rem"
-              />
-            </div>
-            <div className="mb-1 w-[9rem]">
-              <CustomSelect
-                name="department"
-                value={department}
-                placeholder="Department"
-                onChange={setDepartment}
-                options={departments}
-                controlHeight="2rem"
-              />
-            </div>
-            <div className="mb-1 w-[9rem]">
-              <CustomSelect
-                name="status"
-                value={status}
-                placeholder="Status"
-                onChange={setStatus}
-                options={statuses}
-                controlHeight="2rem"
-              />
-            </div>
-            <Input
-              type="date"
-              name="date"
-              noMargin={true}
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </div>
-        </div>
-
-
-        {/* Attendance Table */}
-        <div className="overflow-x-auto -mt-2">
-          <table className="w-full text-xs border-collapse">
-            <thead>
-              <tr className="bg-gray-100 text-gray-700">
-                <th className="px-4 py-3 text-left rounded-tl-md">Emp ID</th>
-                <th className="px-4 py-3 text-left">Name</th>
-                <th className="px-4 py-3 text-left">Location</th>
-                <th className="px-4 py-3 text-left">Department</th>
-                <th className="px-4 py-3 text-left">Shift</th>
-                <th className="px-4 py-3 text-left">Check-in</th>
-                <th className="px-4 py-3 text-left">Check-out</th>
-                <th className="px-4 py-3 text-left">Working Hours</th>
-                <th className="px-4 py-3 text-left">Status</th>
-              </tr>
-            </thead>
-            <tbody className="text-xxs">
-              {attendanceData.map((row, idx) => (
-                <tr
-                  key={idx}
-                  className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    } hover:bg-gray-100 transition-colors`}
-                >
-                  <td className="px-4 py-3">{row.empId}</td>
-                  <td className="px-4 py-3 flex items-center gap-2">
-                    {row.imageUrl ? (
-                      <img
-                        src={`${baseUrl}${row.imageUrl}`}
-                        alt={row.name}
-                        className="w-7 h-7 rounded-full object-cover border border-gray-300"
-                      />
-                    ) : (
-                      <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center">
-                        <FiUser className="text-gray-500" />
-                      </div>
-                    )}
-                    <span className="truncate max-w-[120px]" title={row.name}>{row.name}</span>
-
-                  </td>
-                  <td className="px-4 py-3">{row.location}</td>
-                  <td className="px-4 py-3">{row.department}</td>
-                  <td className="px-4 py-3">{row.shift}</td>
-
-                  <td className="px-4 py-3">
-                    {row.checkIn}
-                    {getMethodIcon(row.checkInMethodId)}
-                  </td>
-                  <td className="px-4 py-3">
-                    {row.checkOut}
-                    {getMethodIcon(row.checkOutMethodId)}
-                  </td>
-
-                  <td className="px-4 py-3">{row.hours}</td>
-                  <td className="px-4 py-3">
-                                       <StatusDesign statusId={row.statusId} label={row.status} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
       </div>
     </Layout>
   );

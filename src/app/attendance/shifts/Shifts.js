@@ -301,7 +301,7 @@ export default function ShiftSchedules() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[80vh] p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Shift Schedules
@@ -332,17 +332,16 @@ export default function ShiftSchedules() {
 
                 </div>
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="w-full flex justify-between flex-col md:flex-row items-center my-3 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className="mb-1 w-[9rem]">
+                    <div className="w-full md:flex flex-col md:flex-row justify-end items-center gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
                                 value={location}
@@ -352,7 +351,7 @@ export default function ShiftSchedules() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
                                 value={team}
@@ -362,7 +361,7 @@ export default function ShiftSchedules() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
                                 value={employees}
@@ -372,7 +371,7 @@ export default function ShiftSchedules() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -382,16 +381,22 @@ export default function ShiftSchedules() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        {viewMode == 'calendar' &&
-                            <IoIosList onClick={() => setViewMode('table')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Table View" />}
-                        {viewMode == 'table' && <CiGrid41 onClick={() => setViewMode('calendar')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Calendar View" />}
-                        <TbFilterOff className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Reset Filter" />
+                        <div className="flex items-center gap-2">
+                            {viewMode == 'calendar' &&
+                                <IoIosList onClick={() => setViewMode('table')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Table View" />}
+                            {viewMode == 'table' && <CiGrid41 onClick={() => setViewMode('calendar')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Calendar View" />}
+                            <TbFilterOff className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Reset Filter" />
+                        </div>
                     </div>
                 </div>
 
 
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2">
+                <div
+                    className={`overflow-x-auto ${viewMode !== "calendar"
+                            ? "shadow-md border border-gray-200 rounded max-h-[70vh]"
+                            : ""
+                        }`}
+                >
                     {shiftsData.length === 0 ? (
                         <div className="p-4 text-center text-gray-500 text-sm">
                             No shifts available.
@@ -628,9 +633,8 @@ export default function ShiftSchedules() {
                                     />
                                 </div>
                             ) : (
-                                // Show Table View if viewMode is table or no shifts with date ranges for calendar
                                 <table className="w-full text-xs border-collapse">
-                                    <thead>
+                                    <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                                         <tr className="bg-gray-100 text-gray-700">
                                             <th className="px-3 py-3">
                                                 <input

@@ -13,7 +13,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
-import { RxCross2 } from "react-icons/rx";
+import { useRouter } from "next/navigation";
 import { MdDone, MdOutlineBlock } from "react-icons/md";
 import RowActions from "y@/app/components/RowActions";
 import ToggleSwitch from "y@/app/components/ToggleSwitch";
@@ -42,10 +42,15 @@ export default function Roles() {
     const openReasonModal = () => setIsReasonOpen(true);
     const closeReasonModal = () => setIsReasonOpen(false);
 
+    const router = useRouter();
+    const handleViewPermissions = (roleId) => {
+        // console.log("Clicked Role ID:", roleId);
+        router.push(`/settings/roles/${roleId}/permissions`);
+    };
 
     const rolesData = [
         {
-            roleId: "ROLE001",
+            roleId: "1",
             name: "Admin",
             description: "Full system access and permissions.",
             assignedUsersCount: 5,
@@ -55,7 +60,7 @@ export default function Roles() {
             status: "Active",
         },
         {
-            roleId: "ROLE002",
+            roleId: "2",
             name: "HR Executive",
             description: "Manage employee records and recruitment.",
             assignedUsersCount: 12,
@@ -65,7 +70,7 @@ export default function Roles() {
             status: "Active",
         },
         {
-            roleId: "ROLE003",
+            roleId: "3",
             name: "Manager",
             description: "Approve leaves and monitor team performance.",
             assignedUsersCount: 20,
@@ -75,7 +80,7 @@ export default function Roles() {
             status: "Active",
         },
         {
-            roleId: "ROLE004",
+            roleId: "4",
             name: "Payroll Officer",
             description: "Handle payroll and salary management.",
             assignedUsersCount: 4,
@@ -85,7 +90,7 @@ export default function Roles() {
             status: "Active",
         },
         {
-            roleId: "ROLE005",
+            roleId: "5",
             name: "Recruiter",
             description: "Manage recruitment and interview process.",
             assignedUsersCount: 3,
@@ -153,8 +158,7 @@ export default function Roles() {
                     </Button>
                 </div>
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
-                <div className="flex justify-between items-center my-3 mt-5">
+                <div className="flex justify-between items-center my-2 mt-5">
                     <div className="w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name or ID..."
@@ -189,12 +193,10 @@ export default function Roles() {
                 </div>
 
 
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2">
+                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead>
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
-                                <th className="px-4 py-3 text-left rounded-tl-md">Role ID</th>
                                 <th className="px-4 py-3 text-left">Role Name</th>
                                 <th className="px-4 py-3 text-left">Description</th>
                                 <th className="px-4 py-3 text-center">Employee Assigned</th>
@@ -211,7 +213,6 @@ export default function Roles() {
                                     className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
                                         } hover:bg-gray-100 transition-colors`}
                                 >
-                                    <td className="px-4 py-3">{row.roleId ?? ''}</td>
                                     <td className="px-4 py-3 truncate max-w-[160px]">{row.name ?? ''}</td>
                                     <td className="px-4 py-3 truncate max-w-[160px]" title={row.description}>{row.description ?? ''}</td>
                                     <td className="px-4 py-3 text-center">{row.assignedUsersCount ?? 0}</td>
@@ -224,7 +225,7 @@ export default function Roles() {
                                     <RowActions
                                         row={row}
                                         actions={[
-                                            { label: "View Permissions", icon: MdOutlineRemoveRedEye },
+                                            { label: "View Permissions", icon: MdOutlineRemoveRedEye, onClick: () => handleViewPermissions(row.roleId) },
                                             { label: "Deactivate Role", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
                                         ]}
                                     />
@@ -341,7 +342,7 @@ export default function Roles() {
                                 <strong className="font-semibold">HR Executive</strong>
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <strong>Role ID:</strong> ROLE024
+                                <strong>Role ID:</strong> 4
                             </p>
                             <p className="text-xxs text-gray-600">
                                 <strong>Users Assigned:</strong> 34

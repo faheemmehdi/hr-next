@@ -237,10 +237,10 @@ function Terminals() {
         "name"
     );
 
-const saveHandle = (e) =>{
-e.preventDefault();
-setShowErrors(true);
-}
+    const saveHandle = (e) => {
+        e.preventDefault();
+        setShowErrors(true);
+    }
 
 
     return (
@@ -248,9 +248,6 @@ setShowErrors(true);
         <Layout>
             <div className="flex justify-between text-lg p-1 mb-2">
                 <h2>Devices Analytics</h2>
-                {/* <Link href="/attendance/settings">
-          <FiSettings className="text-gray-600 cursor-pointer" />
-        </Link> */}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-2">
                 {stats.map((stat, idx) => (
@@ -271,7 +268,7 @@ setShowErrors(true);
                 ))}
             </div>
 
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6 mt-3">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[80vh] p-6 mt-3">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Devices Directory
@@ -280,7 +277,103 @@ setShowErrors(true);
                         Add Device
                     </Button>
                 </div>
-                {isOpen && (
+
+                <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-2">
+                        <SearchBar
+                            placeholder="Search by name or ID..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
+                    <div className="w-full flex flex-col md:flex-row justify-end items-center gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
+                            <CustomSelect
+                                name="location"
+                                value={location}
+                                placeholder="Location"
+                                onChange={setLocation}
+                                options={locations}
+                                controlHeight="2rem"
+                            />
+                        </div>
+
+                        <div className="mb-1 w-full md:w-[9rem]">
+                            <CustomSelect
+                                name="status"
+                                value={status}
+                                placeholder="Status"
+                                onChange={setStatus}
+                                options={statuses}
+                                controlHeight="2rem"
+                            />
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
+                    <table className="w-full text-xs border-collapse">
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
+                            <tr className="bg-gray-100 text-gray-700">
+                                <th className="px-4 py-3 text-left rounded-tl-md">Device ID</th>
+                                <th className="px-4 py-3 text-left">Name</th>
+                                <th className="px-4 py-3 text-left">Location</th>
+                                <th className="px-4 py-3 text-left">Type</th>
+                                <th className="px-4 py-3 text-left">Modal</th>
+                                <th className="px-4 py-3 text-left">Last Sync</th>
+                                <th className="px-4 py-3 text-left">Status</th>
+                                <th className="px-4 py-3 text-left">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-xxs">
+                            {deviceData && deviceData.length > 0 ? (
+                                deviceData.map((row, idx) => (
+                                    <tr
+                                        key={idx}
+                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                            } hover:bg-gray-100 transition-colors`}
+                                    >
+                                        <td className="px-4 py-3">{row.deviceId}</td>
+                                        <td className="px-4 py-3 truncate max-w-35">{row.name}</td>
+                                        <td className="px-4 py-3">{row.location}</td>
+                                        <td className="px-4 py-3">{row.type}</td>
+                                        <td className="px-4 py-3">{row.model}</td>
+                                        <td className="px-4 py-3">{row.lastSync}</td>
+                                        <td className="px-4 py-3">
+                                            <StatusDesign statusId={row.statusId} label={row.status} />
+                                        </td>
+
+
+                                        <RowActions
+                                            row={row}
+                                            actions={[
+                                                { label: "View Device", icon: GoDeviceDesktop },
+                                                { label: "Edit Device", icon: FiEdit3 },
+                                                { label: "Sync Device", icon: MdSync },
+                                                { label: "Test Action", icon: LuTestTubeDiagonal },
+                                                { label: "Activate", icon: MdDone, color: "green" },
+                                                { label: "Delete Device", icon: BsTrash3, color: "red" },
+                                            ]}
+                                        />
+
+
+
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={8} className="text-center py-4 text-gray-500 italic">
+                                        No device found.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+
+  {isOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
                         <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-6/12">
                             <h3 className="text-lg text-center font-semibold mb-4">Add Device</h3>
@@ -419,7 +512,7 @@ setShowErrors(true);
 
                                 <div className="flex justify-end gap-2">
                                     <Button variant="cancel" onClick={handleCloseModal}>
-                                        Close
+                                        Cancel
                                     </Button>
                                     <Button variant="success" onClick={saveHandle}>
                                         Add Device
@@ -431,94 +524,7 @@ setShowErrors(true);
                 )}
 
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-2">
-                        <SearchBar
-                            placeholder="Search by name or ID..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="mb-1 w-[9rem]">
-                            <CustomSelect
-                                name="location"
-                                value={location}
-                                placeholder="Location"
-                                onChange={setLocation}
-                                options={locations}
-                                controlHeight="2rem"
-                            />
-                        </div>
 
-                        <div className="mb-1 w-[9rem]">
-                            <CustomSelect
-                                name="status"
-                                value={status}
-                                placeholder="Status"
-                                onChange={setStatus}
-                                options={statuses}
-                                controlHeight="2rem"
-                            />
-                        </div>
-
-                    </div>
-                </div>
-
-
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2">
-                    <table className="w-full text-xs border-collapse">
-                        <thead>
-                            <tr className="bg-gray-100 text-gray-700">
-                                <th className="px-4 py-3 text-left rounded-tl-md">Device ID</th>
-                                <th className="px-4 py-3 text-left">Name</th>
-                                <th className="px-4 py-3 text-left">Location</th>
-                                <th className="px-4 py-3 text-left">Type</th>
-                                <th className="px-4 py-3 text-left">Modal</th>
-                                <th className="px-4 py-3 text-left">Last Sync</th>
-                                <th className="px-4 py-3 text-left">Status</th>
-                                <th className="px-4 py-3 text-left">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-xxs">
-                            {deviceData.map((row, idx) => (
-                                <tr
-                                    key={idx}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                        } hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-4 py-3">{row.deviceId}</td>
-                                    <td className="px-4 py-3 truncate max-w-35">{row.name}</td>
-                                    <td className="px-4 py-3">{row.location}</td>
-                                    <td className="px-4 py-3">{row.type}</td>
-                                    <td className="px-4 py-3">{row.model}</td>
-                                    <td className="px-4 py-3">{row.lastSync}</td>
-                                    <td className="px-4 py-3">
-                                                       <StatusDesign statusId={row.statusId} label={row.status} />
-                                    </td>
-
-
-                                    <RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "View Device", icon: GoDeviceDesktop },
-                                            { label: "Edit Device", icon: FiEdit3 },
-                                            { label: "Sync Device", icon: MdSync },
-                                            { label: "Test Action", icon: LuTestTubeDiagonal },
-                                            { label: "Activate", icon: MdDone, color: "green" },
-                                            { label: "Delete Device", icon: BsTrash3, color: "red" },
-                                        ]}
-                                    />
-                               
-
-
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </Layout>
     )

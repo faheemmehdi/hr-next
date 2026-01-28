@@ -1,7 +1,7 @@
 import AllDepartments from "./Departments";
 
 export const metadata = {
-  title: "Bonuses | HRM",
+  title: "Departments | HRM",
 };
 
 export default function Profile(){

@@ -33,7 +33,6 @@ const menuItems = [
     dropdown: [
       { label: "List", href: "/employees/list" },
       { label: "Departments", href: "/employees/departments" },
-      { label: "Roles", href: "/employees/roles" },
     ],
   },
   {

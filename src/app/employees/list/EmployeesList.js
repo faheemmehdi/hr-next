@@ -10,7 +10,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FaEye, FaEdit, FaCog, FaTrash, FaUserTie, FaTags } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import {
-    FiUser, FiEdit2, FiX, FiChevronDown, FiChevronUp
+    FiUser, FiEdit3, FiX, FiChevronDown, FiChevronUp
 } from "react-icons/fi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import Button from "y@/app/components/Button";
@@ -195,59 +195,7 @@ export default function EmployeesList() {
             status: "Active",
             statusId: 1,
         },
-        {
-            empId: "EMP1008",
-            name: "Zain Abbas",
-            imageUrl: "/api/portraits/men/44.jpg",
-            location: "Karachi Office",
-            department: "Finance",
-            designation: "Financial Analyst",
-            joiningDate: "2022-12-01",
-            manager: "Zubair Khan",
-            team: "Finance Team",
-            employmentType: "Full-Time",
-            tags: [
-                { id: 11, name: "Probation", bgColor: "#FFF4E5", textColor: "#B45309" },
-                { id: 12, name: "Analyst", bgColor: "#E0E7FF", textColor: "#3730A3" },
-            ],
-            status: "Pending",
-            statusId: 2,
-        },
-        {
-            empId: "EMP1009",
-            name: "Fatima Saeed",
-            imageUrl: "/api/portraits/women/31.jpg",
-            location: "Remote (Home)",
-            department: "Design",
-            designation: "UI/UX Designer",
-            joiningDate: "2021-07-28",
-            manager: "Ahsan Qureshi",
-            team: "Product Design",
-            employmentType: "Remote",
-            tags: [
-                { id: 13, name: "Remote Worker", bgColor: "#E0F7FA", textColor: "#006064" },
-                { id: 14, name: "Top Performer", bgColor: "#E6F4EA", textColor: "#1E7B34" },
-            ],
-            status: "Active",
-            statusId: 1,
-        },
-        {
-            empId: "EMP1010",
-            name: "Ahmad Raza",
-            imageUrl: "/api/portraits/men/36.jpg",
-            location: "Lahore Office",
-            department: "Development",
-            designation: "Frontend Developer",
-            joiningDate: "2023-03-20",
-            manager: "Ahsan Qureshi",
-            team: "Frontend Team",
-            employmentType: "Full-Time",
-            tags: [
-                { id: 15, name: "Resigned", bgColor: "#FEE2E2", textColor: "#991B1B" },
-            ],
-            status: "Resigned",
-            statusId: 3,
-        },
+       
     ];
 
 
@@ -396,7 +344,7 @@ export default function EmployeesList() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         All Employees
@@ -406,18 +354,19 @@ export default function EmployeesList() {
                     </Button>
                 </div>
 
-                <div className="bg-white border border-gray-200 rounded-md shadow p-4 mt-5 mb-4">
-                    <div className="w-full flex justify-between items-center">
-                        <strong className="text-xxs">Apply Filters</strong>
-                        <div className="w-2/3">
-                            <CustomSelect
-                                name="savedFilter"
-                                value={savedFilter}
-                                placeholder="Saved Filters"
-                                onChange={setSavedFilter}
-                                options={savedFilters}
-                                controlHeight="2rem"
-                            />
+                <div className="bg-white border border-gray-200 rounded-md shadow-md p-3 mt-5 mb-4">
+                    <div className="w-full flex justify-between items-center cursor-pointer"
+                        onClick={() => setShowFilters(!showFilters)}
+                    >
+                        <strong className="text-xxs w-1/2">Apply Filters</strong>
+
+                        <div className="w-1/2 flex justify-end">
+                            <span
+                                className="flex items-center gap-1 text-xxs rounded px-2 py-1 text-gray-400"
+                            >
+                                {showFilters ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />}
+                                {/* <span>Filters</span> */}
+                            </span>
                         </div>
                     </div>
 
@@ -426,7 +375,24 @@ export default function EmployeesList() {
                                 ${showFilters ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"}
                                 `}
                     >
-                        <div className="w-full mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        <div className="w-full mt-1 mb-3">
+                            <span className="text-xxs">Saved Filters:</span>
+                            <div className="w-full md:w-3/4">
+                                <CustomSelect
+                                    name="savedFilter"
+                                    value={savedFilter}
+                                    placeholder="Saved Filters"
+                                    onChange={setSavedFilter}
+                                    options={savedFilters}
+                                    controlHeight="2rem"
+                                />
+                            </div>
+                        </div>
+
+                        <span className="text-xxs">Filter By:</span>
+
+                        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+
                             <div className="w-full bg-amber-300">
                                 <CustomSelect
                                     name="location"
@@ -518,29 +484,21 @@ export default function EmployeesList() {
                         </div>
                     </div>
 
-                    <div className="w-full flex justify-end mt-3">
-                        <span
-                            onClick={() => setShowFilters(!showFilters)}
-                            className="flex items-center gap-1 text-xxs rounded px-2 py-1 hover:bg-gray-100 cursor-pointer text-gray-600"
-                        >
-                            {showFilters ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
-                            <span>Filters</span>
-                        </span>
-                    </div>
+
                 </div>
 
 
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="flex flex-col md:flex-row md:justify-between items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name or ID..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center justify-end w-full gap-3">
+                    <div className="flex items-center flex-col md:flex-row md:justify-end w-full mt-2 md:mt-0 gap-3">
 
-                        <div className="w-1/6">
+                        <div className="w-full md:w-1/6">
                             <CustomSelect
                                 name="bulkActions"
                                 value={bulkAction}
@@ -550,7 +508,7 @@ export default function EmployeesList() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="w-1/6">
+                        <div className="w-full md:w-1/6">
                             <CheckboxDropdown
                                 columns={allColumns}
                                 selected={visibleColumns}
@@ -564,10 +522,9 @@ export default function EmployeesList() {
                 </div>
 
 
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2">
+                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead>
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
                                 {allColumns
                                     .filter((c) => visibleColumns.includes(c.key))
@@ -582,7 +539,8 @@ export default function EmployeesList() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {employeeData.map((row, idx) => (
+                            {employeeData && employeeData.length > 0 ? (
+                            employeeData.map((row, idx) => (
                                 <tr
                                     key={idx}
                                     className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
@@ -660,7 +618,7 @@ export default function EmployeesList() {
                                                     </li>
                                                     <li>
                                                         <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
-                                                            <FaEdit className="mr-2" /> Edit Employee
+                                                            <FiEdit3 className="mr-2" /> Edit Employee
                                                         </button>
                                                     </li>
                                                     <li>
@@ -696,7 +654,14 @@ export default function EmployeesList() {
                                         )}
                                     </td>}
                                 </tr>
-                            ))}
+                            ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={17} className="text-center py-4 text-gray-500 italic">
+                                        No employee found.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
 
@@ -746,7 +711,7 @@ export default function EmployeesList() {
                                                             title="Edit Tag"
                                                             onClick={() => editTag(tag)}
                                                         >
-                                                            <FiEdit2 className="w-3 h-3" />
+                                                            <FiEdit3 className="w-3 h-3" />
                                                         </button>
 
                                                         <button
