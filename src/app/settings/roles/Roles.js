@@ -148,7 +148,7 @@ export default function Roles() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Roles
@@ -158,18 +158,16 @@ export default function Roles() {
                     </Button>
                 </div>
 
-                <div className="flex justify-between items-center my-2 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="w-full flex flex-col md:flex-row justify-between items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name or ID..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-
-
-                        <div className="mb-1 w-[9rem]">
+                    <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="assignedEmp"
                                 value={assignEmp}
@@ -179,7 +177,7 @@ export default function Roles() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -207,31 +205,39 @@ export default function Roles() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {rolesData.map((row, idx) => (
-                                <tr
-                                    key={idx}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                        } hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-4 py-3 truncate max-w-[160px]">{row.name ?? ''}</td>
-                                    <td className="px-4 py-3 truncate max-w-[160px]" title={row.description}>{row.description ?? ''}</td>
-                                    <td className="px-4 py-3 text-center">{row.assignedUsersCount ?? 0}</td>
-                                    <td className="px-4 py-3 text-center">{row.permissionCount ?? 0}</td>
-                                    <td className="px-4 py-3">{row.createdOn ?? ''}</td>
-                                    <td className="px-4 py-3">
-                                        <StatusDesign statusId={row.statusId} label={row.status} />
+                            {rolesData && rolesData.length > 0 ? (
+                                rolesData.map((row, idx) => (
+                                    <tr
+                                        key={idx}
+                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                            } hover:bg-gray-100 transition-colors`}
+                                    >
+                                        <td className="px-4 py-3 truncate max-w-[160px]">{row.name ?? ''}</td>
+                                        <td className="px-4 py-3 truncate max-w-[160px]" title={row.description}>{row.description ?? ''}</td>
+                                        <td className="px-4 py-3 text-center">{row.assignedUsersCount ?? 0}</td>
+                                        <td className="px-4 py-3 text-center">{row.permissionCount ?? 0}</td>
+                                        <td className="px-4 py-3">{row.createdOn ?? ''}</td>
+                                        <td className="px-4 py-3">
+                                            <StatusDesign statusId={row.statusId} label={row.status} />
+                                        </td>
+
+                                        <RowActions
+                                            row={row}
+                                            actions={[
+                                                { label: "View Permissions", icon: MdOutlineRemoveRedEye, onClick: () => handleViewPermissions(row.roleId) },
+                                                { label: "Deactivate Role", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                            ]}
+                                        />
+
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={7} className="text-center py-4 text-gray-500 italic">
+                                        No role found.
                                     </td>
-
-                                    <RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "View Permissions", icon: MdOutlineRemoveRedEye, onClick: () => handleViewPermissions(row.roleId) },
-                                            { label: "Deactivate Role", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
-                                        ]}
-                                    />
-
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>

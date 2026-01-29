@@ -66,6 +66,7 @@ const departments = mapSelectOptions(
 
 function CreateProject() {
 
+    const [activeTab, setActiveTab] = useState("overView");
     const [projectData, setProjectData] = useState({
         overView: {
             projectName: '',
@@ -139,10 +140,10 @@ function CreateProject() {
             <div className="flex justify-between text-lg p-1 mb-1">
                 <h2>Create Project</h2>
             </div>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[80vh] p-5">
-                <Tabs tabs={tabs} defaultTab="overView" align="left" isCol />
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[83vh] p-5">
+                <Tabs tabs={tabs} defaultTab="overView" align="left" isCol onTabChange={(key) => setActiveTab(key)} />
                 <div className="w-full text-end mt-5">
-                    <Button type="button" variant="success">Save & Continue</Button>
+                    <Button type="button" variant="success">{activeTab === "team" ? "Save" : "Save & Continue"}</Button>
                 </div>
             </div>
             {/* {projectData.team.docFile.name} */}

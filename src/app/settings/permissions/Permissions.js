@@ -48,7 +48,7 @@ export default function Permissions() {
 
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => {
-        setIsOpen(false); 
+        setIsOpen(false);
         setSelectCat("");
         setPermitName("");
         setPermitKey("");
@@ -263,7 +263,7 @@ export default function Permissions() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Permissions
@@ -273,18 +273,16 @@ export default function Permissions() {
                     </Button>
                 </div>
 
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="w-full flex flex-col md:flex-row justify-between items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name or category..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-
-
-                        <div className="mb-1 w-[9rem]">
+                    <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -298,8 +296,7 @@ export default function Permissions() {
                 </div>
 
 
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2 border border-gray-200 rounded max-h-[70vh]">
+               <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
                         <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr>
@@ -312,27 +309,35 @@ export default function Permissions() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {permissionsData.map((row, idx) => (
-                                <tr
-                                    key={row.id}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-4 py-3 truncate max-w-[160px]">{row.name ?? ''}</td>
-                                    <td className="px-4 py-3">{row.category ?? ''}</td>
-                                    <td className="px-4 py-3">{row.key ?? ''}</td>
-                                    <td className="px-4 py-3">{row.createdOn ?? ''}</td>
-                                    <td className="px-4 py-3">
-                                        <StatusDesign statusId={row.statusId} label={row.status} />
+                            {permissionsData && permissionsData.length > 0 ? (
+                                permissionsData.map((row, idx) => (
+                                    <tr
+                                        key={row.id}
+                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition-colors`}
+                                    >
+                                        <td className="px-4 py-3 truncate max-w-[160px]">{row.name ?? ''}</td>
+                                        <td className="px-4 py-3">{row.category ?? ''}</td>
+                                        <td className="px-4 py-3">{row.key ?? ''}</td>
+                                        <td className="px-4 py-3">{row.createdOn ?? ''}</td>
+                                        <td className="px-4 py-3">
+                                            <StatusDesign statusId={row.statusId} label={row.status} />
+                                        </td>
+                                        <RowActions
+                                            row={row}
+                                            actions={[
+                                                { label: "Edit Permission", icon: FiEdit3 },
+                                                { label: "Deactivate Permission", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                            ]}
+                                        />
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={7} className="text-center py-4 text-gray-500 italic">
+                                        No permission found.
                                     </td>
-                                    <RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "Edit Permission", icon: FiEdit3 },
-                                            { label: "Deactivate Permission", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
-                                        ]}
-                                    />
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -410,13 +415,13 @@ export default function Permissions() {
                             <p className="text-xxs text-gray-600">
                                 <strong>Category:</strong> Employee Management
                             </p>
-                             <p className="text-xxs text-gray-600">
+                            <p className="text-xxs text-gray-600">
                                 <strong>Key:</strong> employee.view
                             </p>
                             <p className="text-xxs text-gray-600">
                                 <strong>Created On:</strong> Aug 14, 2026
                             </p>
-                            
+
                         </div>}
                     onClose={closeReasonModal}
                     variant="danger"

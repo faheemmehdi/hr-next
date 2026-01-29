@@ -39,7 +39,7 @@ export default function PayRollList() {
 
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false);
-    const openReasonModal = (row) => {setIsReasonOpen(true); setSelectedPayroll(row)};
+    const openReasonModal = (row) => { setIsReasonOpen(true); setSelectedPayroll(row) };
     const closeReasonModal = () => setIsReasonOpen(false);
     const [range, setRange] = useState([
         {
@@ -49,7 +49,7 @@ export default function PayRollList() {
         }
     ]);
     const router = useRouter();
-   
+
     const handleRowClick = (id) => {
         router.push(`/payroll/employees/`);
     };
@@ -296,7 +296,7 @@ export default function PayRollList() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Payrolls
@@ -306,16 +306,15 @@ export default function PayRollList() {
                     </Button>
                 </div>
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
-                <div className="flex flex-col md:flex-row justify-between items-center my-3 mt-5">
-                    <div className="w-2/3 md:w-1/5 flex items-center mb-3 md:mb-1">
+                <div className="w-full flex flex-col md:flex-row justify-between items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-3 md:mb-1">
                         <SearchBar
                             placeholder="Search by title ..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex flex-col md:flex-row items-center gap-2">
+                    <div className="w-full flex flex-col md:flex-row justify-end items-center gap-2">
                         <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
@@ -340,18 +339,16 @@ export default function PayRollList() {
                         <div className="w-full md:w-[9rem] mb-1">
                             <MonthPicker monthVal={monthVal} setMonthVal={setMonthVal} />
                         </div>
-                        <div className="relative w-49">
-
+                        <div className="w-full md:w-[9rem]">
                             <DateRangePicker range={range} setRange={setRange} />
                         </div>
                     </div>
                 </div>
 
 
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2">
+                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead>
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
                                 <th className="px-4 py-3 text-left rounded-tl-md">Payroll ID</th>
                                 <th className="px-4 py-3 text-left">Title</th>
@@ -368,42 +365,50 @@ export default function PayRollList() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {payrollData.map((row, idx) => (
-                                <tr
-                                    key={idx}
-                                    onClick={(e) => {
-                                        if (e.target.closest("button")) return;
-                                        handleRowClick(row.id);
-                                    }}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                        } hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-4 py-3">{row.id}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.title}>{row.title}</td>
-                                    <td className="px-4 py-3">{row.location}</td>
-                                    <td className="px-4 py-3">{row.department}</td>
-                                    <td className="px-4 py-3 text-center">{row.totalEmployees}</td>
-                                    <td className="px-4 py-3">{row.payPeriodStart} To {row.payPeriodEnd}</td>
-                                    <td className="px-4 py-3">{row.totalAmount.toLocaleString()}</td>
-                                    <td className="px-4 py-3">{row.payCycleType}</td>
-                                    <td className="px-4 py-3">{row.approvedBy}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.remarks}>{row.remarks}</td>
-                                    <td className="px-4 py-3">
-                                        <StatusDesign statusId={row.statusId} label={row.status} />
+                            {payrollData && payrollData.length > 0 ? (
+                                payrollData.map((row, idx) => (
+                                    <tr
+                                        key={idx}
+                                        onClick={(e) => {
+                                            if (e.target.closest("button")) return;
+                                            handleRowClick(row.id);
+                                        }}
+                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                            } hover:bg-gray-100 transition-colors`}
+                                    >
+                                        <td className="px-4 py-3">{row.id}</td>
+                                        <td className="px-4 py-3 truncate max-w-[120px]" title={row.title}>{row.title}</td>
+                                        <td className="px-4 py-3">{row.location}</td>
+                                        <td className="px-4 py-3">{row.department}</td>
+                                        <td className="px-4 py-3 text-center">{row.totalEmployees}</td>
+                                        <td className="px-4 py-3">{row.payPeriodStart} To {row.payPeriodEnd}</td>
+                                        <td className="px-4 py-3">{row.totalAmount.toLocaleString()}</td>
+                                        <td className="px-4 py-3">{row.payCycleType}</td>
+                                        <td className="px-4 py-3">{row.approvedBy}</td>
+                                        <td className="px-4 py-3 truncate max-w-[120px]" title={row.remarks}>{row.remarks}</td>
+                                        <td className="px-4 py-3">
+                                            <StatusDesign statusId={row.statusId} label={row.status} />
+                                        </td>
+
+                                        <RowActions
+                                            row={row}
+                                            actions={[
+                                                { label: "View Payroll", icon: MdOutlineRemoveRedEye, onClick: () => handleRowClick(row.id) },
+                                                { label: "Edit Payroll", icon: FiEdit3 },
+                                                { label: "Approve Payroll", icon: MdDone, color: "green" },
+                                                { label: "Reject Payroll", icon: RxCross2, color: "red", onClick: () => openReasonModal(row) },
+                                            ]}
+                                        />
+
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={13} className="text-center py-4 text-gray-500 italic">
+                                        No payroll found.
                                     </td>
-
-                                    <RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "View Payroll", icon: MdOutlineRemoveRedEye, onClick: () => handleRowClick(row.id) },
-                                            { label: "Edit Payroll", icon: FiEdit3 },
-                                            { label: "Approve Payroll", icon: MdDone, color: "green" },
-                                            { label: "Reject Payroll", icon: RxCross2, color: "red", onClick: () => openReasonModal(row) },
-                                        ]}
-                                    />
-
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>

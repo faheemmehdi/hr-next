@@ -29,7 +29,7 @@ export default function AllBonuses() {
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
     const [isAddBonusOpen, setAddBonusOpen] = useState(false);
-    const [active, setActive] = useState("");
+    const [active, setActive] = useState(true);
     const [showErrors, setShowErrors] = useState(false);
 
     const handleOpenModal = () => setIsOpen(true);
@@ -213,7 +213,7 @@ export default function AllBonuses() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[80vh] p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Bonuses
@@ -223,17 +223,16 @@ export default function AllBonuses() {
                     </Button>
                 </div>
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="w-full flex flex-col md:flex-row justify-between items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className="mb-1 w-[9rem]">
+                    <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
                                 value={location}
@@ -243,7 +242,7 @@ export default function AllBonuses() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -257,10 +256,9 @@ export default function AllBonuses() {
                 </div>
 
 
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2">
+             <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead>
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
                                 <th className="px-4 py-3 text-left">Name</th>
                                 <th className="px-4 py-3 text-left">Location</th>
@@ -274,7 +272,8 @@ export default function AllBonuses() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {bonusesData.map((row, idx) => (
+                            {bonusesData && bonusesData.length > 0 ? (
+                            bonusesData.map((row, idx) => (
                                 <tr
                                     key={idx}
                                     className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
@@ -301,7 +300,14 @@ export default function AllBonuses() {
                                         ]}
                                     />
                                 </tr>
-                            ))}
+                            ))
+                             ) : (
+                                <tr>
+                                    <td colSpan={11} className="text-center py-4 text-gray-500 italic">
+                                        No bonus found.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -424,7 +430,7 @@ export default function AllBonuses() {
                         </div>
                         <div className="flex justify-end gap-2">
                             <Button variant="cancel" onClick={closeAddLeaveModal}>
-                                Close
+                                Cancel
                             </Button>
                             <Button variant="success">
                                 Add Bonus

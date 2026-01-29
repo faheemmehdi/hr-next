@@ -253,7 +253,7 @@ export default function TimeSheet() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         TimeSheets
@@ -265,17 +265,17 @@ export default function TimeSheet() {
 
 
 
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name or ID..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="w-full flex flex-col md:flex-row justify-end items-center mt-2 md:mt-0 gap-2">
 
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="filterEmp"
                                 value={selectEmp}
@@ -286,7 +286,7 @@ export default function TimeSheet() {
                             />
                         </div>
 
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="selectetProject"
                                 value={selectProject}
@@ -296,7 +296,7 @@ export default function TimeSheet() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -307,22 +307,25 @@ export default function TimeSheet() {
                             />
                         </div>
 
+                        <div className="w-full md:w-[9rem]">
+                            <Input
+                                type="week"
+                                name="week"
+                                noMargin={true}
+                                value={week}
+                                onChange={(e) => setWeek(e.target.value)}
+                            />
+                        </div>
 
-                        <Input
-                            type="week"
-                            name="week"
-                            noMargin={true}
-                            value={week}
-                            onChange={(e) => setWeek(e.target.value)}
-                        />
+
                     </div>
 
                 </div>
 
 
-                <div className="overflow-x-auto -mt-2">
+                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead>
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
                                 <th className="px-4 py-3 text-left rounded-tl-md">Emp ID</th>
                                 <th className="px-4 py-3 text-left">Name</th>
@@ -336,45 +339,53 @@ export default function TimeSheet() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {timesheetsData.map((row, idx) => (
-                                <tr
-                                    key={idx}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                        } hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-4 py-3">{row.empId}</td>
-                                    <td className="px-4 py-3 flex items-center gap-2">
-                                        {row.imageUrl ? (
-                                            <img
-                                                src={`${baseUrl}${row.imageUrl}`}
-                                                alt={row.name}
-                                                className="w-7 h-7 rounded-full object-cover border border-gray-300"
-                                            />
-                                        ) : (
-                                            <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center">
-                                                <FiUser className="text-gray-500" />
-                                            </div>
-                                        )}
-                                        <span className="truncate max-w-[120px]" title={row.name}>{row.name}</span>
+                            {timesheetsData && timesheetsData.length > 0 ? (
+                                timesheetsData.map((row, idx) => (
+                                    <tr
+                                        key={idx}
+                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                            } hover:bg-gray-100 transition-colors`}
+                                    >
+                                        <td className="px-4 py-3">{row.empId}</td>
+                                        <td className="px-4 py-3 flex items-center gap-2">
+                                            {row.imageUrl ? (
+                                                <img
+                                                    src={`${baseUrl}${row.imageUrl}`}
+                                                    alt={row.name}
+                                                    className="w-7 h-7 rounded-full object-cover border border-gray-300"
+                                                />
+                                            ) : (
+                                                <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center">
+                                                    <FiUser className="text-gray-500" />
+                                                </div>
+                                            )}
+                                            <span className="truncate max-w-[120px]" title={row.name}>{row.name}</span>
 
+                                        </td>
+                                        <td className="px-4 py-3">{row.location}</td>
+                                        <td className="px-4 py-3">{row.department}</td>
+                                        <td className="px-4 py-3">{row.date}</td>
+                                        <td className="px-4 py-3">{row.totalTasks}</td>
+                                        <td className="px-4 py-3">{row.totalHours}</td>
+                                        <td className="px-4 py-3">
+                                            <StatusDesign statusId={row.statusId} label={row.status} />
+                                        </td>
+                                        <RowActions
+                                            row={row}
+                                            actions={[
+                                                { label: "View Timesheet", icon: MdOutlineRemoveRedEye, onClick: handleViewTimesheet },
+                                                { label: "Edit Timesheet", icon: FiEdit3 },
+                                            ]}
+                                        />
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={10} className="text-center py-4 text-gray-500 italic">
+                                        No timesheet found.
                                     </td>
-                                    <td className="px-4 py-3">{row.location}</td>
-                                    <td className="px-4 py-3">{row.department}</td>
-                                    <td className="px-4 py-3">{row.date}</td>
-                                    <td className="px-4 py-3">{row.totalTasks}</td>
-                                    <td className="px-4 py-3">{row.totalHours}</td>
-                                    <td className="px-4 py-3">
-                                        <StatusDesign statusId={row.statusId} label={row.status} />
-                                    </td>
-                                    <RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "View Timesheet", icon: MdOutlineRemoveRedEye, onClick: handleViewTimesheet },
-                                            { label: "Edit Timesheet", icon: FiEdit3 },
-                                        ]}
-                                    />
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>

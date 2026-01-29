@@ -263,7 +263,7 @@ export default function Regularization() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-full md:w-[9rem] mt-0 md:mt-1">
+                        <div className="w-full md:w-[9rem]">
                             <Input
                             type="date"
                             name="date"

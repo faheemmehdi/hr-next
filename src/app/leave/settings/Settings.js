@@ -32,8 +32,8 @@ export default function LeaveSettings() {
     const [isReasonOpen, setIsReasonOpen] = useState(false);
     const [isAddLeaveOpen, setAddLeaveOpen] = useState(false);
     const [cashAllow, setCashAllow] = useState(false);
-    const [probation, setProbation] = useState(true);
-    const [active, setActive] = useState("");
+    const [probation, setProbation] = useState(false);
+    const [active, setActive] = useState(true);
     const [showErrors, setShowErrors] = useState(false);
 
     const handleOpenModal = () => setIsOpen(true);
@@ -42,7 +42,7 @@ export default function LeaveSettings() {
     const closeReasonModal = () => setIsReasonOpen(false);
     const openAddLeaveModal = () => setAddLeaveOpen(true);
     const closeAddLeaveModal = () => setAddLeaveOpen(false);
-    
+
     const leaveTypesData = [
         {
             typeId: 1,
@@ -218,7 +218,7 @@ export default function LeaveSettings() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[80vh] p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Leave Types & Policies
@@ -228,17 +228,16 @@ export default function LeaveSettings() {
                     </Button>
                 </div>
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name or Code..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className="mb-1 w-[9rem]">
+                    <div className="w-full flex flex-col md:flex-row justify-end mt-2 md:mt-0 items-center gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
                                 value={location}
@@ -248,7 +247,7 @@ export default function LeaveSettings() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -262,13 +261,12 @@ export default function LeaveSettings() {
                 </div>
 
 
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2">
+                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead>
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
                                 <th className="px-4 py-3 text-left rounded-tl-md">Code</th>
-                                <th className="px-4 py-3 text-left">Name</th>
+                                <th className="px-4 py-3 text-left">Leave Type Name</th>
                                 <th className="px-4 py-3 text-left">Location</th>
                                 <th className="px-4 py-3 text-left">Annual Limit</th>
                                 <th className="px-4 py-3 text-left">Accrual</th>
@@ -281,36 +279,44 @@ export default function LeaveSettings() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {leaveTypesData.map((row, idx) => (
-                                <tr
-                                    key={idx}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                        } hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-4 py-3">{row.code}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.name}>{row.name}</td>
-                                    <td className="px-4 py-3">{row.location}</td>
-                                    <td className="px-4 py-3">{row.annualLimit} Days</td>
-                                    <td className="px-4 py-3">{row.accrual}</td>
-                                    <td className="px-4 py-3">{row.carryForward ? 'Up to ' + row.carryForwardDays + ' Days' : 'No'}</td>
-                                    <td className="px-4 py-3">{row.encashment ? 'Allowed' : 'No'}</td>
-                                    <td className="px-4 py-3">{row.eligibility}</td>
-                                    <td className="px-4 py-3">{row.probation ? 'Allowed' : 'No'}</td>
-                                    <td className="px-4 py-3">
-                                        <StatusDesign statusId={row.statusId} label={row.status} />
-                                    </td>
+                            {leaveTypesData && leaveTypesData.length > 0 ? (
+                                leaveTypesData.map((row, idx) => (
+                                    <tr
+                                        key={idx}
+                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                            } hover:bg-gray-100 transition-colors`}
+                                    >
+                                        <td className="px-4 py-3">{row.code}</td>
+                                        <td className="px-4 py-3 truncate max-w-[120px]" title={row.name}>{row.name}</td>
+                                        <td className="px-4 py-3">{row.location}</td>
+                                        <td className="px-4 py-3">{row.annualLimit} Days</td>
+                                        <td className="px-4 py-3">{row.accrual}</td>
+                                        <td className="px-4 py-3">{row.carryForward ? 'Up to ' + row.carryForwardDays + ' Days' : 'No'}</td>
+                                        <td className="px-4 py-3">{row.encashment ? 'Allowed' : 'No'}</td>
+                                        <td className="px-4 py-3">{row.eligibility}</td>
+                                        <td className="px-4 py-3">{row.probation ? 'Allowed' : 'No'}</td>
+                                        <td className="px-4 py-3">
+                                            <StatusDesign statusId={row.statusId} label={row.status} />
+                                        </td>
 
-                                  
-<RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "View Leave Type", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal},
-                                            { label: "Edit Leave Type", icon: FiEdit3 },
-                                            { label: "Deactivate Type", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
-                                        ]}
-                                    />
+
+                                        <RowActions
+                                            row={row}
+                                            actions={[
+                                                { label: "View Leave Type", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                                                { label: "Edit Leave Type", icon: FiEdit3 },
+                                                { label: "Deactivate Type", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                            ]}
+                                        />
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={11} className="text-center py-4 text-gray-500 italic">
+                                        No leave type found.
+                                    </td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -357,7 +363,7 @@ export default function LeaveSettings() {
                                             <p className="text-xs text-gray-800">Yearly</p>
                                         </div>
                                         <div>
-                                             <p className="text-xxs text-gray-500 font-medium">Probation</p>
+                                            <p className="text-xxs text-gray-500 font-medium">Probation</p>
                                             <p className="text-xs text-gray-800">No</p>
                                         </div>
                                     </div>
@@ -376,8 +382,8 @@ export default function LeaveSettings() {
                                             <p className="text-xs text-gray-800">32 Days</p>
                                         </div>
                                     </div>
-                                   
-                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                                         <div>
                                             <p className="text-xxs text-gray-500 font-medium">Encashment</p>
                                             <p className="text-xs text-gray-800">Allowed</p>
@@ -591,14 +597,12 @@ export default function LeaveSettings() {
                             </div>
                             <div className="flex justify-end gap-2">
                                 <Button variant="cancel" onClick={closeAddLeaveModal}>
-                                    Close
+                                    Cancel
                                 </Button>
                                 <Button variant="success">
                                     Save
                                 </Button>
                             </div>
-
-
                         </div>
                     </div>
                 )}
@@ -622,6 +626,7 @@ export default function LeaveSettings() {
                             </p>
                         </div>}
                     onClose={closeReasonModal}
+                    variant="danger"
                     // onSubmit={handleReject}
                     submitLabel="Deactivate"
                     reasonTitle="Please provide a reason to deactivate this leave type."

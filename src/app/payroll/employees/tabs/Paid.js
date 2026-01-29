@@ -31,16 +31,16 @@ export default function Paid({
 
     return (
         <div>
-            <div className="flex justify-between items-center my-3 mt-1">
-                <div className="w-1/5 flex items-center mb-1">
+            <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-1">
+                <div className="w-full md:w-1/5 flex items-center mb-1">
                     <SearchBar
                         placeholder="Search by name or ID..."
                         value={search}
                         onChange={(e) => onSearch(e.target.value)}
                     />
                 </div>
-                <div className="flex items-center gap-2">
-                    <div className="mb-1 w-[9rem]">
+                <div className="w-full flex flex-col md:flex-row justify-end items-center gap-2 mt-2 md:mt-2">
+                    <div className="mb-1 w-full md:w-[9rem]">
                         <CustomSelect
                             name="department"
                             value={department}
@@ -50,7 +50,7 @@ export default function Paid({
                             controlHeight="2rem"
                         />
                     </div>
-                    <div className="mb-1 w-[9rem]">
+                    <div className="mb-1 w-full md:w-[9rem]">
                         <CustomSelect
                             name="desig"
                             value={designationVal}
@@ -60,19 +60,21 @@ export default function Paid({
                             controlHeight="2rem"
                         />
                     </div>
-                 
-                    <Input
+                 <div className="w-full md:w-[9rem]">
+                         <Input
                         type="date"
                         name="date"
                         noMargin={true}
                         value={date}
                         onChange={(e) => onDateChange(e.target.value)}
                     />
+                    </div>
+                   
                 </div>
             </div>
-            <div className="overflow-x-auto -mt-2">
+            <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                 <table className="w-full text-xs border-collapse">
-                    <thead>
+                    <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                         <tr className="bg-gray-100 text-gray-700">
                             <th className="px-4 py-3 text-left rounded-tl-md">Emp ID</th>
                             <th className="px-4 py-3 text-left">Name</th>
@@ -86,7 +88,8 @@ export default function Paid({
                         </tr>
                     </thead>
                     <tbody className="text-xxs">
-                        {data.map((row, idx) => (
+                        {data && data.length > 0 ? (
+                        data.map((row, idx) => (
                             <tr
                                 key={idx}
                                 className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
@@ -116,7 +119,14 @@ export default function Paid({
                                 <td className="px-4 py-3">{row.netPay.toLocaleString()}</td>
                                 <td className="px-4 py-3">{row.paymentDate}</td>
                             </tr>
-                        ))}
+                        ))
+                        ) : (
+                            <tr>
+                                <td colSpan={12} className="text-center py-4 text-gray-500 italic">
+                                    No employee found.
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>

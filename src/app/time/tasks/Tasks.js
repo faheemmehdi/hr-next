@@ -287,7 +287,7 @@ export default function ProjectTasks() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[80vh] p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Tasks
@@ -318,17 +318,16 @@ export default function ProjectTasks() {
 
                 </div>
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className="mb-1 w-[9rem]">
+                    <div className="w-full flex items-center flex-col md:flex-row justify-end mt-2 md:mt-0 gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="projects"
                                 value={projects}
@@ -339,7 +338,7 @@ export default function ProjectTasks() {
                             />
                         </div>
 
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -349,7 +348,7 @@ export default function ProjectTasks() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="taskEmp"
                                 value={taskAssignedEmp}
@@ -359,7 +358,7 @@ export default function ProjectTasks() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="w-full md:w-[9rem]">
                             <Input
                                 type="date"
                                 name="date"
@@ -372,13 +371,9 @@ export default function ProjectTasks() {
                 </div>
 
 
-                {/* Attendance Table */}
-                <div className="overflow-x-auto -mt-2">
-
-
-
+                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead>
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
                                 <th className="px-3 py-3">
                                     <input
@@ -399,41 +394,50 @@ export default function ProjectTasks() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {tasksData.map((row, idx) => (
-                                <tr
-                                    key={idx}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-3 py-3 text-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedRows.includes(idx)}
-                                            onChange={() => handleRowSelect(idx)}
+                            {tasksData && tasksData.length > 0 ? (
+
+                                tasksData.map((row, idx) => (
+                                    <tr
+                                        key={idx}
+                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition-colors`}
+                                    >
+                                        <td className="px-3 py-3 text-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedRows.includes(idx)}
+                                                onChange={() => handleRowSelect(idx)}
+                                            />
+                                        </td>
+                                        <td className="px-4 py-3 truncate max-w-[120px]" title={row.taskName}>{row.taskName}</td>
+                                        <td className="px-4 py-3">{row.project}</td>
+                                        <td className="px-4 py-3">{row.loggedHours}</td>
+                                        <td className="px-4 py-3">{row.assignedTo}</td>
+                                        <td className="px-4 py-3">{row.createdAt}</td>
+                                        <td className="px-4 py-3">{row.dueDate}</td>
+                                        <td className="px-4 py-3 truncate max-w-[120px]" title={row.description}>
+                                            {row.description}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            <StatusDesign statusId={row.workflowStatusId} label={row.workflowStatus} />
+                                        </td>
+                                        <RowActions
+                                            row={row}
+                                            actions={[
+                                                { label: "View Task", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                                                { label: "Edit Task", icon: FiEdit3 },
+                                                { label: "Asssign Task", icon: MdOutlineAssignment, onClick: openAssignTaskModal },
+                                                { label: "Deactivate Task", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                            ]}
                                         />
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={10} className="text-center py-4 text-gray-500 italic">
+                                        No task found.
                                     </td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.taskName}>{row.taskName}</td>
-                                    <td className="px-4 py-3">{row.project}</td>
-                                    <td className="px-4 py-3">{row.loggedHours}</td>
-                                    <td className="px-4 py-3">{row.assignedTo}</td>
-                                    <td className="px-4 py-3">{row.createdAt}</td>
-                                    <td className="px-4 py-3">{row.dueDate}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.description}>
-                                        {row.description}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <StatusDesign statusId={row.workflowStatusId} label={row.workflowStatus} />
-                                    </td>
-                                    <RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "View Task", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
-                                            { label: "Edit Task", icon: FiEdit3 },
-                                            { label: "Asssign Task", icon: MdOutlineAssignment, onClick: openAssignTaskModal },
-                                            { label: "Deactivate Task", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
-                                        ]}
-                                    />
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
 
@@ -664,7 +668,7 @@ export default function ProjectTasks() {
                             <p className="text-xxs text-gray-600">
                                 <span>Assigned To:</span> Charlie
                             </p>
-                          
+
                         </div>}
                     onClose={closeReasonModal}
                     // onSubmit={handleReject}

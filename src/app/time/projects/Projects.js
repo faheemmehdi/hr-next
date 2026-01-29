@@ -244,7 +244,7 @@ export default function Projects() {
 
   return (
     <Layout>
-      <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+      <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
         <div className="flex justify-between items-center">
           <h2 className="text-base font-semibold text-gray-700">
             Projects
@@ -256,17 +256,17 @@ export default function Projects() {
 
 
 
-        <div className="flex justify-between items-center my-3 mt-5">
-          <div className="w-1/5 flex items-center mb-1">
+        <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+          <div className="w-full md:w-1/5 flex items-center mb-1">
             <SearchBar
               placeholder="Search by name or code..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="w-full flex flex-col md:flex-row justify-end items-center gap-2 mt-2 md:mt-0">
 
-            <div className="mb-1 w-[9rem]">
+            <div className="mb-1 w-full md:w-[9rem]">
               <CustomSelect
                 name="status"
                 value={status}
@@ -277,22 +277,26 @@ export default function Projects() {
               />
             </div>
 
+            <div className="w-full md:w-[9rem]">
+              <Input
+                type="date"
+                name="date"
+                noMargin={true}
+                value={date}
+                onChange={(e) => onDateChange(e.target.value)}
+              />
+            </div>
 
-            <Input
-              type="date"
-              name="date"
-              noMargin={true}
-              value={date}
-              onChange={(e) => onDateChange(e.target.value)}
-            />
+
+
           </div>
 
         </div>
 
 
-        <div className="overflow-x-auto -mt-2">
+        <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
           <table className="w-full text-xs border-collapse">
-            <thead>
+            <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
               <tr className="bg-gray-100 text-gray-700">
                 <th className="px-4 py-3 text-left rounded-tl-md">Code</th>
                 <th className="px-4 py-3 text-left">Name</th>
@@ -307,38 +311,47 @@ export default function Projects() {
               </tr>
             </thead>
             <tbody className="text-xxs">
-              {projectsData.map((row, idx) => (
-                <tr
-                  key={idx}
-                  className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    } hover:bg-gray-100 transition-colors`}
-                >
-                  <td className="px-4 py-3">{row.projectCode}</td>
-                  <td className="px-4 py-3 truncate max-w-[150px]" title={row.projectName}>{row.projectName}</td>
-                  <td className="px-4 py-3">{row.client}</td>
-                  <td className="px-4 py-3">{row.projectManager}</td>
-                  <td className="px-4 py-3">{row.billable ? "Yes" : "No"}</td>
-                  <td className="px-4 py-3">{row.startDate}</td>
-                  <td className="px-4 py-3">{row.endDate}</td>
-                  <td className="px-4 py-3">{row.loggedHours}</td>
-                  <td className="px-4 py-3">
-                    <StatusDesign statusId={row.statusId} label={row.status} />
+              {projectsData && projectsData.length > 0 ? (
+
+                projectsData.map((row, idx) => (
+                  <tr
+                    key={idx}
+                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      } hover:bg-gray-100 transition-colors`}
+                  >
+                    <td className="px-4 py-3">{row.projectCode}</td>
+                    <td className="px-4 py-3 truncate max-w-[150px]" title={row.projectName}>{row.projectName}</td>
+                    <td className="px-4 py-3">{row.client}</td>
+                    <td className="px-4 py-3">{row.projectManager}</td>
+                    <td className="px-4 py-3">{row.billable ? "Yes" : "No"}</td>
+                    <td className="px-4 py-3">{row.startDate}</td>
+                    <td className="px-4 py-3">{row.endDate}</td>
+                    <td className="px-4 py-3">{row.loggedHours}</td>
+                    <td className="px-4 py-3">
+                      <StatusDesign statusId={row.statusId} label={row.status} />
+                    </td>
+                    <RowActions
+                      row={row}
+                      actions={[
+                        { label: "View Project", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                        { label: "Edit Project", icon: FiEdit3 },
+                      ]}
+                    />
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={10} className="text-center py-4 text-gray-500 italic">
+                    No project found.
                   </td>
-                  <RowActions
-                    row={row}
-                    actions={[
-                      { label: "View Project", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
-                      { label: "Edit Project", icon: FiEdit3 },
-                    ]}
-                  />
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
         {isOpen && (
           <Modal width="w-full max-w-[794px]">
-            <h2>Salary Slip</h2>
+            <h2>Project Detail</h2>
             <div className="flex justify-end pt-4">
               <Button variant="cancel" onClick={handleCloseModal}>
                 Close

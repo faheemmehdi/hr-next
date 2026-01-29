@@ -40,78 +40,78 @@ export default function AllDepartments() {
     const closeAddDeptModal = () => setAddBonusOpen(false);
 
     const departmentData = [
-        // {
-        //     name: "Performance Bonus",
-        //     departmentHead: "Jane Doe",
-        //     location: "All Locations",
-        //     members: 120,
-        //     createdAt: "2024-01-10",
-        //     statusId: 1,
-        //     status: "Active",
-        // },
-        // {
-        //     name: "Year-End Bonus",
-        //     departmentHead: "John Smith",
-        //     location: "Head Office",
-        //     members: 85,
-        //     createdAt: "2023-12-15",
-        //     statusId: 1,
-        //     status: "Active",
-        // },
-        // {
-        //     name: "Referral Bonus",
-        //     departmentHead: "Emily Johnson",
-        //     location: "All Locations",
-        //     members: 200,
-        //     createdAt: "2024-02-01",
-        //     statusId: 1,
-        //     status: "Active",
-        // },
-        // {
-        //     name: "Holiday Bonus",
-        //     departmentHead: "Michael Brown",
-        //     location: "Regional Office - East",
-        //     members: 50,
-        //     createdAt: "2023-11-20",
-        //     statusId: 2,
-        //     status: "Inactive",
-        // },
-        // {
-        //     name: "Attendance Bonus",
-        //     departmentHead: "Laura Wilson",
-        //     location: "All Locations",
-        //     members: 140,
-        //     createdAt: "2024-01-05",
-        //     statusId: 1,
-        //     status: "Active",
-        // },
-        // {
-        //     name: "Training Completion Bonus",
-        //     departmentHead: "David Lee",
-        //     location: "Head Office",
-        //     members: 75,
-        //     createdAt: "2024-02-10",
-        //     statusId: 1,
-        //     status: "Active",
-        // },
-        // {
-        //     name: "Customer Satisfaction Bonus",
-        //     departmentHead: "Sarah Davis",
-        //     location: "All Locations",
-        //     members: 110,
-        //     createdAt: "2023-12-01",
-        //     statusId: 1,
-        //     status: "Active",
-        // },
-        // {
-        //     name: "Leadership Bonus",
-        //     departmentHead: "Robert Martinez",
-        //     location: "Regional Office - West",
-        //     members: 40,
-        //     createdAt: "2024-01-15",
-        //     statusId: 1,
-        //     status: "Active",
-        // },
+        {
+            name: "Performance Bonus",
+            departmentHead: "Jane Doe",
+            location: "All Locations",
+            members: 120,
+            createdAt: "2024-01-10",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Year-End Bonus",
+            departmentHead: "John Smith",
+            location: "Head Office",
+            members: 85,
+            createdAt: "2023-12-15",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Referral Bonus",
+            departmentHead: "Emily Johnson",
+            location: "All Locations",
+            members: 200,
+            createdAt: "2024-02-01",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Holiday Bonus",
+            departmentHead: "Michael Brown",
+            location: "Regional Office - East",
+            members: 50,
+            createdAt: "2023-11-20",
+            statusId: 2,
+            status: "Inactive",
+        },
+        {
+            name: "Attendance Bonus",
+            departmentHead: "Laura Wilson",
+            location: "All Locations",
+            members: 140,
+            createdAt: "2024-01-05",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Training Completion Bonus",
+            departmentHead: "David Lee",
+            location: "Head Office",
+            members: 75,
+            createdAt: "2024-02-10",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Customer Satisfaction Bonus",
+            departmentHead: "Sarah Davis",
+            location: "All Locations",
+            members: 110,
+            createdAt: "2023-12-01",
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Leadership Bonus",
+            departmentHead: "Robert Martinez",
+            location: "Regional Office - West",
+            members: 40,
+            createdAt: "2024-01-15",
+            statusId: 1,
+            status: "Active",
+        },
 
     ];
 
@@ -164,7 +164,6 @@ export default function AllDepartments() {
                     </Button>
                 </div>
 
-                {/* Search + Date Filter (UI only; logic handled in backend) */}
                 <div className="w-full flex flex-col md:flex-row justify-between items-center my-2 mt-5">
                     <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
@@ -174,7 +173,7 @@ export default function AllDepartments() {
                         />
                     </div>
                     <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
-                        <div className="mb-1 w-full md:w-[10rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
                                 value={location}
@@ -184,7 +183,7 @@ export default function AllDepartments() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-full md:w-[10rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="hod"
                                 value={hod}

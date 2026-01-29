@@ -269,7 +269,7 @@ export default function HolidaysCalender() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 p-6">
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-base font-semibold text-gray-700">
                         Holiday Calendar
@@ -279,16 +279,16 @@ export default function HolidaysCalender() {
                     </Button>
                 </div>
 
-                <div className="flex justify-between items-center my-3 mt-5">
-                    <div className="w-1/5 flex items-center mb-1">
+                <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+                    <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center gap-2">
-                        <div className="mb-1 w-[9rem]">
+                    <div className="w-full md:flex flex-col md:flex-row justify-end items-center gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="region"
                                 value={selectRegion}
@@ -298,7 +298,7 @@ export default function HolidaysCalender() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
                                 value={location}
@@ -309,27 +309,33 @@ export default function HolidaysCalender() {
                             />
                         </div>
 
-                        <div className="mb-1 w-[9rem]">
+                        <div className="mb-1 w-full md:w-[9rem]">
                             <MonthPicker monthVal={monthVal} setMonthVal={setMonthVal} />
                         </div>
-                        <Input
-                            type="date"
-                            name="date"
-                            noMargin={true}
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                        />
-                        {viewMode == 'calendar' &&
-                            <IoIosList onClick={() => setViewMode('table')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Table View" />}
-                        {viewMode == 'table' && <CiGrid41 onClick={() => setViewMode('calendar')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Calendar View" />}
-                        <TbFilterOff className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Reset Filter" />
+
+                        <div className="w-full md:w-[9rem]">
+                            <Input
+                                type="date"
+                                name="date"
+                                noMargin={true}
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            {viewMode == 'calendar' &&
+                                <IoIosList onClick={() => setViewMode('table')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Table View" />}
+                            {viewMode == 'table' && <CiGrid41 onClick={() => setViewMode('calendar')} className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Calendar View" />}
+                            <TbFilterOff className="border rounded h-[31px] w-[31px] p-[4px] cursor-pointer bg-gray-50 border-gray-300 text-gray-500 mb-1" title="Reset Filter" />
+                        </div>
+
                     </div>
                 </div>
 
-
-                {viewMode === 'table' ? (<div className="overflow-x-auto -mt-2">
+                {viewMode === 'table' ? (<div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead>
+                                    <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
                                 <th className="px-4 py-3 text-left rounded-tl-md">ID</th>
                                 <th className="px-4 py-3 text-left">Holiday Name</th>
@@ -345,38 +351,46 @@ export default function HolidaysCalender() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {holidayCalendarData.map((row, idx) => (
-                                <tr
-                                    key={idx}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                        } hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-4 py-3">{row.id}</td>
-                                    <td className="px-4 py-3">{row.holidayName}</td>
-                                    <td className="px-4 py-3">
-                                        {row.startDay}{row.startDay !== row.endDay ? ` – ${row.endDay}` : ''}
-                                    </td>
-                                    <td className="px-4 py-3">{row.day}</td>
-                                    <td className="px-4 py-3">{row.regionName}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.locations}>{row.locations}</td>
-                                    <td className="px-4 py-3">{row.calendarType}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.description}>{row.description}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]">{row.attachment}</td>
-                                    <td className="px-4 py-3">
-                                        <StatusDesign statusId={row.statusId} label={row.status} />
-                                    </td>
+                            {holidayCalendarData && holidayCalendarData.length > 0 ? (
+                                holidayCalendarData.map((row, idx) => (
+                                    <tr
+                                        key={idx}
+                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                            } hover:bg-gray-100 transition-colors`}
+                                    >
+                                        <td className="px-4 py-3">{row.id}</td>
+                                        <td className="px-4 py-3">{row.holidayName}</td>
+                                        <td className="px-4 py-3">
+                                            {row.startDay}{row.startDay !== row.endDay ? ` – ${row.endDay}` : ''}
+                                        </td>
+                                        <td className="px-4 py-3">{row.day}</td>
+                                        <td className="px-4 py-3">{row.regionName}</td>
+                                        <td className="px-4 py-3 truncate max-w-[120px]" title={row.locations}>{row.locations}</td>
+                                        <td className="px-4 py-3">{row.calendarType}</td>
+                                        <td className="px-4 py-3 truncate max-w-[120px]" title={row.description}>{row.description}</td>
+                                        <td className="px-4 py-3 truncate max-w-[120px]">{row.attachment}</td>
+                                        <td className="px-4 py-3">
+                                            <StatusDesign statusId={row.statusId} label={row.status} />
+                                        </td>
 
 
-                                    <RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "View Holiday", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
-                                            { label: "Edit Holiday", icon: FiEdit3, color: "green" },
-                                            { label: "Deactivate", icon: RxCross2, color: "red", onClick: openReasonModal },
-                                        ]}
-                                    />
+                                        <RowActions
+                                            row={row}
+                                            actions={[
+                                                { label: "View Holiday", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                                                { label: "Edit Holiday", icon: FiEdit3, color: "green" },
+                                                { label: "Deactivate", icon: RxCross2, color: "red", onClick: openReasonModal },
+                                            ]}
+                                        />
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={12} className="text-center py-4 text-gray-500 italic">
+                                        No holiday found.
+                                    </td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>) : (<div className="bg-white rounded border border-gray-200 p-4 -mt-2">
