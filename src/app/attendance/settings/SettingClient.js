@@ -66,6 +66,41 @@ function SettingClient() {
         sat: true,
         sun: true,
     });
+    const toggleWorkingDay = (dayKey) => {
+        setWorkingDays((prev) => {
+            const isSelected = !prev[dayKey];
+
+            if (isSelected) {
+                setWeekendDays((wPrev) => ({
+                    ...wPrev,
+                    [dayKey]: false,
+                }));
+            }
+
+            return {
+                ...prev,
+                [dayKey]: isSelected,
+            };
+        });
+    };
+
+    const toggleWeekendDay = (dayKey) => {
+        setWeekendDays((prev) => {
+            const isSelected = !prev[dayKey];
+
+            if (isSelected) {
+                setWorkingDays((wPrev) => ({
+                    ...wPrev,
+                    [dayKey]: false,
+                }));
+            }
+
+            return {
+                ...prev,
+                [dayKey]: isSelected,
+            };
+        });
+    };
 
 
 
@@ -166,13 +201,13 @@ function SettingClient() {
         handleModeToggle,
         weekdays,
         workingDays,
-        setWorkingDays,
         weekendDays,
-        setWeekendDays,
         timeZones,
         modes,
         setModes,
         handleSave,
+        toggleWorkingDay,
+        toggleWeekendDay,
     };
 
 

@@ -383,7 +383,7 @@ export default function PaySlips() {
                 name="date"
                 noMargin={true}
                 value={date}
-                onChange={(e) => onDateChange(e.target.value)}
+                onChange={(e) => setDate(e.target.value)}
               />
             </div>
 

@@ -3,7 +3,8 @@ import CustomSelect from "y@/app/components/CustomSelect";
 import Input from "y@/app/components/Input";
 import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import Button from "y@/app/components/Button";
-export default function General({settings, onChange, locations, shifts, allModes, handleModeToggle, weekdays, workingDays, setWorkingDays, weekendDays, setWeekendDays, timeZones, modes, handleSave}) {
+export default function General({settings, onChange, locations, shifts, allModes, handleModeToggle, weekdays, workingDays, weekendDays, timeZones, modes, handleSave,toggleWorkingDay,
+    toggleWeekendDay,}) {
 
 
 
@@ -46,7 +47,6 @@ export default function General({settings, onChange, locations, shifts, allModes
                                     </div>
                                 </div>
                             </div>
-
 
                             {settings.attendanceEnabled && <div className="w-full">
                                 <div className="w-full mt-7">
@@ -111,12 +111,7 @@ export default function General({settings, onChange, locations, shifts, allModes
                                                         <input
                                                             type="checkbox"
                                                             checked={workingDays[day.key]}
-                                                            onChange={() =>
-                                                                setWorkingDays((prev) => ({
-                                                                    ...prev,
-                                                                    [day.key]: !prev[day.key],
-                                                                }))
-                                                            }
+                                                           onChange={() => toggleWorkingDay(day.key)}
                                                             className="accent-[var(--toggle-btn)] w-3.5 h-3.5 cursor-pointer"
                                                         />
 
@@ -142,12 +137,7 @@ export default function General({settings, onChange, locations, shifts, allModes
                                                         <input
                                                             type="checkbox"
                                                             checked={weekendDays[day.key]}
-                                                            onChange={() =>
-                                                                setWeekendDays((prev) => ({
-                                                                    ...prev,
-                                                                    [day.key]: !prev[day.key],
-                                                                }))
-                                                            }
+                                                            onChange={() => toggleWeekendDay(day.key)}
                                                             className="accent-[var(--toggle-btn)] w-3.5 h-3.5 cursor-pointer"
                                                         />
 
