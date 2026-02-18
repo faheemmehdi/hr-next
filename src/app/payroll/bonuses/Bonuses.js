@@ -17,6 +17,8 @@ import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import RowActions from "y@/app/components/RowActions";
 import Modal from "y@/app/components/ModalShell";
+import RichTextEditor from "y@/app/components/RichTextEditor";
+
 export default function AllBonuses() {
     const [bonusName, setBonusName] = useState("");
     const [frequency, setFrequency] = useState("");
@@ -31,6 +33,7 @@ export default function AllBonuses() {
     const [isAddBonusOpen, setAddBonusOpen] = useState(false);
     const [active, setActive] = useState(true);
     const [showErrors, setShowErrors] = useState(false);
+    const [desc, setDesc] = useState("");
 
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false);
@@ -256,7 +259,7 @@ export default function AllBonuses() {
                 </div>
 
 
-             <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
+                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
                         <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
@@ -273,35 +276,35 @@ export default function AllBonuses() {
                         </thead>
                         <tbody className="text-xxs">
                             {bonusesData && bonusesData.length > 0 ? (
-                            bonusesData.map((row, idx) => (
-                                <tr
-                                    key={idx}
-                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                        } hover:bg-gray-100 transition-colors`}
-                                >
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.name}>{row.name}</td>
-                                    <td className="px-4 py-3">{row.location}</td>
-                                    <td className="px-4 py-3 truncate max-w-[120px]" title={row.description}>{row.description}</td>
-                                    <td className="px-4 py-3">{row.amount.toLocaleString()}</td>
-                                    <td className="px-4 py-3">{row.eligibility}</td>
-                                    <td className="px-4 py-3">{row.frequency}</td>
-                                    <td className="px-4 py-3">{row.createdAt}</td>
-                                    <td className="px-4 py-3">
-                                        <StatusDesign statusId={row.statusId} label={row.status} />
-                                    </td>
+                                bonusesData.map((row, idx) => (
+                                    <tr
+                                        key={idx}
+                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                            } hover:bg-gray-100 transition-colors`}
+                                    >
+                                        <td className="px-4 py-3 truncate max-w-[120px]" title={row.name}>{row.name}</td>
+                                        <td className="px-4 py-3">{row.location}</td>
+                                        <td className="px-4 py-3 truncate max-w-[120px]" title={row.description}>{row.description}</td>
+                                        <td className="px-4 py-3">{row.amount.toLocaleString()}</td>
+                                        <td className="px-4 py-3">{row.eligibility}</td>
+                                        <td className="px-4 py-3">{row.frequency}</td>
+                                        <td className="px-4 py-3">{row.createdAt}</td>
+                                        <td className="px-4 py-3">
+                                            <StatusDesign statusId={row.statusId} label={row.status} />
+                                        </td>
 
 
-                                    <RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "View Bonus", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
-                                            { label: "Edit Bonus", icon: FiEdit3 },
-                                            { label: "Deactivate Bonus", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
-                                        ]}
-                                    />
-                                </tr>
-                            ))
-                             ) : (
+                                        <RowActions
+                                            row={row}
+                                            actions={[
+                                                { label: "View Bonus", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                                                { label: "Edit Bonus", icon: FiEdit3 },
+                                                { label: "Deactivate Bonus", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                            ]}
+                                        />
+                                    </tr>
+                                ))
+                            ) : (
                                 <tr>
                                     <td colSpan={11} className="text-center py-4 text-gray-500 italic">
                                         No bonus found.
@@ -419,13 +422,7 @@ export default function AllBonuses() {
                                 >
                                     Description
                                 </label>
-                                <textarea
-                                    id="desc"
-                                    rows="4"
-                                    placeholder="Enter description here..."
-                                    className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                        focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                />
+                                <RichTextEditor value={desc} onChange={setDesc} />
                             </div>
                         </div>
                         <div className="flex justify-end gap-2">

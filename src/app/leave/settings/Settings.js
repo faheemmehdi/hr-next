@@ -16,6 +16,9 @@ import { MdOutlineBlock } from "react-icons/md";
 import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import RowActions from "y@/app/components/RowActions";
+import RichTextEditor from "y@/app/components/RichTextEditor";
+import Modal from "y@/app/components/ModalShell";
+
 export default function LeaveSettings() {
     const [typeName, setTypeName] = useState("");
     const [typeCode, setTypeCode] = useState("");
@@ -35,6 +38,7 @@ export default function LeaveSettings() {
     const [probation, setProbation] = useState(false);
     const [active, setActive] = useState(true);
     const [showErrors, setShowErrors] = useState(false);
+    const [desc, setDesc] = useState("");
 
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false);
@@ -425,186 +429,178 @@ export default function LeaveSettings() {
 
 
                 {isAddLeaveOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-6/12">
-                            <h3 className="text-lg text-center font-semibold mb-4">Add Leave Type</h3>
-                            <div className="w-full">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                                    <CustomSelect
-                                        name="location"
-                                        label="Location"
-                                        value={locationVal}
-                                        placeholder="Select Location"
-                                        onChange={setLocationVal}
-                                        options={locations}
-                                        controlHeight="2rem"
-                                        error={showErrors && !locationVal ? "Location is required" : ""}
-                                    />
+                    <Modal width="w-10/12 md:w-6/12">
+                        <h3 className="text-lg text-center font-semibold mb-4">Add Leave Type</h3>
+                        <div className="w-full">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                                <CustomSelect
+                                    name="location"
+                                    label="Location"
+                                    value={locationVal}
+                                    placeholder="Select Location"
+                                    onChange={setLocationVal}
+                                    options={locations}
+                                    controlHeight="2rem"
+                                    error={showErrors && !locationVal ? "Location is required" : ""}
+                                />
 
-                                    <Input
-                                        type="text"
-                                        name="typeName"
-                                        placeholder="Enter Leave Type name"
-                                        label="Leave Type Name"
-                                        noMargin={true}
-                                        value={typeName}
-                                        onChange={(e) => setTypeName(e.target.value)}
-                                        error={showErrors && !typeName ? "Leave Type Name is required" : ""}
-                                    />
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-                                    <Input
-                                        type="text"
-                                        name="typeCode"
-                                        placeholder="Enter Leave Type Code"
-                                        label="Leave Type Code"
-                                        noMargin={true}
-                                        value={typeCode}
-                                        onChange={(e) => setTypeCode(e.target.value)}
-                                        error={showErrors && !typeCode ? "Type Code is required" : ""}
-                                    />
-                                    <Input
-                                        type="number"
-                                        name="leavesLimit"
-                                        placeholder="Enter number"
-                                        label="Annual Limit"
-                                        noMargin={true}
-                                        value={leaveLimit}
-                                        onChange={(e) => setLeaveLimit(e.target.value)}
-                                        error={showErrors && !leaveLimit ? "Annual Limit is required" : ""}
-                                    />
-                                    <CustomSelect
-                                        name="type"
-                                        label="Accrual Type"
-                                        value={type}
-                                        placeholder="Select Type"
-                                        onChange={setType}
-                                        options={accrualTypes}
-                                        controlHeight="2rem"
-                                        tooltip="Decides when employees get this leave (every month or year)."
-                                        error={showErrors && !type ? "Accrual Type is required" : ""}
-                                    />
-
-
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-
-                                    <div className="flex flex-col gap-2">
-                                        <div className="w-full md:w-62">
-                                            <ToggleSwitch
-                                                label="Carry Forward Allowed"
-                                                checked={CFAllow}
-                                                onChange={setCFAllow}
-                                            />
-                                        </div>
-                                        {CFAllow && (
-                                            <Input
-                                                type="number"
-                                                name="cfDays"
-                                                placeholder="Enter Max Days"
-                                                label="Carry Forward Limit (Days)"
-                                                noMargin={true}
-                                                value={CFDays}
-                                                onChange={(e) => setCFDays(e.target.value)}
-                                                error={showErrors && !CFDays && CFAllow ? "Carry Forward Limit is required" : ""}
-                                            />
-                                        )}
-                                    </div>
-
-                                    <div className="flex flex-col gap-2">
-                                        <div className="w-full md:w-62">
-                                            <ToggleSwitch
-                                                label="Encashment Allowed"
-                                                checked={cashAllow}
-                                                onChange={setCashAllow}
-                                            />
-                                        </div>
-                                        {cashAllow && (
-                                            <div className="w-full">
-                                                <label
-                                                    htmlFor="cashPolicyNote"
-                                                    className="block text-xxs text-gray-700 mb-1"
-                                                >
-                                                    Encashment Policy Note
-                                                </label>
-                                                <textarea
-                                                    id="cashPolicyNote"
-                                                    rows="1"
-                                                    placeholder="Enter policy note ..."
-                                                    className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 text-xxs 
-                                                    focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 
-                                                    resize-y overflow-hidden transition-all duration-150 min-h-[32px] max-h-[150px]"
-                                                />
-                                            </div>
-
-                                        )}
-                                    </div>
+                                <Input
+                                    type="text"
+                                    name="typeName"
+                                    placeholder="Enter Leave Type name"
+                                    label="Leave Type Name"
+                                    noMargin={true}
+                                    value={typeName}
+                                    onChange={(e) => setTypeName(e.target.value)}
+                                    error={showErrors && !typeName ? "Leave Type Name is required" : ""}
+                                />
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                                <Input
+                                    type="text"
+                                    name="typeCode"
+                                    placeholder="Enter Leave Type Code"
+                                    label="Leave Type Code"
+                                    noMargin={true}
+                                    value={typeCode}
+                                    onChange={(e) => setTypeCode(e.target.value)}
+                                    error={showErrors && !typeCode ? "Type Code is required" : ""}
+                                />
+                                <Input
+                                    type="number"
+                                    name="leavesLimit"
+                                    placeholder="Enter number"
+                                    label="Annual Limit"
+                                    noMargin={true}
+                                    value={leaveLimit}
+                                    onChange={(e) => setLeaveLimit(e.target.value)}
+                                    error={showErrors && !leaveLimit ? "Annual Limit is required" : ""}
+                                />
+                                <CustomSelect
+                                    name="type"
+                                    label="Accrual Type"
+                                    value={type}
+                                    placeholder="Select Type"
+                                    onChange={setType}
+                                    options={accrualTypes}
+                                    controlHeight="2rem"
+                                    tooltip="Decides when employees get this leave (every month or year)."
+                                    error={showErrors && !type ? "Accrual Type is required" : ""}
+                                />
 
 
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-                                    <div className="w-full">
-                                        <Input
-                                            type="number"
-                                            name="asAfter"
-                                            placeholder="Enter Number"
-                                            label="Accrual Start After (Days)"
-                                            noMargin={true}
-                                            value={ASAfter}
-                                            onChange={(e) => setASAfter(e.target.value)}
-                                            error={showErrors && !ASAfter && CFAllow ? "Accrual Start After is required" : ""}
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+
+                                <div className="flex flex-col gap-2">
+                                    <div className="w-full md:w-62">
+                                        <ToggleSwitch
+                                            label="Carry Forward Allowed"
+                                            checked={CFAllow}
+                                            onChange={setCFAllow}
                                         />
                                     </div>
-                                    <div className="w-full flex items-center">
-                                        <div className="w-full md:w-37 md:mt-4">
-                                            <ToggleSwitch
-                                                label="Probation Eligibility"
-                                                checked={probation}
-                                                onChange={setProbation}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="w-full flex items-center">
-
-                                        <div className="w-full md:w-37 md:mt-4">
-                                            <ToggleSwitch
-                                                label="Active Status"
-                                                checked={active}
-                                                onChange={setActive}
-                                            />
-                                        </div>
-                                    </div>
-
-
+                                    {CFAllow && (
+                                        <Input
+                                            type="number"
+                                            name="cfDays"
+                                            placeholder="Enter Max Days"
+                                            label="Carry Forward Limit (Days)"
+                                            noMargin={true}
+                                            value={CFDays}
+                                            onChange={(e) => setCFDays(e.target.value)}
+                                            error={showErrors && !CFDays && CFAllow ? "Carry Forward Limit is required" : ""}
+                                        />
+                                    )}
                                 </div>
 
-                                <div className="w-full mb-3">
-                                    <label
-                                        htmlFor="pDesc"
-                                        className="block text-xxs text-gray-700 mb-2"
-                                    >
-                                        Policy Description / Notes
-                                    </label>
-                                    <textarea
-                                        id="pDesc"
-                                        rows="4"
-                                        placeholder="Enter policies notes..."
-                                        className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                        focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
+                                <div className="flex flex-col gap-2">
+                                    <div className="w-full md:w-62">
+                                        <ToggleSwitch
+                                            label="Encashment Allowed"
+                                            checked={cashAllow}
+                                            onChange={setCashAllow}
+                                        />
+                                    </div>
+                                    {cashAllow && (
+                                        <div className="w-full">
+                                            <label
+                                                htmlFor="cashPolicyNote"
+                                                className="block text-xxs text-gray-700 mb-1"
+                                            >
+                                                Encashment Policy Note
+                                            </label>
+                                            <textarea
+                                                id="cashPolicyNote"
+                                                rows="1"
+                                                placeholder="Enter policy note ..."
+                                                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-800 text-xxs 
+                                                    focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 
+                                                    resize-y overflow-hidden transition-all duration-150 min-h-[32px] max-h-[150px]"
+                                            />
+                                        </div>
+
+                                    )}
+                                </div>
+
+
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                                <div className="w-full">
+                                    <Input
+                                        type="number"
+                                        name="asAfter"
+                                        placeholder="Enter Number"
+                                        label="Accrual Start After (Days)"
+                                        noMargin={true}
+                                        value={ASAfter}
+                                        onChange={(e) => setASAfter(e.target.value)}
+                                        error={showErrors && !ASAfter && CFAllow ? "Accrual Start After is required" : ""}
                                     />
                                 </div>
+                                <div className="w-full flex items-center">
+                                    <div className="w-full md:w-37 md:mt-4">
+                                        <ToggleSwitch
+                                            label="Probation Eligibility"
+                                            checked={probation}
+                                            onChange={setProbation}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="w-full flex items-center">
+
+                                    <div className="w-full md:w-37 md:mt-4">
+                                        <ToggleSwitch
+                                            label="Active Status"
+                                            checked={active}
+                                            onChange={setActive}
+                                        />
+                                    </div>
+                                </div>
+
+
                             </div>
-                            <div className="flex justify-end gap-2">
-                                <Button variant="cancel" onClick={closeAddLeaveModal}>
-                                    Cancel
-                                </Button>
-                                <Button variant="success">
-                                    Save
-                                </Button>
+
+                            <div className="w-full mb-3">
+                                <label
+                                    htmlFor="pDesc"
+                                    className="block text-xxs text-gray-700 mb-2"
+                                >
+                                    Policy Description / Notes
+                                </label>
+                                <RichTextEditor value={desc} onChange={setDesc} />
                             </div>
                         </div>
-                    </div>
+                        <div className="flex justify-end gap-2">
+                            <Button variant="cancel" onClick={closeAddLeaveModal}>
+                                Cancel
+                            </Button>
+                            <Button variant="success">
+                                Save
+                            </Button>
+                        </div>
+                    </Modal>
                 )}
 
                 <ReasonModal

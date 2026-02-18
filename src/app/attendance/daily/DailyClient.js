@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
+
 import {
   FiSmartphone,
   FiCpu,
@@ -26,6 +27,7 @@ import {
 import { CiMobile4 } from "react-icons/ci";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
+import RichTextEditor from "y@/app/components/RichTextEditor";
 export default function DailyClient() {
   const [date, setDate] = useState("");
   const [dateVal, setDateVal] = useState("");
@@ -111,21 +113,7 @@ export default function DailyClient() {
       status: "Present",
       statusId: 1, // Present
     },
-    {
-      empId: "EMP002",
-      name: "Sara Ahmed malilk city bana rota",
-      imageUrl: "/api/portraits/women/45.jpg",
-      location: "Karachi Office",
-      department: "Finance",
-      shift: "Morning",
-      checkIn: "-",
-      checkInMethodId: null,
-      checkOut: "-",
-      checkOutMethodId: null,
-      hours: "-",
-      status: "Weekend",
-      statusId: 4, // Weekend
-    },
+
     {
       empId: "EMP003",
       name: "Hamza Ali",
@@ -140,6 +128,21 @@ export default function DailyClient() {
       hours: "6.5",
       status: "Late",
       statusId: 3, // Late
+    },
+    {
+      empId: "EMP002",
+      name: "Sara Ahmed malilk city bana rota",
+      imageUrl: "/api/portraits/women/45.jpg",
+      location: "Karachi Office",
+      department: "Finance",
+      shift: "Morning",
+      checkIn: "-",
+      checkInMethodId: null,
+      checkOut: "-",
+      checkOutMethodId: null,
+      hours: "-",
+      status: "Weekend",
+      statusId: 4, // Weekend
     },
     {
       empId: "EMP004",
@@ -548,17 +551,7 @@ export default function DailyClient() {
                       Remarks
                     </label>
 
-                    <textarea
-                      id="remarks"
-                      name="remarks"
-                      rows="3"
-                      value={remarks}
-                      onChange={(e) => setRemarks(e.target.value)}
-                      className={`w-full px-3 py-1 border rounded-md text-xxs focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none
-                        ${showErrors && !remarks ? "border-red-500" : "border-gray-300"}
-                      `}
-                      placeholder="Enter remarks..."
-                    ></textarea>
+                    <RichTextEditor value={remarks} onChange={setRemarks} />
 
                     {showErrors && !remarks && (
                       <p className="text-xxs text-red-500">Remarks are required</p>

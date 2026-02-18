@@ -95,7 +95,7 @@ function CreateProject() {
             billing_rate: '',
             currency: '',
             estimated_budget: '',
-            overtime_allow: '',
+            overtime_allow: 'true',
             overtime_rate: '',
             milestones: [
                 { name: '', dueDate: '', linkedBilling: '', description: '' }

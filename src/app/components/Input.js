@@ -17,6 +17,9 @@ export default function Input({
   variant = "default",
   tooltip = "",
   isRequired = false,
+  disabled = false,
+  bg = '',
+  ...rest
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -67,8 +70,11 @@ export default function Input({
           onChange={onChange}
           onBlur={onBlur}
           placeholder={placeholder}
+          disabled={disabled}
+          {...rest}
           className={`${variants[variant].input}
             ${icon ? "pl-10" : "pl-4"}
+            ${bg ? bg : ""}
             ${type === "password" ? "pr-14" : ""
             }  /* more space for text button */
             ${variant === "default"

@@ -23,6 +23,8 @@ import Paid from "./tabs/Paid";
 import Tabs from "y@/app/components/Tabs";
 import All from "./tabs/All";
 import Modal from "y@/app/components/ModalShell";
+import RichTextEditor from "y@/app/components/RichTextEditor";
+
 export default function PayrollEmp() {
     const [activeTab, setActiveTab] = useState("");
     const [date, setDate] = useState("");
@@ -31,7 +33,7 @@ export default function PayrollEmp() {
     const [location, setLocation] = useState("");
     const [selectedRow, setSelectedRow] = useState(null);
     const [modalType, setModalType] = useState(null);
-    const [locationVal, setLocationVal] = useState("");
+    const [desc, setDesc] = useState("");
     const [employee, setEmployee] = useState("");
     const [department, setDepartment] = useState("");
     const [departVal, setDepartVal] = useState("");
@@ -459,7 +461,7 @@ export default function PayrollEmp() {
                 <Tabs tabs={tabs} defaultTab="all" onTabChange={setActiveTab} align="center" />
 
                 {isOpen && (
-                    <Modal width="w-11/12 md:w-4/12">
+                    <Modal width="w-11/12 md:w-5/12">
                         <div className="mb-1">
                             <div className="flex justify-between">
                                 <h2 className="text-lg font-semibold text-gray-800">{activeTab === 'pending' && "Approve All Employees"}{activeTab === 'approved' && "Mark All Employees as Paid"}</h2>
@@ -485,13 +487,7 @@ export default function PayrollEmp() {
                             >
                                 Remarks / Description
                             </label>
-                            <textarea
-                                id="reasonText"
-                                rows="4"
-                                placeholder="Write remarks here..."
-                                className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                  focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                            />
+                            <RichTextEditor value={desc} onChange={setDesc} />
                         </div>
                         <div className="flex justify-end gap-2 pt-3">
                             <Button variant="cancel" onClick={handleCloseModal}>

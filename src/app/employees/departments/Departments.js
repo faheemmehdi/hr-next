@@ -17,12 +17,13 @@ import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import RowActions from "y@/app/components/RowActions";
 import Modal from "y@/app/components/ModalShell";
+import RichTextEditor from "y@/app/components/RichTextEditor";
 export default function AllDepartments() {
     const [deptName, setDeptName] = useState("");
     const [deptHead, setDeptHead] = useState("");
     const [search, setSearch] = useState("");
     const [location, setLocation] = useState("");
-    const [eligibility, setEligibility] = useState("");
+    const [desc, setDesc] = useState("");
     const [locationVal, setLocationVal] = useState("");
     const [amount, setAmount] = useState("");
     const [hod, setHod] = useState("");
@@ -331,13 +332,7 @@ export default function AllDepartments() {
                                 >
                                     Description
                                 </label>
-                                <textarea
-                                    id="desc"
-                                    rows="4"
-                                    placeholder="Enter description here..."
-                                    className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                        focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                />
+                                <RichTextEditor value={desc} onChange={setDesc} />
                             </div>
                         </div>
                         <div className="flex justify-end gap-2">

@@ -19,8 +19,11 @@ import RowActions from "y@/app/components/RowActions";
 import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import Tooltip from "y@/app/components/Tooltip";
 import { Checkbox } from "@headlessui/react";
+import Modal from "y@/app/components/ModalShell";
+import RichTextEditor from "y@/app/components/RichTextEditor";
+
 export default function Roles() {
-    const [date, setDate] = useState("");
+    const [desc, setDesc] = useState("");
     const [dateVal, setDateVal] = useState("");
     const [search, setSearch] = useState("");
     const [location, setLocation] = useState("");
@@ -242,102 +245,94 @@ export default function Roles() {
                     </table>
                 </div>
                 {isOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-10/12 md:w-6/12">
-                            <h3 className="text-lg text-center font-semibold mb-4">Add Role</h3>
+                    <Modal width="w-full md:w-6/12">
+                        <h3 className="text-lg text-center font-semibold mb-4">Add Role</h3>
 
-                            <div className="w-full">
+                        <div className="w-full">
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                                    <Input
-                                        type="text"
-                                        name="name"
-                                        placeholder="Enter role name"
-                                        label="Role Name"
-                                        noMargin={true}
-                                        isRequired={true}
-                                        value={roleName}
-                                        onChange={(e) => setRoleName(e.target.value)}
-                                        error={showErrors && !roleName ? "Role Name is required" : ""}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                                <Input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Enter role name"
+                                    label="Role Name"
+                                    noMargin={true}
+                                    isRequired={true}
+                                    value={roleName}
+                                    onChange={(e) => setRoleName(e.target.value)}
+                                    error={showErrors && !roleName ? "Role Name is required" : ""}
+                                />
+
+                                <div className="flex items-center md:pt-4 md:justify-center">
+                                    <ToggleSwitch
+                                        label="Activate Role"
+                                        checked={active}
+                                        onChange={setActive}
                                     />
-
-                                    <div className="flex items-center md:pt-4 md:justify-center">
-                                        <ToggleSwitch
-                                            label="Activate Role"
-                                            checked={active}
-                                            onChange={setActive}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="text-xxs text-gray-700 w-full pb-1 flex items-center"><span className="me-1">Permission Categories</span> <Tooltip label="Selecting this category grants all permissions related to it." /></div>
-
-
-                                <div className="max-h-56 overflow-y-auto p-1 bg-white border-t border-b border-gray-300">
-
-                                    {permissionCategories.map(({ value, label }) => (
-                                        <label
-                                            key={value}
-                                            className="inline-flex items-center cursor-pointer text-sm text-gray-800 mb-2"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                className="form-checkbox h-3 w-3 text-blue-600"
-                                            //   checked={selectedCategories.includes(id)}
-                                            //   onChange={() => toggleCategory(id)}
-                                            />
-
-                                            <span className="ml-2 mr-5 text-xxs text-gray-800">{label}</span>
-                                        </label>
-                                    ))}
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-5">
-
-                                    <CustomSelect
-                                        name="assignRoleEmp"
-                                        label="Assign Employees"
-                                        value={assignRoleEmp}
-                                        placeholder="Select Employee"
-                                        onChange={setAssignRoleEmp}
-                                        options={employees}
-                                        isMulti={true}
-                                        controlHeight="2rem"
-                                    />
-                                    <div className="flex items-center md:pt-4 md:justify-center">
-                                        <ToggleSwitch
-                                            label="Default Role"
-                                            checked={defaultRole}
-                                            onChange={setDefaultRole}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mb-4 w-full">
-                                    <label
-                                        htmlFor=""
-                                        className="block text-xxs text-gray-700 mb-2"
-                                    >
-                                        Description
-                                    </label>
-                                    <textarea
-                                        id=""
-                                        rows="4"
-                                        placeholder="Write description here..."
-                                        className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                            focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                    />
-                                </div>
-                                <div className="flex justify-end gap-2">
-                                    <Button variant="cancel" onClick={handleCloseModal}>
-                                        Cancel
-                                    </Button>
-                                    <Button variant="success">
-                                        Add Role
-                                    </Button>
                                 </div>
                             </div>
+
+                            <div className="text-xxs text-gray-700 w-full pb-1 flex items-center"><span className="me-1">Permission Categories</span> <Tooltip label="Selecting this category grants all permissions related to it." /></div>
+
+
+                            <div className="max-h-56 overflow-y-auto p-1 bg-white border-t border-b border-gray-300">
+
+                                {permissionCategories.map(({ value, label }) => (
+                                    <label
+                                        key={value}
+                                        className="inline-flex items-center cursor-pointer text-sm text-gray-800 mb-2"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            className="form-checkbox h-3 w-3 text-blue-600"
+                                        //   checked={selectedCategories.includes(id)}
+                                        //   onChange={() => toggleCategory(id)}
+                                        />
+
+                                        <span className="ml-2 mr-5 text-xxs text-gray-800">{label}</span>
+                                    </label>
+                                ))}
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-5">
+
+                                <CustomSelect
+                                    name="assignRoleEmp"
+                                    label="Assign Employees"
+                                    value={assignRoleEmp}
+                                    placeholder="Select Employee"
+                                    onChange={setAssignRoleEmp}
+                                    options={employees}
+                                    isMulti={true}
+                                    controlHeight="2rem"
+                                />
+                                <div className="flex items-center md:pt-4 md:justify-center">
+                                    <ToggleSwitch
+                                        label="Default Role"
+                                        checked={defaultRole}
+                                        onChange={setDefaultRole}
+                                    />
+                                </div>
+                            </div>
+                            <div className="mb-4 w-full">
+                                <label
+                                    htmlFor=""
+                                    className="block text-xxs text-gray-700 mb-2"
+                                >
+                                    Description
+                                </label>
+                                <RichTextEditor value={desc} onChange={setDesc} />
+                            </div>
+                            <div className="flex justify-end gap-2">
+                                <Button variant="cancel" onClick={handleCloseModal}>
+                                    Cancel
+                                </Button>
+                                <Button variant="success">
+                                    Add Role
+                                </Button>
+                            </div>
                         </div>
-                    </div>
+                    </Modal>
                 )}
                 <ReasonModal
                     isOpen={isReasonOpen}

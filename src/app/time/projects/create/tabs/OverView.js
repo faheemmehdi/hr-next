@@ -1,4 +1,5 @@
 import Button from "y@/app/components/Button";
+import RichTextEditor from "y@/app/components/RichTextEditor";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 const projectTypes = mapSelectOptions(
     [
@@ -207,25 +208,11 @@ export default function OverView({ components, locations, departments, employees
                 <div className="w-full rounded-lg shadow-md border border-gray-200 p-4 flex flex-col md:flex-row gap-6 mt-6">
                     <div className="w-full">
                         <label>Project Summary</label>
-                        <textarea
-                            rows="4"
-                            placeholder="Brief overview of the project"
-                            className="w-full mt-1 rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                focus:outline-none  focus:border-gray-600 transition-all duration-150"
-                            value={data.project_summary || ""}
-                            onChange={(e) => onChange('project_summary', e.target.value)}
-                        />
+                        <RichTextEditor />
                     </div>
                     <div className="w-full">
                         <label>Detailed Description</label>
-                        <textarea
-                            rows="4"
-                            placeholder="Full background, objectives, scope and notes"
-                            className="w-full mt-1 rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                focus:outline-none  focus:border-gray-600 transition-all duration-150"
-                            value={data.project_detail || ""}
-                            onChange={(e) => onChange('project_detail', e.target.value)}
-                        />
+                        <RichTextEditor />
                     </div>
                 </div>
 

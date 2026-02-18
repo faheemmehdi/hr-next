@@ -24,9 +24,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { CiGrid41 } from "react-icons/ci";
 import { IoIosList } from "react-icons/io";
 import { TbFilterOff } from "react-icons/tb";
+import RichTextEditor from "y@/app/components/RichTextEditor";
+
 export default function ShiftSchedules() {
     const [shiftName, setShiftName] = useState("");
-    const [frequency, setFrequency] = useState("");
+    const [desc, setDesc] = useState("");
     const [search, setSearch] = useState("");
     const [location, setLocation] = useState("");
     const [officeStart, setOfficeStart] = useState("");
@@ -828,6 +830,42 @@ export default function ShiftSchedules() {
                                     options={locations}
                                     isMulti={true}
                                     controlHeight="2rem"
+                                /><CustomSelect
+                                    name="eligEmp"
+                                    label="Eligible Employees"
+                                    value={eligEmp}
+                                    placeholder="Select Employee"
+                                    onChange={setEligEmp}
+                                    options={locations}
+                                    isMulti={true}
+                                    controlHeight="2rem"
+                                /><CustomSelect
+                                    name="eligEmp"
+                                    label="Eligible Employees"
+                                    value={eligEmp}
+                                    placeholder="Select Employee"
+                                    onChange={setEligEmp}
+                                    options={locations}
+                                    isMulti={true}
+                                    controlHeight="2rem"
+                                /><CustomSelect
+                                    name="eligEmp"
+                                    label="Eligible Employees"
+                                    value={eligEmp}
+                                    placeholder="Select Employee"
+                                    onChange={setEligEmp}
+                                    options={locations}
+                                    isMulti={true}
+                                    controlHeight="2rem"
+                                /><CustomSelect
+                                    name="eligEmp"
+                                    label="Eligible Employees"
+                                    value={eligEmp}
+                                    placeholder="Select Employee"
+                                    onChange={setEligEmp}
+                                    options={locations}
+                                    isMulti={true}
+                                    controlHeight="2rem"
                                 />
                                 <CustomSelect
                                     name="eligDept"
@@ -848,13 +886,7 @@ export default function ShiftSchedules() {
                                 >
                                     Description
                                 </label>
-                                <textarea
-                                    id="desc"
-                                    rows="4"
-                                    placeholder="Enter description here..."
-                                    className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                        focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                />
+                                                               <RichTextEditor value={desc} onChange={setDesc} />
                             </div>
                         </div>
                         <div className="flex justify-end gap-2">

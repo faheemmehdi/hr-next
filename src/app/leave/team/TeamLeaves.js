@@ -23,6 +23,8 @@ import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
 import FileUpload from "y@/app/components/FileUpload";
 import MonthPicker from "y@/app/components/MonthPicker";
+import RichTextEditor from "y@/app/components/RichTextEditor";
+
 export default function TeamLeave() {
     const [date, setDate] = useState("");
     const [selectRegion, setSelectRegion] = useState("");
@@ -30,7 +32,7 @@ export default function TeamLeave() {
     const [location, setLocation] = useState("");
     const [selectMonth, setSelectMonth] = useState("");
     const [selectYear, setSelectYear] = useState("");
-    const [viewMode, setViewMode] = useState('table');
+    const [desc, setDesc] = useState("");
     const [monthVal, setMonthVal] = useState("");
     const [regionVal, setRegionVal] = useState("");
     const [locationVal, setLocationVal] = useState("");
@@ -771,13 +773,7 @@ export default function TeamLeave() {
                                     >
                                         Reason / Remarks
                                     </label>
-                                    <textarea
-                                        id="pDesc"
-                                        rows="4"
-                                        placeholder="Enter here..."
-                                        className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                        focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                    />
+                                    <RichTextEditor value={desc} onChange={setDesc} />
                                 </div>
 
 

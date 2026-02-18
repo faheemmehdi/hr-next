@@ -24,12 +24,14 @@ import { MdDone } from "react-icons/md";
 import FileUpload from "y@/app/components/FileUpload";
 import MonthPicker from "y@/app/components/MonthPicker";
 import RowActions from "y@/app/components/RowActions";
+import RichTextEditor from "y@/app/components/RichTextEditor";
+
 export default function HolidaysCalender() {
     const [date, setDate] = useState("");
     const [selectRegion, setSelectRegion] = useState("");
     const [search, setSearch] = useState("");
     const [location, setLocation] = useState("");
-    const [selectMonth, setSelectMonth] = useState("");
+    const [desc, setDesc] = useState("");
     const [selectYear, setSelectYear] = useState("");
     const [viewMode, setViewMode] = useState('table');
     const [calendarTitle, setCalendarTitle] = useState('');
@@ -335,7 +337,7 @@ export default function HolidaysCalender() {
 
                 {viewMode === 'table' ? (<div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                                    <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
+                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                             <tr className="bg-gray-100 text-gray-700">
                                 <th className="px-4 py-3 text-left rounded-tl-md">ID</th>
                                 <th className="px-4 py-3 text-left">Holiday Name</th>
@@ -754,16 +756,8 @@ export default function HolidaysCalender() {
                                     >
                                         Description
                                     </label>
-                                    <textarea
-                                        id="pDesc"
-                                        rows="4"
-                                        placeholder="Enter description..."
-                                        className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                        focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                    />
+                                    <RichTextEditor value={desc} onChange={setDesc} />
                                 </div>
-
-
 
                                 <div className="flex justify-end gap-2">
                                     <Button variant="cancel" onClick={handleCloseModal}>
@@ -796,6 +790,7 @@ export default function HolidaysCalender() {
                             </p>
                         </div>}
                     onClose={closeReasonModal}
+                    variant="danger"
                     // onSubmit={handleReject}
                     submitLabel="Deactivate"
                     reasonTitle="Please provide a reason for deactivating this holiday."

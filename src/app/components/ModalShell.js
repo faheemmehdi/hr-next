@@ -1,13 +1,21 @@
 export default function Modal({ children, width }) {
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-            <div className={`bg-white rounded-lg shadow-lg p-6 ${width ? width : 'w-10/12 md:w-5/12'}`}>
-
-                <div className="w-full">
-                    <div className="px-3 py-1 bg-white rounded-xl">
+        <div className="fixed inset-0 z-50 bg-black/50 overflow-y-auto">
+            
+            <div className=" min-h-auto flex justify-center px-4 py-10">
+                
+                <div
+                    className={`
+                        bg-white rounded-xl shadow-xl
+                        w-full
+                        ${width ? width : 'md:w-5/12'}
+                    `}
+                >
+                    <div className="p-6">
                         {children}
                     </div>
                 </div>
+
             </div>
         </div>
     );

@@ -50,3 +50,10 @@ input[type="date"]::-webkit-datetime-edit {
 .react-datepicker-popper {
   z-index: 9999 !important;
 }
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

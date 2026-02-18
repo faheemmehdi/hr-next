@@ -335,7 +335,7 @@ export default function TimeSheet() {
                                 <th className="px-4 py-3 text-left">Tasks</th>
                                 <th className="px-4 py-3 text-left">Hours</th>
                                 <th className="px-4 py-3 text-left">Status</th>
-                                <th className="px-4 py-3 text-center">Action</th>
+                                <th className="px-4 py-3 text-left">Action</th>
                             </tr>
                         </thead>
                         <tbody className="text-xxs">

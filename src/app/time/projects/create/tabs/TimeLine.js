@@ -2,6 +2,7 @@ import Button from "y@/app/components/Button";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import { TiPlus } from "react-icons/ti";
 import { RxCross2 } from "react-icons/rx";
+import RichTextEditor from "y@/app/components/RichTextEditor";
 const billingTypes = mapSelectOptions(
     [
         { id: 1, name: "Hourly (Time & Material)" },
@@ -174,13 +175,7 @@ export default function TimeLine({ components, data, employees, updateData }) {
 
                                 <div className="w-full mt-4">
                                     <label className="block text-xxs font-medium text-gray-700 mb-1">Notes</label>
-                                    <textarea
-                                        rows="3"
-                                        placeholder="Description"
-                                        className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none focus:outline-none focus:border-gray-600 transition-all duration-150"
-                                        value={milestone.description || ""}
-                                        onChange={e => onMilestoneChange(index, 'description', e.target.value)}
-                                    />
+                                                                 <RichTextEditor />
                                 </div>
                             </div>
                         ))}

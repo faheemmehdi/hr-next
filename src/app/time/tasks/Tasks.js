@@ -17,6 +17,8 @@ import RowActions from "y@/app/components/RowActions";
 import Modal from "y@/app/components/ModalShell";
 import "react-datepicker/dist/react-datepicker.css";
 import FileUpload from "y@/app/components/FileUpload";
+import RichTextEditor from "y@/app/components/RichTextEditor";
+
 export default function ProjectTasks() {
     const [taskName, setTaskName] = useState("");
     const [search, setSearch] = useState("");
@@ -44,7 +46,7 @@ export default function ProjectTasks() {
     const [isAssignOpen, setAssignOpen] = useState(false);
     const [bulkAction, setBulkAction] = useState(null);
     const [taskAssignedEmp, setTaskAssignedEmp] = useState("");
-    const [endDate, setEndDate] = useState(null);
+    const [desc, setDesc] = useState("");
     const [assignNote, setAssignNote] = useState('');
     const [assignStart, setAssignStart] = useState('');
     const [assignDue, setAssignDue] = useState('');
@@ -629,13 +631,7 @@ export default function ProjectTasks() {
                                 >
                                     Description
                                 </label>
-                                <textarea
-                                    id="desc"
-                                    rows="4"
-                                    placeholder="Enter description here..."
-                                    className="w-full rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                        focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-300 transition-all duration-150"
-                                />
+                                <RichTextEditor value={desc} onChange={setDesc} />
                             </div>
                         </div>
                         <div className="flex justify-end gap-2">
@@ -678,7 +674,7 @@ export default function ProjectTasks() {
                 />
 
                 {isAssignOpen && (
-                    <Modal width="w-full md:w-5/12">
+                    <Modal width="w-full md:w-6/12">
                         <div className="border-b border-gray-400 pb-3 mb-4">
                             <h2 className="text-lg font-semibold text-gray-800">Assign Task</h2>
                             <p className="text-xxs text-gray-500">
@@ -737,14 +733,7 @@ export default function ProjectTasks() {
 
                         <div className="w-full">
                             <label className="text-xxs ">Assign Note</label>
-                            <textarea
-                                rows="4"
-                                placeholder="Assign note"
-                                className="w-full mt-1 rounded border border-gray-300 p-3 text-gray-800 text-xxs resize-none 
-                                focus:outline-none  focus:border-gray-600 transition-all duration-150"
-                                value={assignNote}
-                                onChange={(e) => setAssignNote(e.target.value)}
-                            />
+                            <RichTextEditor value={assignNote} onChange={setAssignNote} />
                         </div>
 
 
