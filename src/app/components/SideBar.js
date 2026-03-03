@@ -10,7 +10,10 @@ import {
   FiBarChart2,
   FiSettings,
   FiClock,
-  FiActivity
+  FiActivity,
+  FiLink,
+  FiPackage,
+  FiLayers
 } from "react-icons/fi";
 import { LuCalendarDays } from "react-icons/lu";
 const menuItems = [
@@ -26,6 +29,16 @@ const menuItems = [
     ],
   },
   {
+    icon: <FiLayers className="text-md" />,
+    label: "Organization",
+    href: "#", // parent item for dropdown
+    description: "Company info and office locations",
+    dropdown: [
+      { label: "Organization Profile", href: "/admin/organization" },
+      { label: "Locations", href: "/admin/locations" },
+    ],
+  },
+  {
     icon: <FiUsers className="text-md" />,
     href: "/employees",
     label: "Employees",
@@ -33,6 +46,7 @@ const menuItems = [
     dropdown: [
       { label: "List", href: "/employees/list" },
       { label: "Departments", href: "/employees/departments" },
+      { label: "Teams", href: "/employees/teams" },
     ],
   },
   {
@@ -76,6 +90,16 @@ const menuItems = [
     ],
   },
   {
+    icon: <FiPackage className="text-md" />,
+    href: "/assets",
+    label: "Assets",
+    description: "Handle salary, bonuses, and deductions",
+    dropdown: [
+      { label: "Asset Catalog", href: "/assets/list" },
+      { label: "Asset Policies", href: "/assets/policies" },
+    ],
+  },
+  {
     icon: <FiDollarSign className="text-md" />,
     href: "/payroll",
     label: "Payroll",
@@ -84,6 +108,12 @@ const menuItems = [
       { label: "Payrolls", href: "/payroll/list" },
       { label: "Salary Slip", href: "/payroll/salary-slip" },
       { label: "Bonuses", href: "/payroll/bonuses" },
+      { label: "Expenses", href: "/payroll/expenses" },
+      { label: "Loans", href: "/payroll/loans" },
+      { label: "OverTime", href: "/payroll/overtime" },
+      { label: "Payroll Runs", href: "/payroll/runs" },
+      { label: "Bank Integration", href: "/payroll/banks" },
+      { label: "Current Compennsation", href: "/payroll/compensation" },
       { label: "Tax", href: "/payroll/tax" },
     ],
   },
@@ -121,6 +151,12 @@ const menuItems = [
     ],
   },
   {
+    icon: <FiLink className="text-md" />,
+    href: "/integrations",
+    label: "Integrations & APIs",
+
+  },
+  {
     icon: <FiSettings className="text-md" />,
     href: "/settings",
     label: "Settings",
@@ -140,39 +176,48 @@ export default function Sidebar() {
       className="fixed top-11 left-0 w-11 ml-1 h-[calc(100vh-2.75rem)] pt-6 flex flex-col items-center space-y-2 z-40"
     >
       {menuItems.map((item, idx) => (
-        <div key={idx} className="relative group w-full">
+        <div
+          key={idx}
+          className={`relative w-full ${item.dropdown ? "group" : ""}`}
+        >
           <Link
             href={item.href}
-            className="w-full hover:bg-white/30 flex justify-center py-1 text-gray-300 hover:text-white"
+            className={`w-full flex justify-center py-1 text-gray-300 hover:text-white ${item.dropdown ? "hover:bg-white/30" : ""
+              }`}
           >
             {item.icon}
           </Link>
 
-          {/* Dropdown card */}
-          <div className="absolute left-full top-0 ml-1 hidden group-hover:block z-50">
-            <div className="w-52 bg-white text-black rounded shadow-lg border border-gray-200 p-2 animate-fade-in">
-              <p className="text-xs px-2 py-1 border-b border-gray-200">
-                <span className="font-semibold">{item.label}</span>
-                <br />
-                <span className="text-gray-500 text-[11px]">
-                  {item.description}
-                </span>
-              </p>
+          {/* Render dropdown only if it exists */}
+          {item.dropdown && (
+            <div className="absolute left-full top-0 ml-1 hidden group-hover:block z-50">
+              <div className="w-52 bg-white text-black rounded shadow-lg border border-gray-200 p-2 animate-fade-in">
+                {/* Render description if exists */}
+                {item.description && (
+                  <p className="text-xs px-2 py-1 border-b border-gray-200">
+                    <span className="font-semibold">{item.label}</span>
+                    <br />
+                    <span className="text-gray-500 text-[11px]">
+                      {item.description}
+                    </span>
+                  </p>
+                )}
 
-              <ul className="flex flex-col">
-                {item.dropdown.map((drop, i) => (
-                  <li key={i}>
-                    <Link
-                      href={drop.href}
-                      className="block px-3 py-1 text-xxs hover:bg-gray-100 rounded"
-                    >
-                      {drop.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                <ul className="flex flex-col">
+                  {item.dropdown.map((drop, i) => (
+                    <li key={i}>
+                      <Link
+                        href={drop.href}
+                        className="block px-3 py-1 text-xxs hover:bg-gray-100 rounded"
+                      >
+                        {drop.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       ))}
     </aside>
