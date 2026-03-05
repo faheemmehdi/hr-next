@@ -14,6 +14,7 @@ import {
 } from "react-icons/fi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import Button from "y@/app/components/Button";
+import StatusDesign from "y@/app/components/StatusColors";
 export default function EmployeesList() {
     const [date, setDate] = useState("");
     const [search, setSearch] = useState("");
@@ -126,7 +127,7 @@ export default function EmployeesList() {
                 { id: 4, name: "Shift Worker", bgColor: "#E0F7FA", textColor: "#006064" },
             ],
             status: "Pending",
-            statusId: 2,
+            statusId: 3,
         },
         {
             empId: "EMP1004",
@@ -159,7 +160,7 @@ export default function EmployeesList() {
                 { id: 8, name: "High Performer", bgColor: "#ECFDF5", textColor: "#065F46" },
             ],
             status: "Resigned",
-            statusId: 3,
+            statusId: 2,
         },
         {
             empId: "EMP1006",
@@ -176,7 +177,7 @@ export default function EmployeesList() {
                 { id: 9, name: "Former Employee", bgColor: "#F3F4F6", textColor: "#4B5563" },
             ],
             status: "Terminated",
-            statusId: 4,
+            statusId: 2,
         },
         {
             empId: "EMP1007",
@@ -331,8 +332,8 @@ export default function EmployeesList() {
         { key: "joiningDate", label: "Joined" },
         { key: "manager", label: "Manager" },
         { key: "team", label: "Team" },
-        { key: "empType", label: "EMP Type" },
         { key: "tags", label: "Tags" },
+        { key: "empType", label: "EMP Type" },
         { key: "status", label: "Status" },
         { key: "action", label: "Action" },
     ];
@@ -575,7 +576,6 @@ export default function EmployeesList() {
                                     {visibleColumns.includes("joiningDate") && <td className="px-4 py-3">{row.joiningDate}</td>}
                                     {visibleColumns.includes("manager") && <td className="px-4 py-3">{row.manager}</td>}
                                     {visibleColumns.includes("team") && <td className="px-4 py-3">{row.team}</td>}
-                                    {visibleColumns.includes("empType") && <td className="px-4 py-3">{row.employmentType}</td>}
                                     {visibleColumns.includes("tags") && <td className="px-4 py-3 max-w-[10rem]">
                                         <div className="flex items-center justify-center flex-wrap gap-1">
                                             {row.tags.map((tag) => (
@@ -596,9 +596,10 @@ export default function EmployeesList() {
 
                                         </div>
                                     </td>}
+                                    {visibleColumns.includes("empType") && <td className="px-4 py-3">{row.employmentType}</td>}
 
                                     {visibleColumns.includes("status") && <td className="px-4 py-3">
-                                        {row.status}
+                                                                                    <StatusDesign statusId={row.statusId} label={row.status} />
                                     </td>}
                                     {visibleColumns.includes("action") && <td className="px-4 py-3 text-center relative" ref={menuRef}>
                                         <button

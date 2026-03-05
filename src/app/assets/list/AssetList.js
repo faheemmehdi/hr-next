@@ -5,11 +5,10 @@ import { useState } from "react";
 import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
-import { FiEdit3 } from "react-icons/fi";
+import { FiEdit3, FiPrinter, FiRotateCcw } from "react-icons/fi";
 import { MdOutlineRemoveRedEye, MdOutlineBlock } from "react-icons/md";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
-import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
 import RowActions from "y@/app/components/RowActions";
 import Modal from "y@/app/components/ModalShell";
@@ -22,21 +21,60 @@ export default function AssetCatalog() {
     const [isOpen, setIsOpen] = useState(false);
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
-    const [showErrors, setShowErrors] = useState(false);
+    const [isReturnOpen, setIsReturnOpen] = useState(false);
+    const [isAssignOpen, setIsAssignOpen] = useState(false);
+    const [isQrOpen, setIsQrOpen] = useState(false);
+    const [currentAsset, setCurrentAsset] = useState(null);
+    const [assignAsset, setAssignAsset] = useState(null);
+    const [assignToValue, setAssignToValue] = useState("");
+    const [returnReason, setReturnReason] = useState("");
+    const [qrAsset, setQrAsset] = useState(null);
 
     const [type, setType] = useState("");
     const [serial, setSerial] = useState("");
     const [assetCondition, setAssetCondition] = useState("");
     const [purchaseDate, setPurchaseDate] = useState("");
     const [assignTo, setAssignTo] = useState("");
-    const [active, setActive] = useState(true);
 
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false);
     const openAddModal = () => setIsAddOpen(true);
     const closeAddModal = () => setIsAddOpen(false);
-    const openReasonModal = () => setIsReasonOpen(true);
-    const closeReasonModal = () => setIsReasonOpen(false);
+    const openReasonModal = (row) => {
+        setCurrentAsset(row);
+        setIsReasonOpen(true);
+    };
+    const closeReasonModal = () => {
+        setCurrentAsset(null);
+        setIsReasonOpen(false);
+    };
+    const openReturnModal = (row) => {
+        setReturnReason("");
+        setCurrentAsset(row);
+        setIsReturnOpen(true);
+    };
+    const closeReturnModal = () => {
+        setCurrentAsset(null);
+        setIsReturnOpen(false);
+    };
+    const openAssignModal = (row) => {
+        setAssignAsset(row);
+        setAssignToValue(row.assignee === "—" ? "" : row.assignee);
+        setIsAssignOpen(true);
+    };
+    const closeAssignModal = () => {
+        setAssignAsset(null);
+        setAssignToValue("");
+        setIsAssignOpen(false);
+    };
+    const openQrModal = (row) => {
+        setQrAsset(row);
+        setIsQrOpen(true);
+    };
+    const closeQrModal = () => {
+        setQrAsset(null);
+        setIsQrOpen(false);
+    };
 
     const assetsData = [
         {
@@ -152,13 +190,19 @@ export default function AssetCatalog() {
             <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
 
                 {/* Header */}
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                     <h2 className="text-base font-semibold text-gray-700">
                         Asset Catalog
                     </h2>
-                    <Button onClick={openAddModal} variant="success">
-                        Add Asset
-                    </Button>
+                    <div className="flex flex-wrap gap-2">
+                        <Button variant="primary" type="button">
+                            Export
+                        </Button>
+                      
+                        <Button onClick={openAddModal} variant="success">
+                            Add Asset
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Filters */}
@@ -221,19 +265,21 @@ export default function AssetCatalog() {
                                         <StatusDesign statusId={row.statusId} label={row.status} />
                                     </td>
 
-                                    <RowActions
-                                        row={row}
-                                        actions={[
-                                            { label: "View Asset", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
-                                            { label: "Assign Asset", icon: FiEdit3 },
-                                            { label: "Mark Lost", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
-                                        ]}
-                                    />
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                            <RowActions
+                                row={row}
+                                actions={[
+                                    { label: "View Asset", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                                    { label: "Assign Asset", icon: FiEdit3, onClick: openAssignModal },
+                                    { label: "Return Asset", icon: FiRotateCcw, onClick: openReturnModal },
+                                    { label: "Mark Lost", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                    { label: "Print QR", icon: FiPrinter, onClick: openQrModal },
+                                ]}
+                            />
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
 
                 {/* View Modal */}
                 {isOpen && (
@@ -249,6 +295,75 @@ export default function AssetCatalog() {
                     </Modal>
                 )}
 
+                {/* Assign Asset Modal */}
+                {isAssignOpen && (
+                    <Modal width="w-full md:w-5/12">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                            Assign Asset
+                        </h3>
+                        <p className="text-xxs text-gray-600 mb-3">
+                            Assign {assignAsset?.type} ({assignAsset?.serial}) to a team member.
+                        </p>
+                        <Input
+                            type="text"
+                            label="Assign To"
+                            value={assignToValue}
+                            onChange={(e) => setAssignToValue(e.target.value)}
+                        />
+                        <div className="flex justify-end gap-2 mt-4">
+                            <Button variant="cancel" onClick={closeAssignModal}>
+                                Cancel
+                            </Button>
+                            <Button variant="success" onClick={closeAssignModal}>
+                                Assign
+                            </Button>
+                        </div>
+                    </Modal>
+                )}
+
+                {/* Return Asset Modal */}
+                <ReasonModal
+                    isOpen={isReturnOpen}
+                    title="Return Asset"
+                    desc={returnReason}
+                    setDesc={setReturnReason}
+                    infoSection={
+                        currentAsset && (
+                            <div className="text-xxs text-gray-600">
+                                {currentAsset.type} {currentAsset.serial}
+                            </div>
+                        )
+                    }
+                    onClose={closeReturnModal}
+                    onSubmit={closeReturnModal}
+                    submitLabel="Return"
+                    reasonTitle="Please provide context for returning the asset."
+                />
+
+                {/* QR Modal */}
+                {isQrOpen && qrAsset && (
+                    <Modal width="w-full md:w-5/12">
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-lg font-semibold text-gray-800">QR Print</h3>
+                            <span className="text-xxs text-gray-500">#{qrAsset.serial}</span>
+                        </div>
+                        <div className="h-40 w-40 mx-auto bg-gray-100 border flex items-center justify-center text-xxs text-gray-600">
+                            QR CODE PREVIEW
+                        </div>
+                        <p className="text-xxs text-gray-500 mt-3">
+                            Print this QR for {qrAsset.type} ({qrAsset.assignee || "unassigned"}).
+                        </p>
+                        <div className="flex justify-end gap-2 mt-4">
+                            <Button variant="cancel" onClick={closeQrModal}>
+                                Close
+                            </Button>
+                            <Button variant="success" onClick={closeQrModal}>
+                                Print
+                            </Button>
+                        </div>
+                    </Modal>
+                )}
+
                 {/* Add Asset Modal */}
                 {isAddOpen && (
                     <Modal width="w-full md:w-6/12">
@@ -256,46 +371,53 @@ export default function AssetCatalog() {
                             Add Asset
                         </h3>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
 
-                            <CustomSelect
-                                name="type"
-                                label="Asset Type"
-                                value={type}
-                                onChange={setType}
-                                options={types}
-                                placeholder="Select Type"
-                                isMulti
-                                controlHeight="2rem"
-                            />
-                            <Input
-                                type="text"
-                                label="Serial Number"
-                                value={serial}
-                                onChange={(e) => setSerial(e.target.value)}
-                            />
-                        </div>
+                                <CustomSelect
+                                    name="type"
+                                    label="Asset Type"
+                                    value={type}
+                                    onChange={setType}
+                                    options={types}
+                                    placeholder="Select Type"
+                                    controlHeight="2rem"
+                                />
+                                <Input
+                                    type="text"
+                                    label="Serial Number"
+                                    value={serial}
+                                    onChange={(e) => setSerial(e.target.value)}
+                                />
+                            </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
 
 
-                            <CustomSelect
-                                name="condition"
-                                label="Condition"
-                                value={assetCondition}
-                                onChange={setAssetCondition}
-                                options={conditions}
-                                isMulti
-                                placeholder="Select Condition"
-                                controlHeight="2rem"
-                            />
-                            <Input
-                                type="date"
-                                label="Purchase Date"
-                                value={purchaseDate}
-                                onChange={(e) => setPurchaseDate(e.target.value)}
-                            />
-                        </div>
+                                <CustomSelect
+                                    name="condition"
+                                    label="Condition"
+                                    value={assetCondition}
+                                    onChange={setAssetCondition}
+                                    options={conditions}
+                                    placeholder="Select Condition"
+                                    controlHeight="2rem"
+                                />
+                                <Input
+                                    type="date"
+                                    label="Purchase Date"
+                                    value={purchaseDate}
+                                    onChange={(e) => setPurchaseDate(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                                <Input
+                                    type="text"
+                                    label="Assign To"
+                                    value={assignTo}
+                                    onChange={(e) => setAssignTo(e.target.value)}
+                                />
+                            </div>
 
                         <div className="flex justify-end gap-2">
                             <Button variant="cancel" onClick={closeAddModal}>

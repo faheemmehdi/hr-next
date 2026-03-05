@@ -13,7 +13,8 @@ import {
   FiActivity,
   FiLink,
   FiPackage,
-  FiLayers
+  FiLayers,
+  FiInbox
 } from "react-icons/fi";
 import { LuCalendarDays } from "react-icons/lu";
 const menuItems = [
@@ -32,10 +33,19 @@ const menuItems = [
     icon: <FiLayers className="text-md" />,
     label: "Organization",
     href: "#", // parent item for dropdown
-    description: "Company info and office locations",
+    description: "Company and office locations management",
     dropdown: [
       { label: "Organization Profile", href: "/admin/organization" },
       { label: "Locations", href: "/admin/locations" },
+      { label: "Departments", href: "/admin/departments" },
+      { label: "Admin Users", href: "/admin/users" },
+      { label: "Tags", href: "/admin/tags" },
+      { label: "Audit Logs", href: "/admin/audit-logs" },
+      { label: "Notifications", href: "/admin/notifications" },
+      { label: "Security & Privacy", href: "/admin/security" },
+      { label: "Custom Fields", href: "/admin/custom-fields" },
+      { label: "Data Import/Export", href: "/admin/data" },
+
     ],
   },
   {
@@ -45,7 +55,6 @@ const menuItems = [
     description: "Manage staff records and attendance details",
     dropdown: [
       { label: "List", href: "/employees/list" },
-      { label: "Departments", href: "/employees/departments" },
       { label: "Teams", href: "/employees/teams" },
     ],
   },
@@ -99,6 +108,11 @@ const menuItems = [
       { label: "Asset Policies", href: "/assets/policies" },
     ],
   },
+  {
+  icon: <FiInbox className="text-md" />,
+  href: "/inbox",
+  label: "Approvals Center"
+},
   {
     icon: <FiDollarSign className="text-md" />,
     href: "/payroll",

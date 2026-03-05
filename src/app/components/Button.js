@@ -11,8 +11,8 @@ export default function Button({
   const applyWidth = width ? width : "w-auto";
 
   const styles = {
-    primary: "bg-[var(--color-primary)] text-white  hover:opacity-90",
-    secondary: "bg-[var(--color-secondary)] text-white hover:opacity-90",
+    primary: "bg-[var(--color-primary)] text-white  hover:opacity-90 text-xxs",
+    secondary: "bg-[var(--color-secondary)] text-white hover:opacity-90 text-xxs",
     danger: "bg-[var(--color-danger)] text-white text-xxs hover:opacity-90",
     transparent: `bg-${bgColor} text-xxs hover:opacity-90 rounded`,
     cancel: "bg-[var(--color-gray)] text-black hover:opacity-90 text-xxs",
