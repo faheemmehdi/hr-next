@@ -56,72 +56,72 @@ export default function AdminUsers() {
     );
 
     const adminUsersData = [
-    {
-        name: "Ahmad Khan",
-        email: "ahmad.khan@company.com",
-        role: "Super Admin",
-        lastActive: "2026-03-01 10:25 AM",
-        twoFA: true,
-        statusId: 1,
-        status: "Active",
-    },
-    {
-        name: "Sara Ali",
-        email: "sara.ali@company.com",
-        role: "HR Admin",
-        lastActive: "2026-02-28 02:15 PM",
-        twoFA: false,
-        statusId: 1,
-        status: "Active",
-    },
-    {
-        name: "Omar Malik",
-        email: "omar.malik@company.com",
-        role: "Manager",
-        lastActive: "2026-03-02 08:30 AM",
-        twoFA: true,
-        statusId: 2,
-        status: "Inactive",
-    },
-    
-    {
-        name: "Bilal Shah",
-        email: "bilal.shah@company.com",
-        role: "Manager",
-        lastActive: "2026-02-27 09:45 AM",
-        twoFA: true,
-        statusId: 1,
-        status: "Active",
-    },
-    {
-        name: "Ayesha Siddiqui",
-        email: "ayesha.siddiqui@company.com",
-        role: "Finance Admin",
-        lastActive: "2026-03-01 01:10 PM",
-        twoFA: false,
-        statusId: 1,
-        status: "Active",
-    },
-    {
-        name: "Fatima Noor",
-        email: "fatima.noor@company.com",
-        role: "HR Admin",
-        lastActive: "2026-03-02 03:05 PM",
-        twoFA: true,
-        statusId: 1,
-        status: "Active",
-    },
-    {
-        name: "Usman Riaz",
-        email: "usman.riaz@company.com",
-        role: "Finance Admin",
-        lastActive: "2026-03-01 11:55 AM",
-        twoFA: false,
-        statusId: 2,
-        status: "Inactive",
-    },
-    
-];
+        {
+            name: "Ahmad Khan",
+            email: "ahmad.khan@company.com",
+            role: "Super Admin",
+            lastActive: "2026-03-01 10:25 AM",
+            twoFA: true,
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Sara Ali",
+            email: "sara.ali@company.com",
+            role: "HR Admin",
+            lastActive: "2026-02-28 02:15 PM",
+            twoFA: false,
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Omar Malik",
+            email: "omar.malik@company.com",
+            role: "Manager",
+            lastActive: "2026-03-02 08:30 AM",
+            twoFA: true,
+            statusId: 2,
+            status: "Inactive",
+        },
+
+        {
+            name: "Bilal Shah",
+            email: "bilal.shah@company.com",
+            role: "Manager",
+            lastActive: "2026-02-27 09:45 AM",
+            twoFA: true,
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Ayesha Siddiqui",
+            email: "ayesha.siddiqui@company.com",
+            role: "Finance Admin",
+            lastActive: "2026-03-01 01:10 PM",
+            twoFA: false,
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Fatima Noor",
+            email: "fatima.noor@company.com",
+            role: "HR Admin",
+            lastActive: "2026-03-02 03:05 PM",
+            twoFA: true,
+            statusId: 1,
+            status: "Active",
+        },
+        {
+            name: "Usman Riaz",
+            email: "usman.riaz@company.com",
+            role: "Finance Admin",
+            lastActive: "2026-03-01 11:55 AM",
+            twoFA: false,
+            statusId: 2,
+            status: "Inactive",
+        },
+
+    ];
 
     return (
         <Layout>
@@ -143,27 +143,27 @@ export default function AdminUsers() {
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                     <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
-                                            <div className="mb-1 w-full md:w-[9rem]">
-                                                <CustomSelect
-                                                    name="location"
-                                                    value={selectRole}
-                                                    placeholder="Role"
-                                                    onChange={setSelectRole}
-                                                    options={roles}
-                                                    controlHeight="2rem"
-                                                />
-                                            </div>
-                                            <div className="mb-1 w-full md:w-[9rem]">
-                                                <Input
-                                                                type="date"
-                                                                name="date"
-                                                                noMargin={true}
-                                                                value={date}
-                                                                onChange={(e) => onDateChange(e.target.value)}
-                                                              />
-                                            </div>
-                                        </div>
+                    <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
+                        <div className="mb-1 w-full md:w-[9rem]">
+                            <CustomSelect
+                                name="location"
+                                value={selectRole}
+                                placeholder="Role"
+                                onChange={setSelectRole}
+                                options={roles}
+                                controlHeight="2rem"
+                            />
+                        </div>
+                        <div className="mb-1 w-full md:w-[9rem]">
+                            <Input
+                                type="date"
+                                name="date"
+                                noMargin={true}
+                                value={date}
+                                onChange={(e) => onDateChange(e.target.value)}
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">

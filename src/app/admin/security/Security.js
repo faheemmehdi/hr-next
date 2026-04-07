@@ -96,12 +96,12 @@ export default function Security() {
                     </div>
                 </div>
 
-                
+
 
                 <div className="mt-6 shadow-md border border-gray-200 rounded overflow-hidden">
                     <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
-                            <table className="w-full text-xs border-collapse">
-                                <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
+                        <table className="w-full text-xs border-collapse">
+                            <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                                 <tr>
                                     <th className="px-4 py-3 text-left">SSO Provider</th>
                                     <th className="px-4 py-3 text-left">2FA Policy</th>
@@ -225,14 +225,14 @@ export default function Security() {
                         />
                     </div>
                     <div className="w-full mb-3">
-                                <label
-                                    htmlFor="desc"
-                                    className="block text-xxs text-gray-700 mb-2"
-                                >
-                                    Description
-                                </label>
-                                <RichTextEditor value={dlpRules} onChange={setDlpRules} />
-                            </div>
+                        <label
+                            htmlFor="desc"
+                            className="block text-xxs text-gray-700 mb-2"
+                        >
+                            Description
+                        </label>
+                        <RichTextEditor value={dlpRules} onChange={setDlpRules} />
+                    </div>
                 </div>
 
                 <div className="mt-6 flex flex-wrap gap-2 items-center justify-end">
@@ -274,7 +274,7 @@ export default function Security() {
                 )}
 
 
-               
+
 
 
             </div>

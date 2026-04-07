@@ -109,10 +109,10 @@ const menuItems = [
     ],
   },
   {
-  icon: <FiInbox className="text-md" />,
-  href: "/inbox",
-  label: "Approvals Center"
-},
+    icon: <FiInbox className="text-md" />,
+    href: "/inbox",
+    label: "Approvals Center"
+  },
   {
     icon: <FiDollarSign className="text-md" />,
     href: "/payroll",
@@ -159,8 +159,9 @@ const menuItems = [
     label: "Reports",
     description: "Generate HR and organizational reports",
     dropdown: [
-      { label: "Employee", href: "/reports/employee" },
-      { label: "Finance", href: "/reports/finance" },
+      { label: "Employees", href: "/reports/employees" },
+      { label: "Attendance", href: "/reports/attendance" },
+      { label: "Time", href: "/reports/time" },
       { label: "Custom", href: "/reports/custom" },
     ],
   },
@@ -196,6 +197,7 @@ export default function Sidebar() {
         >
           <Link
             href={item.href}
+            title={!item.dropdown ? item.label : ""}
             className={`w-full flex justify-center py-1 text-gray-300 hover:text-white ${item.dropdown ? "hover:bg-white/30" : ""
               }`}
           >
