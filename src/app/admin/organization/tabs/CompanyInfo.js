@@ -3,6 +3,7 @@ import { useState } from "react";
 import Input from "y@/app/components/Input";
 import Button from "y@/app/components/Button";
 import FileUpload from "y@/app/components/FileUpload";
+import { FiBriefcase, FiGlobe, FiMail } from "react-icons/fi";
 
 export default function CompanyInfo() {
   const [companyName, setCompanyName] = useState("Kairos Services");
@@ -17,7 +18,8 @@ export default function CompanyInfo() {
   const [city, setCity] = useState("Karachi");
   const [country, setCountry] = useState("Pakistan");
 
-  const [attach, setAttach] = useState("");
+  const [logoFile, setLogoFile] = useState("");
+  const [attachmentFile, setAttachmentFile] = useState("");
 
   const resetForm = () => {
     setCompanyName("");
@@ -30,7 +32,8 @@ export default function CompanyInfo() {
     setAddress("");
     setCity("");
     setCountry("");
-    setAttach("");
+    setLogoFile("");
+    setAttachmentFile("");
   };
 
   const handleSave = () => {
@@ -45,20 +48,42 @@ export default function CompanyInfo() {
       address,
       city,
       country,
-      attach,
+      logoFile,
+      attachmentFile,
     });
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="rounded-lg border border-gray-200 bg-[#f8fbff] p-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] text-gray-500">Organization</p>
+            <FiBriefcase className="text-[#315d9c]" size={13} />
+          </div>
+          <p className="text-xs font-semibold text-gray-800 mt-1">{companyName || "Not set"}</p>
+        </div>
+        <div className="rounded-lg border border-gray-200 bg-[#f7faf8] p-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] text-gray-500">Contact Email</p>
+            <FiMail className="text-[#2f7d4f]" size={13} />
+          </div>
+          <p className="text-xs font-semibold text-gray-800 mt-1">{email || "Not set"}</p>
+        </div>
+        <div className="rounded-lg border border-gray-200 bg-[#fff8ed] p-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] text-gray-500">Website</p>
+            <FiGlobe className="text-[#9a5d1d]" size={13} />
+          </div>
+          <p className="text-xs font-semibold text-gray-800 mt-1">{website || "Not set"}</p>
+        </div>
+      </div>
 
-      {/* ================= Company Info ================= */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-300 p-6">
-        <h2 className="text-base font-semibold mb-6 border-b border-gray-300 pb-3">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h2 className="text-sm font-semibold text-gray-700 pb-2 border-b border-gray-200">
           Company Information
         </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <Input
             label="Company Name"
             value={companyName}
@@ -66,7 +91,6 @@ export default function CompanyInfo() {
             placeholder="Enter company name"
             noMargin
           />
-
           <Input
             label="Legal Name"
             value={legalName}
@@ -74,7 +98,6 @@ export default function CompanyInfo() {
             placeholder="Legal entity name"
             noMargin
           />
-
           <Input
             label="Tax ID / NTN"
             value={taxId}
@@ -82,7 +105,6 @@ export default function CompanyInfo() {
             placeholder="Enter tax identification"
             noMargin
           />
-
           <Input
             label="Registration Number"
             value={registrationNo}
@@ -93,13 +115,11 @@ export default function CompanyInfo() {
         </div>
       </div>
 
-      {/* ================= Contact Info ================= */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-300 p-6">
-        <h2 className="text-base font-semibold mb-6 border-b border-gray-300 pb-3">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h2 className="text-sm font-semibold text-gray-700 pb-2 border-b border-gray-200">
           Contact Information
         </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <Input
             label="Official Email"
             value={email}
@@ -107,7 +127,6 @@ export default function CompanyInfo() {
             placeholder="company@email.com"
             noMargin
           />
-
           <Input
             label="Phone Number"
             value={phone}
@@ -115,7 +134,6 @@ export default function CompanyInfo() {
             placeholder="+92 300 1234567"
             noMargin
           />
-
           <Input
             label="Website"
             value={website}
@@ -123,7 +141,6 @@ export default function CompanyInfo() {
             placeholder="www.company.com"
             noMargin
           />
-
           <Input
             label="Address"
             value={address}
@@ -131,7 +148,6 @@ export default function CompanyInfo() {
             placeholder="Street address"
             noMargin
           />
-
           <Input
             label="City"
             value={city}
@@ -139,7 +155,6 @@ export default function CompanyInfo() {
             placeholder="City"
             noMargin
           />
-
           <Input
             label="Country"
             value={country}
@@ -150,31 +165,27 @@ export default function CompanyInfo() {
         </div>
       </div>
 
-      {/* ================= Branding ================= */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-300 p-6">
-        <h2 className="text-base font-semibold mb-6 border-b border-gray-300 pb-3">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h2 className="text-sm font-semibold text-gray-700 pb-2 border-b border-gray-200">
           Branding & Documents
         </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <FileUpload
             label="Company Logo"
             name="logo"
-            onChange={(e) => setAttach(e.target.files?.[0])}
-            value={attach}
+            onChange={(e) => setLogoFile(e.target.files?.[0])}
+            value={logoFile}
           />
-
           <FileUpload
             label="Attachments"
             name="attachment"
-            onChange={(e) => setAttach(e.target.files?.[0])}
-            value={attach}
+            onChange={(e) => setAttachmentFile(e.target.files?.[0])}
+            value={attachmentFile}
           />
         </div>
       </div>
 
-      {/* ================= Actions ================= */}
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-3 pt-2">
         <Button variant="cancel" type="button" onClick={resetForm}>
           Reset
         </Button>
@@ -182,7 +193,6 @@ export default function CompanyInfo() {
           Save Changes
         </Button>
       </div>
-
     </div>
   );
 }

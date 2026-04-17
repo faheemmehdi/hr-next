@@ -1,7 +1,7 @@
 import Organization from "./Organization";
 
 export const metadata = {
-  title: "Organization | HRM",
+  title: "Organization| HRM",
 };
 
 export default function ORG(){

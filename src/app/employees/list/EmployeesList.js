@@ -1,5 +1,6 @@
 "use client";
 import Layout from "y@/app/components/Layout";
+import { useRouter } from "next/navigation";
 import Input from "y@/app/components/Input";
 import CheckboxDropdown from "y@/app/components/CheckboxDropdown";
 import { useState, useEffect, useRef } from "react";
@@ -10,12 +11,13 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FaEye, FaEdit, FaCog, FaTrash, FaUserTie, FaTags } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import {
-    FiUser, FiEdit3, FiX, FiChevronDown, FiChevronUp
+    FiUser, FiEdit3, FiX, FiChevronDown, FiChevronUp, FiUpload, FiDownload, FiSliders
 } from "react-icons/fi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
 export default function EmployeesList() {
+    const router = useRouter();
     const [date, setDate] = useState("");
     const [search, setSearch] = useState("");
     const [location, setLocation] = useState("");
@@ -52,6 +54,9 @@ export default function EmployeesList() {
 
     const handleMenuToggle = (id) => {
         setOpenMenuId((prev) => (prev === id ? null : id));
+    };
+    const goToProfile = (empId) => {
+        router.push(`/employees/${empId}`);
     };
 
     const addNewTag = () => {
@@ -341,186 +346,196 @@ export default function EmployeesList() {
     const [visibleColumns, setVisibleColumns] = useState([, "empId", "name", "department", "location", "designation", "status", "action"]);
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const activeFilters = [
+        { key: "department", label: "Dept", value: department },
+        { key: "team", label: "Team", value: team },
+        { key: "location", label: "Location", value: location },
+        { key: "manager", label: "Manager", value: manager },
+        { key: "type", label: "Type", value: type },
+        { key: "status", label: "Status", value: status },
+        { key: "tag", label: "Tag", value: tag },
+        { key: "date", label: "Joined", value: date },
+    ].filter((item) => item.value);
+
+    const clearSingleFilter = (filterKey) => {
+        if (filterKey === "department") setDepartment("");
+        if (filterKey === "team") setTeam("");
+        if (filterKey === "location") setLocation("");
+        if (filterKey === "manager") setManager("");
+        if (filterKey === "type") setType("");
+        if (filterKey === "status") setStatus("");
+        if (filterKey === "tag") setTag("");
+        if (filterKey === "date") setDate("");
+    };
+
+    const clearAllFilters = () => {
+        setDepartment("");
+        setTeam("");
+        setLocation("");
+        setManager("");
+        setType("");
+        setStatus("");
+        setTag("");
+        setDate("");
+    };
 
 
     return (
         <Layout>
             <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
-                <div className="flex justify-between items-center">
-                    <h2 className="text-base font-semibold text-gray-700">
-                        All Employees
-                    </h2>
-                    <Button type="button" variant="success">
-                        Add Employee
-                    </Button>
-                </div>
-
-                <div className="bg-white border border-gray-200 rounded-md shadow-md p-3 mt-5 mb-4">
-                    <div className="w-full flex justify-between items-center cursor-pointer"
-                        onClick={() => setShowFilters(!showFilters)}
-                    >
-                        <strong className="text-xxs w-1/2">Apply Filters</strong>
-
-                        <div className="w-1/2 flex justify-end">
-                            <span
-                                className="flex items-center gap-1 text-xxs rounded px-2 py-1 text-gray-400"
-                            >
-                                {showFilters ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />}
-                                {/* <span>Filters</span> */}
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                    <h2 className="text-base font-semibold text-gray-700">All Employees</h2>
+                    <div className="flex flex-wrap gap-2">
+                        <Button type="button" variant="success" onClick={() => router.push("/employees/new")}>
+                            Add Employee
+                        </Button>
+                        <Button type="button" variant="primary">
+                            <span className="inline-flex items-center gap-1.5">
+                                <FiUpload size={13} />
+                                Import
                             </span>
-                        </div>
+                        </Button>
+                        <Button type="button" variant="cancel">
+                            <span className="inline-flex items-center gap-1.5">
+                                <FiDownload size={13} />
+                                Export
+                            </span>
+                        </Button>
                     </div>
-
-                    <div
-                        className={`overflow-hidden transition-[max-height,opacity] duration-500 ease-in-out
-                                ${showFilters ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"}
-                                `}
-                    >
-                        <div className="w-full mt-1 mb-3">
-                            <span className="text-xxs">Saved Filters:</span>
-                            <div className="w-full md:w-3/4">
-                                <CustomSelect
-                                    name="savedFilter"
-                                    value={savedFilter}
-                                    placeholder="Saved Filters"
-                                    onChange={setSavedFilter}
-                                    options={savedFilters}
-                                    controlHeight="2rem"
-                                />
-                            </div>
-                        </div>
-
-                        <span className="text-xxs">Filter By:</span>
-
-                        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-
-                            <div className="w-full bg-amber-300">
-                                <CustomSelect
-                                    name="location"
-                                    value={location}
-                                    placeholder="Location"
-                                    onChange={setLocation}
-                                    options={locations}
-                                    controlHeight="2rem"
-                                />
-                            </div>
-
-                            <CustomSelect
-                                name="department"
-                                value={department}
-                                placeholder="Department"
-                                onChange={setDepartment}
-                                options={departments}
-                                controlHeight="2rem"
-                            />
-
-                            <CustomSelect
-                                name="team"
-                                value={team}
-                                placeholder="Team"
-                                onChange={setTeam}
-                                options={teams}
-                                controlHeight="2rem"
-                            />
-
-                            <CustomSelect
-                                name="manager"
-                                value={manager}
-                                placeholder="Manager"
-                                onChange={setManager}
-                                options={managers}
-                                controlHeight="2rem"
-                            />
-
-                            <CustomSelect
-                                name="type"
-                                value={type}
-                                placeholder="Type"
-                                onChange={setType}
-                                options={types}
-                                controlHeight="2rem"
-                            />
-
-                            <CustomSelect
-                                name="status"
-                                value={status}
-                                placeholder="Status"
-                                onChange={setStatus}
-                                options={statuses}
-                                controlHeight="2rem"
-                            />
-
-                            <CustomSelect
-                                name="tag"
-                                value={tag}
-                                placeholder="Tags"
-                                onChange={setTag}
-                                options={tags}
-                                controlHeight="2rem"
-                            />
-
-                            <Input
-                                type="date"
-                                name="date"
-                                noMargin={true}
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                                className="w-full"
-                            />
-                        </div>
-
-                        <div className="w-full text-xxs gap-3 flex justify-end mt-3">
-                            <button
-                                className="bg-gray-200 text-gray-800 border border-gray-400 rounded cursor-pointer hover:bg-gray-300"
-                                style={{ padding: "5px 12px" }}
-                            >
-                                Reset
-                            </button>
-                            <button
-                                className="bg-[#f0f7fc] hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-600 rounded cursor-pointer"
-                                style={{ padding: "5px 12px" }}
-                            >
-                                Save Filter
-                            </button>
-                        </div>
-                    </div>
-
-
                 </div>
 
+                <div className="mt-4 mb-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+                        <div className="w-full md:w-1/5">
+                            <SearchBar placeholder="Search by name, emp id, manager..." onSearch={setSearch} />
+                        </div>
+                        <div className="w-full lg:w-auto flex flex-wrap lg:flex-nowrap items-center justify-start lg:justify-end gap-2">
+                            <div className="w-full sm:w-[11rem]">
+                                <CustomSelect
+                                    name="bulkActions"
+                                    value={bulkAction}
+                                    placeholder="Bulk Actions"
+                                    onChange={setBulkActions}
+                                    options={bulkActions}
+                                    controlHeight="2rem"
+                                />
+                            </div>
+                            <div className="w-full sm:w-[11rem]">
+                                <CheckboxDropdown
+                                    columns={allColumns}
+                                    selected={visibleColumns}
+                                    onChange={setVisibleColumns}
+                                />
+                            </div>
+                            <Button type="button" variant="secondary" onClick={() => setShowFilters(true)}>
+                                <span className="inline-flex items-center gap-1.5">
+                                    <FiSliders size={13} />
+                                    Open Filters
+                                </span>
+                            </Button>
+                        </div>
+                    </div>
 
-                <div className="flex flex-col md:flex-row md:justify-between items-center my-2 mt-5">
-                    <div className="w-full md:w-1/5 flex items-center mb-1">
-                        <SearchBar
-                            placeholder="Search by name or ID..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                    <div className="mt-2 flex items-center justify-between gap-2 flex-wrap">
+                        <div className="flex items-center flex-wrap gap-1.5">
+                            {activeFilters.length > 0 ? (
+                                activeFilters.map((f) => (
+                                    <span
+                                        key={f.key}
+                                        className="inline-flex items-center gap-1 rounded-full bg-[#edf4ff] text-[#315d9c] border border-[#d7e6ff] px-2 py-1 text-[10px] font-medium"
+                                    >
+                                        {f.label}: {String(f.value)}
+                                        <button
+                                            type="button"
+                                            className="cursor-pointer"
+                                            onClick={() => clearSingleFilter(f.key)}
+                                        >
+                                            <FiX size={11} />
+                                        </button>
+                                    </span>
+                                ))
+                            ) : (
+                                <span className="text-[10px] text-gray-500">No active filters</span>
+                            )}
+                        </div>
+                        {activeFilters.length > 0 && (
+                            <Button type="button" variant="cancel" onClick={clearAllFilters}>
+                                Clear All
+                            </Button>
+                        )}
+                    </div>
+                </div>
+
+                {showFilters && (
+                    <div className="fixed inset-0 z-50">
+                        <div
+                            className="absolute inset-0 bg-black/35"
+                            onClick={() => setShowFilters(false)}
                         />
-                    </div>
-                    <div className="flex items-center flex-col md:flex-row md:justify-end w-full mt-2 md:mt-0 gap-3">
+                        <div className="absolute top-0 right-0 h-full w-full sm:w-[26rem] bg-white shadow-2xl border-l border-gray-200 p-4 overflow-y-auto">
+                            <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+                                <div>
+                                    <h3 className="text-sm font-semibold text-gray-800">Filters</h3>
+                                    <p className="text-[10px] text-gray-500">Refine employees quickly</p>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="p-1 rounded hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => setShowFilters(false)}
+                                >
+                                    <FiX size={16} />
+                                </button>
+                            </div>
 
-                        <div className="w-full md:w-1/6">
-                            <CustomSelect
-                                name="bulkActions"
-                                value={bulkAction}
-                                placeholder="Bulk Actions"
-                                onChange={setBulkActions}
-                                options={bulkActions}
-                                controlHeight="2rem"
-                            />
+                            <div className="mt-4 space-y-3">
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-1">Saved Views</p>
+                                    <div className="grid grid-cols-1 gap-2">
+                                        <CustomSelect
+                                            name="savedFilter"
+                                            value={savedFilter}
+                                            placeholder="Saved Filters"
+                                            onChange={setSavedFilter}
+                                            options={savedFilters}
+                                            controlHeight="2rem"
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-1">Organization</p>
+                                    <div className="grid grid-cols-1 gap-2">
+                                        <CustomSelect name="department" value={department} placeholder="Department" onChange={setDepartment} options={departments} controlHeight="2rem" />
+                                        <CustomSelect name="team" value={team} placeholder="Team" onChange={setTeam} options={teams} controlHeight="2rem" />
+                                        <CustomSelect name="manager" value={manager} placeholder="Manager" onChange={setManager} options={managers} controlHeight="2rem" />
+                                        <CustomSelect name="location" value={location} placeholder="Location" onChange={setLocation} options={locations} controlHeight="2rem" />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-wide text-gray-500 mb-1">Employment</p>
+                                    <div className="grid grid-cols-1 gap-2">
+                                        <CustomSelect name="type" value={type} placeholder="Type" onChange={setType} options={types} controlHeight="2rem" />
+                                        <CustomSelect name="status" value={status} placeholder="Status" onChange={setStatus} options={statuses} controlHeight="2rem" />
+                                        <CustomSelect name="tag" value={tag} placeholder="Tags" onChange={setTag} options={tags} controlHeight="2rem" />
+                                        <Input type="date" name="date" noMargin value={date} onChange={(e) => setDate(e.target.value)} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="sticky bottom-0 bg-white pt-4 mt-4 border-t border-gray-200 flex justify-end gap-2">
+                                <Button type="button" variant="cancel" onClick={clearAllFilters}>
+                                    Reset
+                                </Button>
+                                <Button type="button" variant="secondary">
+                                    Save Filter
+                                </Button>
+                                <Button type="button" variant="secondary" onClick={() => setShowFilters(false)}>
+                                    Apply
+                                </Button>
+                            </div>
                         </div>
-                        <div className="w-full md:w-1/6">
-                            <CheckboxDropdown
-                                columns={allColumns}
-                                selected={visibleColumns}
-                                onChange={setVisibleColumns}
-                            />
-                        </div>
-
                     </div>
-
-
-                </div>
+                )}
 
 
                 <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
@@ -549,7 +564,12 @@ export default function EmployeesList() {
                                 >
                                     {visibleColumns.includes("empId") && <td className="px-4 py-3">{row.empId}</td>}
                                     {visibleColumns.includes("name") && <td className="px-4 py-2 align-middle">
-                                        <div className="flex items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => goToProfile(row.empId)}
+                                            className="flex items-center gap-2 cursor-pointer hover:opacity-85 transition"
+                                            title={`Open profile: ${row.name}`}
+                                        >
                                             {row.imageUrl ? (
                                                 <img
                                                     src={`${baseUrl}${row.imageUrl}`}
@@ -567,7 +587,7 @@ export default function EmployeesList() {
                                             >
                                                 {row.name}
                                             </span>
-                                        </div>
+                                        </button>
                                     </td>}
 
                                     {visibleColumns.includes("location") && <td className="px-4 py-3">{row.location}</td>}
@@ -613,7 +633,13 @@ export default function EmployeesList() {
                                             <div ref={menuRef} className="absolute top-10 right-16 z-50 w-35 bg-white border border-gray-200 rounded-xl shadow-lg">
                                                 <ul className="py-2 text-xxs text-gray-700">
                                                     <li>
-                                                        <button className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50">
+                                                        <button
+                                                            className="flex items-center w-full cursor-pointer px-4 py-2 hover:bg-gray-50"
+                                                            onClick={() => {
+                                                                goToProfile(row.empId);
+                                                                setOpenMenuId(null);
+                                                            }}
+                                                        >
                                                             <FaEye className="mr-2" /> View Employee
                                                         </button>
                                                     </li>

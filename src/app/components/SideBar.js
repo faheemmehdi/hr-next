@@ -14,7 +14,9 @@ import {
   FiLink,
   FiPackage,
   FiLayers,
-  FiInbox
+  FiInbox,
+  FiUserCheck,
+  FiFileText
 } from "react-icons/fi";
 import { LuCalendarDays } from "react-icons/lu";
 const menuItems = [
@@ -22,17 +24,12 @@ const menuItems = [
     icon: <FiHome className="text-md" />,
     href: "/dashboard",
     label: "Dashboard",
-    description: "Track key metrics and performance insights",
-    dropdown: [
-      { label: "Overview", href: "/dashboard/overview" },
-      { label: "Stats", href: "/dashboard/stats" },
-      { label: "Reports", href: "/dashboard/reports" },
-    ],
+    
   },
   {
     icon: <FiLayers className="text-md" />,
     label: "Organization",
-    href: "#", // parent item for dropdown
+    href: "/admin", // parent item for dropdown
     description: "Company and office locations management",
     dropdown: [
       { label: "Organization Profile", href: "/admin/organization" },
@@ -54,9 +51,27 @@ const menuItems = [
     label: "Employees",
     description: "Manage staff records and attendance details",
     dropdown: [
-      { label: "List", href: "/employees/list" },
+      { label: "Employees List", href: "/employees/list" },
       { label: "Teams", href: "/employees/teams" },
     ],
+  },
+  {
+  icon: <FiFileText className="text-md" />,
+  href: "/contracts",
+  label: "Contracts",
+  description: "Manage employee contracts and agreements",
+  dropdown: [
+    { label: "Templates", href: "/contracts/templates" },
+    { label: "Generate Contract", href: "/contracts/new" },
+    { label: "E-Sign Queue", href: "/contracts/esign" },
+    { label: "Contracts Repository", href: "/contracts" },
+    { label: "Audit Trails", href: "/contracts/audit" },
+  ],
+},
+   {
+    icon: <FiUserCheck className="text-md" />,
+    href: "/self/checkin",
+    label: "Self Check-In/Out"
   },
   {
     icon: <FiClock className="text-md" />,
@@ -131,17 +146,7 @@ const menuItems = [
       { label: "Tax", href: "/payroll/tax" },
     ],
   },
-  {
-    icon: <FiTrendingUp className="text-md" />,
-    href: "/performance",
-    label: "Performance",
-    description: "Track employee performance and evaluations",
-    dropdown: [
-      { label: "Reviews", href: "/performance/reviews" },
-      { label: "Goals", href: "/performance/goals" },
-      { label: "KPI Reports", href: "/performance/kpi-reports" },
-    ],
-  },
+ 
   {
     icon: <FiUserPlus className="text-md" />,
     href: "/recruitment",
@@ -162,7 +167,9 @@ const menuItems = [
       { label: "Employees", href: "/reports/employees" },
       { label: "Attendance", href: "/reports/attendance" },
       { label: "Time", href: "/reports/time" },
-      { label: "Custom", href: "/reports/custom" },
+      { label: "Leave", href: "/reports/leave" },
+      { label: "Payroll", href: "/reports/payroll" },
+      { label: "Compliance", href: "/reports/compliance" },
     ],
   },
   {
