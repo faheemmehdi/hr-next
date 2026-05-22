@@ -289,14 +289,19 @@ export default function ProjectTasks() {
 
     return (
         <Layout>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
-                <div className="flex justify-between items-center">
-                    <h2 className="text-base font-semibold text-gray-700">
-                        Tasks
-                    </h2>
+            <div className="bg-white w-full rounded-lg shadow-sm border border-gray-200 min-h-[90vh] p-6">
+                <div className="flex justify-between items-start gap-3">
+                    <div>
+                        <h2 className="text-base font-semibold text-gray-700">
+                            Tasks
+                        </h2>
+                        <p className="text-xxs text-gray-500 mt-0.5">
+                            Plan, assign, and monitor task execution across projects.
+                        </p>
+                    </div>
                     <div className="flex gap-2">
                         {selectedRows.length > 0 && (
-                            <div className="mt-[1px] min-w-[130px]">
+                            <div className="mt-[1px] min-w-[140px]">
                                 <CustomSelect
                                     name="bulk_actions"
                                     value={bulkAction}
@@ -320,16 +325,15 @@ export default function ProjectTasks() {
 
                 </div>
 
-                <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5">
-                    <div className="w-full md:w-1/5 flex items-center mb-1">
+                <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5 p-3 rounded-lg border border-gray-200 bg-white shadow-sm">
+                    <div className="w-full md:w-[18rem] flex items-center mb-1">
                         <SearchBar
-                            placeholder="Search by name..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Search task, project, or assignee..."
+                            onSearch={setSearch}
                         />
                     </div>
                     <div className="w-full flex items-center flex-col md:flex-row justify-end mt-2 md:mt-0 gap-2">
-                        <div className="mb-1 w-full md:w-[9rem]">
+                        <div className="mb-1 w-full md:w-[10rem]">
                             <CustomSelect
                                 name="projects"
                                 value={projects}
@@ -340,7 +344,7 @@ export default function ProjectTasks() {
                             />
                         </div>
 
-                        <div className="mb-1 w-full md:w-[9rem]">
+                        <div className="mb-1 w-full md:w-[10rem]">
                             <CustomSelect
                                 name="status"
                                 value={status}
@@ -350,7 +354,7 @@ export default function ProjectTasks() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="mb-1 w-full md:w-[9rem]">
+                        <div className="mb-1 w-full md:w-[10rem]">
                             <CustomSelect
                                 name="taskEmp"
                                 value={taskAssignedEmp}
@@ -360,7 +364,7 @@ export default function ProjectTasks() {
                                 controlHeight="2rem"
                             />
                         </div>
-                        <div className="w-full md:w-[9rem]">
+                        <div className="w-full md:w-[10rem]">
                             <Input
                                 type="date"
                                 name="date"
@@ -373,9 +377,9 @@ export default function ProjectTasks() {
                 </div>
 
 
-                <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
+                <div className="overflow-x-auto shadow-sm border border-gray-200 rounded-lg max-h-[72vh]">
                     <table className="w-full text-xs border-collapse">
-                        <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
+                        <thead className="bg-gray-50 text-gray-700 sticky top-0 z-10 border-b border-gray-200">
                             <tr className="bg-gray-100 text-gray-700">
                                 <th className="px-3 py-3">
                                     <input
@@ -399,10 +403,7 @@ export default function ProjectTasks() {
                             {tasksData && tasksData.length > 0 ? (
 
                                 tasksData.map((row, idx) => (
-                                    <tr
-                                        key={idx}
-                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition-colors`}
-                                    >
+                                    <tr key={idx} className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50/50"} hover:bg-gray-50 transition-colors`}>
                                         <td className="px-3 py-3 text-center">
                                             <input
                                                 type="checkbox"

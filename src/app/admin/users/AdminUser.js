@@ -1,7 +1,7 @@
 "use client";
 import Layout from "y@/app/components/Layout";
 import Input from "y@/app/components/Input";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
@@ -26,6 +26,7 @@ export default function AdminUsers() {
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
     const [isAddUserOpen, setAddUserOpen] = useState(false);
+    const [selectedAdmin, setSelectedAdmin] = useState(null);
 
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
@@ -36,10 +37,10 @@ export default function AdminUsers() {
 
     const roles = mapSelectOptions(
         [
-            { id: 1, name: "Super Admin" },
-            { id: 2, name: "HR Admin" },
-            { id: 3, name: "Manager" },
-            { id: 4, name: "Finance Admin" },
+            { id: "Super Admin", name: "Super Admin" },
+            { id: "HR Admin", name: "HR Admin" },
+            { id: "Manager", name: "Manager" },
+            { id: "Finance Admin", name: "Finance Admin" },
         ],
         "id",
         "name"
@@ -123,6 +124,20 @@ export default function AdminUsers() {
 
     ];
 
+    const filteredAdminUsers = useMemo(() => {
+        const q = search.trim().toLowerCase();
+        return adminUsersData.filter((user) => {
+            const matchesSearch =
+                !q ||
+                user.name.toLowerCase().includes(q) ||
+                user.email.toLowerCase().includes(q) ||
+                user.role.toLowerCase().includes(q);
+            const matchesRole = !selectRole || user.role === selectRole;
+            const matchesDate = !date || user.lastActive.startsWith(date);
+            return matchesSearch && matchesRole && matchesDate;
+        });
+    }, [search, selectRole, date, adminUsersData]);
+
     return (
         <Layout>
             <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
@@ -139,8 +154,7 @@ export default function AdminUsers() {
                     <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name or email..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onSearch={setSearch}
                         />
                     </div>
                     <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
@@ -180,8 +194,8 @@ export default function AdminUsers() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {adminUsersData && adminUsersData.length > 0 ? (
-                                adminUsersData.map((user, idx) => (
+                            {filteredAdminUsers && filteredAdminUsers.length > 0 ? (
+                                filteredAdminUsers.map((user, idx) => (
                                     <tr
                                         key={idx}
                                         className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition-colors`}
@@ -207,9 +221,24 @@ export default function AdminUsers() {
                                         <RowActions
                                             row={user}
                                             actions={[
-                                                { label: "View Admin", icon: MdOutlineRemoveRedEye, onClick: openModal },
+                                                {
+                                                    label: "View Admin",
+                                                    icon: MdOutlineRemoveRedEye,
+                                                    onClick: (rowData) => {
+                                                        setSelectedAdmin(rowData);
+                                                        openModal();
+                                                    },
+                                                },
                                                 { label: "Edit Admin", icon: FiEdit3 },
-                                                { label: "Disable Admin", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                                {
+                                                    label: "Disable Admin",
+                                                    icon: MdOutlineBlock,
+                                                    color: "red",
+                                                    onClick: (rowData) => {
+                                                        setSelectedAdmin(rowData);
+                                                        openReasonModal();
+                                                    },
+                                                },
                                             ]}
                                         />
                                     </tr>
@@ -231,10 +260,25 @@ export default function AdminUsers() {
                         <div className="border-b border-gray-400 pb-3 mb-4">
                             <div className="flex justify-between">
                                 <h2 className="text-lg font-semibold text-gray-800">Admin Details</h2>
-                                <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-green-100 text-green-700">
-                                    Active
+                                <span
+                                    className={`inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full ${selectedAdmin?.statusId === 2
+                                            ? "bg-red-100 text-red-700"
+                                            : "bg-green-100 text-green-700"
+                                        }`}
+                                >
+                                    {selectedAdmin?.status || "Active"}
                                 </span>
                             </div>
+                        </div>
+                        <div className="space-y-2 text-xs text-gray-700">
+                            <p><span className="font-semibold">Name:</span> {selectedAdmin?.name || "-"}</p>
+                            <p><span className="font-semibold">Email:</span> {selectedAdmin?.email || "-"}</p>
+                            <p><span className="font-semibold">Role:</span> {selectedAdmin?.role || "-"}</p>
+                            <p><span className="font-semibold">Last Active:</span> {selectedAdmin?.lastActive || "-"}</p>
+                            <p>
+                                <span className="font-semibold">2FA:</span>{" "}
+                                {selectedAdmin?.twoFA ? "Enabled" : "Disabled"}
+                            </p>
                         </div>
                         <div className="flex justify-end pt-4">
                             <Button variant="cancel" onClick={closeModal}>
@@ -307,13 +351,13 @@ export default function AdminUsers() {
                     infoSection={
                         <div className="border-gray-300 border-b py-1 mb-2">
                             <p className="text-xs text-gray-800 font-medium">
-                                <span className="font-semibold">Ahmad Khan</span>
+                                <span className="font-semibold">{selectedAdmin?.name || "Admin User"}</span>
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Email:</span> ahmad.khan@company.com
+                                <span>Email:</span> {selectedAdmin?.email || "-"}
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Role:</span> Super Admin
+                                <span>Role:</span> {selectedAdmin?.role || "-"}
                             </p>
                         </div>}
                     onClose={closeReasonModal}

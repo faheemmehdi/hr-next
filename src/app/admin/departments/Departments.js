@@ -1,17 +1,16 @@
 "use client";
 import Layout from "y@/app/components/Layout";
 import Input from "y@/app/components/Input";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
 import {
-    FiEdit3, FiEye
+    FiEdit3
 } from "react-icons/fi";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
-import { RxCross2 } from "react-icons/rx";
 import { MdOutlineBlock } from "react-icons/md";
 import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
@@ -32,6 +31,7 @@ export default function AllDepartments() {
     const [isAddDeptOpen, setAddBonusOpen] = useState(false);
     const [active, setActive] = useState(true);
     const [showErrors, setShowErrors] = useState(false);
+    const [selectedDepartment, setSelectedDepartment] = useState(null);
 
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false);
@@ -42,73 +42,73 @@ export default function AllDepartments() {
 
     const departmentData = [
         {
-            name: "Performance Bonus",
+            name: "Human Resources",
             departmentHead: "Jane Doe",
-            location: "All Locations",
-            members: 120,
+            location: "Lahore",
+            members: 24,
             createdAt: "2024-01-10",
             statusId: 1,
             status: "Active",
         },
         {
-            name: "Year-End Bonus",
+            name: "Finance",
             departmentHead: "John Smith",
-            location: "Head Office",
-            members: 85,
+            location: "Karachi",
+            members: 18,
             createdAt: "2023-12-15",
             statusId: 1,
             status: "Active",
         },
         {
-            name: "Referral Bonus",
+            name: "Engineering",
             departmentHead: "Emily Johnson",
-            location: "All Locations",
-            members: 200,
+            location: "Islamabad",
+            members: 72,
             createdAt: "2024-02-01",
             statusId: 1,
             status: "Active",
         },
         {
-            name: "Holiday Bonus",
+            name: "Sales",
             departmentHead: "Michael Brown",
-            location: "Regional Office - East",
-            members: 50,
+            location: "Multan",
+            members: 31,
             createdAt: "2023-11-20",
             statusId: 2,
             status: "Inactive",
         },
         {
-            name: "Attendance Bonus",
+            name: "Marketing",
             departmentHead: "Laura Wilson",
-            location: "All Locations",
-            members: 140,
+            location: "Rawalpindi",
+            members: 16,
             createdAt: "2024-01-05",
             statusId: 1,
             status: "Active",
         },
         {
-            name: "Training Completion Bonus",
+            name: "Operations",
             departmentHead: "David Lee",
-            location: "Head Office",
-            members: 75,
+            location: "Kohat",
+            members: 22,
             createdAt: "2024-02-10",
             statusId: 1,
             status: "Active",
         },
         {
-            name: "Customer Satisfaction Bonus",
+            name: "Customer Support",
             departmentHead: "Sarah Davis",
-            location: "All Locations",
-            members: 110,
+            location: "Lahore",
+            members: 29,
             createdAt: "2023-12-01",
             statusId: 1,
             status: "Active",
         },
         {
-            name: "Leadership Bonus",
+            name: "Legal & Compliance",
             departmentHead: "Robert Martinez",
-            location: "Regional Office - West",
-            members: 40,
+            location: "Karachi",
+            members: 11,
             createdAt: "2024-01-15",
             statusId: 1,
             status: "Active",
@@ -119,13 +119,13 @@ export default function AllDepartments() {
 
     const locations = mapSelectOptions(
         [
-            { id: 1, name: "Lahore" },
-            { id: 2, name: "Multan" },
-            { id: 3, name: "Karachi" },
-            { id: 3, name: "Islamabad" },
-            { id: 3, name: "Shaher Sultan" },
-            { id: 3, name: "Rawalpindi" },
-            { id: 3, name: "Kohat" },
+            { id: "Lahore", name: "Lahore" },
+            { id: "Multan", name: "Multan" },
+            { id: "Karachi", name: "Karachi" },
+            { id: "Islamabad", name: "Islamabad" },
+            { id: "Shaher Sultan", name: "Shaher Sultan" },
+            { id: "Rawalpindi", name: "Rawalpindi" },
+            { id: "Kohat", name: "Kohat" },
         ],
         "id",
         "name"
@@ -134,23 +134,32 @@ export default function AllDepartments() {
 
     const hods = mapSelectOptions(
         [
-            { id: 1, name: "Ahmad Khan" },
-            { id: 2, name: "Sara Ali" },
-            { id: 3, name: "Omar Malik" },
-            { id: 4, name: "Ayesha Siddiqui" },
-            { id: 5, name: "Bilal Shah" },
-            { id: 6, name: "Fatima Noor" },
-            { id: 7, name: "Usman Riaz" },
-            { id: 8, name: "Hina Javed" },
-            { id: 9, name: "Zain Qureshi" },
-            { id: 10, name: "Maria Hassan" },
+            { id: "Jane Doe", name: "Jane Doe" },
+            { id: "John Smith", name: "John Smith" },
+            { id: "Emily Johnson", name: "Emily Johnson" },
+            { id: "Michael Brown", name: "Michael Brown" },
+            { id: "Laura Wilson", name: "Laura Wilson" },
+            { id: "David Lee", name: "David Lee" },
+            { id: "Sarah Davis", name: "Sarah Davis" },
+            { id: "Robert Martinez", name: "Robert Martinez" },
         ],
         "id",
         "name"
     );
 
-
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const filteredDepartmentData = useMemo(() => {
+        const q = search.trim().toLowerCase();
+        return departmentData.filter((dept) => {
+            const matchesSearch =
+                !q ||
+                dept.name.toLowerCase().includes(q) ||
+                dept.location.toLowerCase().includes(q) ||
+                dept.departmentHead.toLowerCase().includes(q);
+            const matchesLocation = !location || dept.location === location;
+            const matchesHod = !hod || dept.departmentHead === hod;
+            return matchesSearch && matchesLocation && matchesHod;
+        });
+    }, [search, location, hod, departmentData]);
 
 
     return (
@@ -169,8 +178,7 @@ export default function AllDepartments() {
                     <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onSearch={setSearch}
                         />
                     </div>
                     <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
@@ -212,8 +220,8 @@ export default function AllDepartments() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {departmentData && departmentData.length > 0 ? (
-                                departmentData.map((row, idx) => (
+                            {filteredDepartmentData && filteredDepartmentData.length > 0 ? (
+                                filteredDepartmentData.map((row, idx) => (
                                     <tr
                                         key={idx}
                                         className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition-colors`}
@@ -229,9 +237,24 @@ export default function AllDepartments() {
                                         <RowActions
                                             row={row}
                                             actions={[
-                                                { label: "View Department", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                                                {
+                                                    label: "View Department",
+                                                    icon: MdOutlineRemoveRedEye,
+                                                    onClick: (rowData) => {
+                                                        setSelectedDepartment(rowData);
+                                                        handleOpenModal();
+                                                    },
+                                                },
                                                 { label: "Edit Department", icon: FiEdit3 },
-                                                { label: "Deactivate Department", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                                {
+                                                    label: "Deactivate Department",
+                                                    icon: MdOutlineBlock,
+                                                    color: "red",
+                                                    onClick: (rowData) => {
+                                                        setSelectedDepartment(rowData);
+                                                        openReasonModal();
+                                                    },
+                                                },
                                             ]}
                                         />
                                     </tr>
@@ -252,11 +275,24 @@ export default function AllDepartments() {
                         <div className="border-b border-gray-400 pb-3 mb-4">
                             <div className="flex justify-between">
                                 <h2 className="text-lg font-semibold text-gray-800">Department Details</h2>
-                                <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-green-100 text-green-700">
-                                    Active
+                                <span
+                                    className={`inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full ${selectedDepartment?.statusId === 2
+                                            ? "bg-red-100 text-red-700"
+                                            : "bg-green-100 text-green-700"
+                                        }`}
+                                >
+                                    {selectedDepartment?.status || "Active"}
                                 </span>
                             </div>
-                            <p className="text-xxs text-gray-500">Created At 20 Dec, 2025 at 09:10 AM</p>
+                            <p className="text-xxs text-gray-500">
+                                Created At {selectedDepartment?.createdAt || "-"}
+                            </p>
+                        </div>
+                        <div className="space-y-2 text-xs text-gray-700">
+                            <p><span className="font-semibold">Department:</span> {selectedDepartment?.name || "-"}</p>
+                            <p><span className="font-semibold">Location:</span> {selectedDepartment?.location || "-"}</p>
+                            <p><span className="font-semibold">Department Head:</span> {selectedDepartment?.departmentHead || "-"}</p>
+                            <p><span className="font-semibold">Total Employees:</span> {selectedDepartment?.members ?? "-"}</p>
                         </div>
 
                         <div className="flex justify-end pt-4">
@@ -353,13 +389,13 @@ export default function AllDepartments() {
                     infoSection={
                         <div className="border-gray-300 border-b py-1 mb-2">
                             <p className="text-xs text-gray-800 font-medium">
-                                <span className="font-semibold">Human Resource Department</span>
+                                <span className="font-semibold">{selectedDepartment?.name || "Department"}</span>
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Location:</span> Multan
+                                <span>Location:</span> {selectedDepartment?.location || "-"}
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Department Head:</span> Michael Brown
+                                <span>Department Head:</span> {selectedDepartment?.departmentHead || "-"}
                             </p>
                         </div>}
                     onClose={closeReasonModal}

@@ -56,17 +56,30 @@ export default function Tag() {
         setMergeNotes("");
         setIsMergeOpen(true);
     };
-    const closeMergeModal = () => setIsMergeOpen(false);
+    const closeMergeModal = () => {
+        setIsMergeOpen(false);
+        setMergeSource(null);
+        setMergeTarget("");
+        setMergeNotes("");
+    };
     const openDeleteModal = (tag) => {
         setDeleteTag(tag);
         setDeleteReason("");
         setIsDeleteOpen(true);
     };
-    const closeDeleteModal = () => setIsDeleteOpen(false);
+    const closeDeleteModal = () => {
+        setIsDeleteOpen(false);
+        setDeleteTag(null);
+        setDeleteReason("");
+    };
 
     const handleAddTag = () => {
         if (!newTagName.trim()) return;
         const trimmedName = newTagName.trim();
+        const isDuplicate = tags.some(
+            (tag) => tag.name.toLowerCase() === trimmedName.toLowerCase()
+        );
+        if (isDuplicate) return;
         setTags((prev) => [
             ...prev,
             {
@@ -86,8 +99,8 @@ export default function Tag() {
     const handleMerge = () => {
         if (!mergeSource || !mergeTarget) return;
         setTags((prev) => {
-            const sourceTag = prev.find((tag) => tag.id === mergeSource.id);
-            const targetTag = prev.find((tag) => tag.id === mergeTarget);
+            const sourceTag = prev.find((tag) => String(tag.id) === String(mergeSource.id));
+            const targetTag = prev.find((tag) => String(tag.id) === String(mergeTarget));
             if (!sourceTag || !targetTag) return prev;
             return prev
                 .map((tag) =>
@@ -130,8 +143,7 @@ export default function Tag() {
                     <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search tag name..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onSearch={setSearch}
                         />
                     </div>
                 </div>
@@ -374,20 +386,20 @@ export default function Tag() {
                 infoSection={
                     <div className="border-gray-300 border-b py-1 mb-2">
                         <p className="text-xs text-gray-800 font-medium">
-                            <span className="font-semibold">Urgent</span>
+                            <span className="font-semibold">{deleteTag?.name || "Tag"}</span>
                         </p>
                         <p className="text-xxs text-gray-600">
-                            <span>Color:</span> (BG: #708897, Text: #ABSELE)
+                            <span>Color:</span> (BG: {deleteTag?.bgColor || "-"}, Text: {deleteTag?.textColor || "-"})
                         </p>
                         <p className="text-xxs text-gray-600">
-                            <span>Usage:</span> 38
+                            <span>Usage:</span> {deleteTag?.usage ?? "-"}
                         </p>
                     </div>}
                 onClose={closeDeleteModal}
                 onSubmit={handleDelete}
                 variant="danger"
                 submitLabel="Delete"
-                reasonTitle="Please provide a reason to deactivate this tag."
+                reasonTitle="Please provide a reason to delete this tag."
             />
         </Layout>
     );

@@ -506,7 +506,12 @@ export default function OrgDashboard() {
               <p className="text-xxs text-gray-500 mt-1">Channel throughput and current notification queue.</p>
               <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <DonutBreakdown rows={notificationStats.channels} colors={["#4c8fff", "#2f7d4f", "#6f63cd"]} />
+                  <DonutBreakdown
+                    rows={notificationStats.channels}
+                    colors={["#4c8fff", "#2f7d4f", "#6f63cd"]}
+                    sizeClass="w-40 h-40"
+                    subtitle="sent"
+                  />
                 </div>
                 <div className="space-y-2">
                   {notificationStats.queue.map((q) => (
@@ -552,7 +557,12 @@ export default function OrgDashboard() {
               <h3 className="text-sm font-semibold text-gray-700">Custom Fields</h3>
               <p className="text-xxs text-gray-500 mt-1">Field type footprint and structure complexity.</p>
               <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
-                <DonutBreakdown rows={customFieldStats} colors={["#2f7d4f", "#4c8fff", "#d89a3f", "#6f63cd"]} />
+                <DonutBreakdown
+                  rows={customFieldStats}
+                  colors={["#2f7d4f", "#4c8fff", "#d89a3f", "#6f63cd"]}
+                  sizeClass="w-40 h-40"
+                  subtitle="fields"
+                />
                 <HorizontalBars rows={customFieldStats} color="#2f7d4f" />
               </div>
             </Link>

@@ -75,7 +75,7 @@ export default function Security() {
     };
 
     const summaryCopy =
-        "SSO, 2FA, password policy, retention, and DLP settings give you quick control over the organization’s security posture.";
+        "SSO, 2FA, password policy, retention, and DLP settings give you quick control over the organization's security posture.";
 
     return (
         <Layout>
@@ -98,6 +98,15 @@ export default function Security() {
 
 
 
+                <div className="w-full flex flex-col md:flex-row justify-between items-center my-2 mt-5">
+                    <div className="w-full md:w-1/4 flex items-center mb-1">
+                        <SearchBar
+                            placeholder="Search provider, policy, retention..."
+                            onSearch={setSearch}
+                        />
+                    </div>
+                </div>
+
                 <div className="mt-6 shadow-md border border-gray-200 rounded overflow-hidden">
                     <div className="overflow-x-auto shadow-md border border-gray-200 rounded max-h-[72vh]">
                         <table className="w-full text-xs border-collapse">
@@ -112,19 +121,27 @@ export default function Security() {
                                 </tr>
                             </thead>
                             <tbody className="text-xxs">
-                                {filteredOverview.map((row, idx) => (
-                                    <tr
-                                        key={`row-${idx}`}
-                                        className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition`}
-                                    >
-                                        <td className="px-4 py-3 text-gray-800">{row.provider}</td>
-                                        <td className="px-4 py-3 text-gray-600">{row.twoFa}</td>
-                                        <td className="px-4 py-3 text-gray-600">{row.password}</td>
-                                        <td className="px-4 py-3 text-gray-600">{row.retention}</td>
-                                        <td className="px-4 py-3 text-gray-600">{row.dlp}</td>
-                                        <td className="px-4 py-3 text-gray-600">{row.updated}</td>
+                                {filteredOverview.length > 0 ? (
+                                    filteredOverview.map((row, idx) => (
+                                        <tr
+                                            key={`row-${idx}`}
+                                            className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition`}
+                                        >
+                                            <td className="px-4 py-3 text-gray-800">{row.provider}</td>
+                                            <td className="px-4 py-3 text-gray-600">{row.twoFa}</td>
+                                            <td className="px-4 py-3 text-gray-600">{row.password}</td>
+                                            <td className="px-4 py-3 text-gray-600">{row.retention}</td>
+                                            <td className="px-4 py-3 text-gray-600">{row.dlp}</td>
+                                            <td className="px-4 py-3 text-gray-600">{row.updated}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={6} className="text-center py-4 text-gray-500 italic">
+                                            No security settings found.
+                                        </td>
                                     </tr>
-                                ))}
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -186,7 +203,14 @@ export default function Security() {
                             type="number"
                             label="Minimum length"
                             value={passwordLength}
-                            onChange={(e) => setPasswordLength(Number(e.target.value))}
+                            onChange={(e) => {
+                                const next = Number(e.target.value);
+                                if (Number.isNaN(next)) {
+                                    setPasswordLength(0);
+                                    return;
+                                }
+                                setPasswordLength(next < 0 ? 0 : next);
+                            }}
                         />
                         <CustomSelect
                             name="passwordPolicy"
@@ -281,3 +305,4 @@ export default function Security() {
         </Layout>
     );
 }
+

@@ -41,17 +41,17 @@ function MemberItem({ member, onDeactivate }) {
         transition,
         opacity: isDragging ? 0.8 : 1,
       }}
-      className={`flex justify-between items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg cursor-grab ${
-        isDragging ? "ring-2 ring-offset-2 ring-indigo-300 shadow-lg cursor-grabbing" : ""
+      className={`flex justify-between items-center gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2.5 shadow-sm transition hover:border-gray-300 hover:shadow-md cursor-grab ${
+        isDragging ? "ring-2 ring-offset-1 ring-[#d7e6ff] shadow-md cursor-grabbing" : ""
       }`}
     >
       <div className="flex items-center gap-3 text-sm text-gray-700">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-400 text-white font-semibold">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#edf4ff] text-[#315d9c] font-semibold">
           {initials || <FiUsers />}
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-800">{member.name}</p>
-          <p className="text-xxs text-gray-400 tracking-wide">Drag to reassign</p>
+          <p className="text-xs font-medium text-gray-800">{member.name}</p>
+          <p className="text-xxs text-gray-400">Drag to reassign</p>
         </div>
       </div>
       <div className="flex gap-2">
@@ -76,9 +76,9 @@ function ActiveMemberPreview({ member }) {
     .slice(0, 2);
 
   return (
-    <div className="pointer-events-none flex w-[260px] items-center justify-between rounded-2xl border border-indigo-200 bg-white/80 px-4 py-3 shadow-lg backdrop-blur">
+    <div className="pointer-events-none flex w-[260px] items-center justify-between rounded-lg border border-[#d7e6ff] bg-white px-4 py-3 shadow-md">
       <div className="flex items-center gap-3 text-sm text-gray-800">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-fuchsia-500 to-pink-500 text-white font-semibold">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#edf4ff] text-[#315d9c] font-semibold">
           {initials || <FiUsers />}
         </div>
         <div>
@@ -102,36 +102,36 @@ function TeamCard({ team, onMemberDeactivate }) {
   const completionWidth = Math.min(100, team.members.length * 12);
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
-      <div className="space-y-3 bg-gradient-to-br from-emerald-900 via-teal-800 to-cyan-700 px-5 py-4 text-white">
+    <div className="flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+      <div className="space-y-3 bg-[#f8fbff] border-b border-gray-200 px-4 py-3 text-gray-700">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-xxs tracking-[0.4em] uppercase text-white/70">Team</p>
-            <h3 className="text-lg font-semibold tracking-tight">{team.name}</h3>
+            <p className="text-xxs uppercase text-gray-400">Team</p>
+            <h3 className="text-sm font-semibold tracking-tight text-gray-800">{team.name}</h3>
           </div>
           <div className="flex items-center gap-3">
             <span
-              className={`text-xxs font-semibold rounded-full px-3 py-1 uppercase tracking-wide ${
-                team.active ? "bg-white/30 text-white" : "bg-white/20 text-white/70"
+              className={`text-xxs font-semibold rounded-full px-2 py-1 ${
+                team.active ? "bg-[#effaf3] text-[#2f7d4f]" : "bg-[#fff4e8] text-[#9a5d1d]"
               }`}
             >
               {team.active ? "Active" : "Inactive"}
             </span>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-3 text-xxs text-white/80">
+        <div className="flex flex-wrap items-center gap-3 text-xxs text-gray-500">
           <div className="flex items-center gap-2">
-            <FiUsers className="text-white/80" size={14} />
-            <span className="font-semibold text-white">{team.lead}</span>
+            <FiUsers className="text-gray-400" size={14} />
+            <span className="font-semibold text-gray-700">{team.lead}</span>
           </div>
-          <span className="px-[10px] py-1 rounded-full bg-white/20 text-white/80">
+          <span className="px-[10px] py-1 rounded-full bg-white border border-gray-200 text-gray-600">
             {team.members.length} member{team.members.length !== 1 ? "s" : ""}
           </span>
         </div>
-        <div className="flex items-center gap-3 text-xxs text-white/70">
-          <div className="flex-1 rounded-full bg-white/20">
+        <div className="flex items-center gap-3 text-xxs text-gray-500">
+          <div className="flex-1 rounded-full bg-gray-200">
             <div
-              className="h-1 rounded-full bg-white transition-all duration-300"
+              className="h-1 rounded-full bg-[#5b8fce] transition-all duration-300"
               style={{ width: `${completionWidth}%` }}
             />
           </div>
@@ -142,7 +142,7 @@ function TeamCard({ team, onMemberDeactivate }) {
       <div
         ref={setNodeRef}
         className={`flex flex-1 flex-col gap-3 px-5 py-5 transition ${
-          isOver ? "bg-slate-100 border border-blue-200" : "bg-slate-50"
+          isOver ? "bg-[#f1f7ff] border border-[#d7e6ff]" : "bg-white"
         }`}
       >
         <SortableContext items={displayMembers.map((member) => member.id)} strategy={verticalListSortingStrategy}>
@@ -251,7 +251,7 @@ export default function TeamsPage() {
   // DnD sensors
   const sensors = useSensors(useSensor(PointerSensor));
 
-  // ✅ Wrap handlers in useCallback to fix warning
+  // Wrap handlers in useCallback to keep DnD handler references stable.
   const handleDragStart = useCallback(({ active }) => {
     setDraggingMemberId(active.id);
   }, []);
@@ -386,11 +386,10 @@ export default function TeamsPage() {
 
   return (
     <Layout>
-     
-        <div className=" ">
+        <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between py-3">
             <div>
-              <h2 className="text-xl font-semibold text-gray-800">Teams</h2>
+              <h2 className="text-base font-semibold text-gray-700">Teams</h2>
               <p className="text-xxs text-gray-500">
                 Organize squads, review skill gaps, and manage membership effortlessly.
               </p>
@@ -412,7 +411,7 @@ export default function TeamsPage() {
             {statsSummary.map((stat) => (
               <div
                 key={stat.title}
-                className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm hover:shadow-md transition"
+                className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm"
               >
                 <div className="flex items-center justify-between">
                   <h3 className="text-xxs font-medium text-gray-600">{stat.title}</h3>
@@ -422,7 +421,6 @@ export default function TeamsPage() {
               </div>
             ))}
           </div>
-        </div>
 
         <DndContext
           sensors={sensors}
@@ -431,7 +429,7 @@ export default function TeamsPage() {
           onDragEnd={handleDragEnd}
           onDragCancel={handleDragCancel}
         >
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 mt-4 p-4 bg-white w-full rounded-lg shadow-md border border-gray-200">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 mt-4">
             {filteredTeams.map((team) => (
               <TeamCard
                 key={team.id}
@@ -499,7 +497,7 @@ export default function TeamsPage() {
             </div>
           </Modal>
         )}
-      
+        </div>
     </Layout>
   );
 }

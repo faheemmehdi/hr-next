@@ -1,17 +1,16 @@
 "use client";
 import Layout from "y@/app/components/Layout";
 import Input from "y@/app/components/Input";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
 import {
-    FiEdit3, FiEye
+    FiEdit3
 } from "react-icons/fi";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Button from "y@/app/components/Button";
 import StatusDesign from "y@/app/components/StatusColors";
-import { RxCross2 } from "react-icons/rx";
 import { MdOutlineBlock } from "react-icons/md";
 import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import ReasonModal from "y@/app/components/ReasonConfirmModal";
@@ -19,19 +18,19 @@ import RowActions from "y@/app/components/RowActions";
 import Modal from "y@/app/components/ModalShell";
 import RichTextEditor from "y@/app/components/RichTextEditor";
 export default function Locations() {
-    const [deptName, setDeptName] = useState("");
-    const [city, setcity] = useState("");
+    const [officeName, setOfficeName] = useState("");
+    const [city, setCity] = useState("");
     const [search, setSearch] = useState("");
-    const [location, setLocation] = useState("");
+    const [countryFilter, setCountryFilter] = useState("");
+    const [cityFilter, setCityFilter] = useState("");
     const [desc, setDesc] = useState("");
     const [locCountry, setLocCountry] = useState("");
-    const [amount, setAmount] = useState("");
-    const [hod, setHod] = useState("");
+    const [timezone, setTimezone] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isReasonOpen, setIsReasonOpen] = useState(false);
     const [isLocOpen, setAddBonusOpen] = useState(false);
     const [active, setActive] = useState(true);
-    const [showErrors, setShowErrors] = useState(false);
+    const [selectedLocation, setSelectedLocation] = useState(null);
 
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false);
@@ -142,13 +141,13 @@ export default function Locations() {
 
     const locations = mapSelectOptions(
         [
-            { id: 1, name: "Lahore" },
-            { id: 2, name: "Multan" },
-            { id: 3, name: "Karachi" },
-            { id: 3, name: "Islamabad" },
-            { id: 3, name: "Shaher Sultan" },
-            { id: 3, name: "Rawalpindi" },
-            { id: 3, name: "Kohat" },
+            { id: "Lahore", name: "Lahore" },
+            { id: "Multan", name: "Multan" },
+            { id: "Karachi", name: "Karachi" },
+            { id: "Islamabad", name: "Islamabad" },
+            { id: "Shaher Sultan", name: "Shaher Sultan" },
+            { id: "Rawalpindi", name: "Rawalpindi" },
+            { id: "Kohat", name: "Kohat" },
         ],
         "id",
         "name"
@@ -156,29 +155,29 @@ export default function Locations() {
 
     const countries = mapSelectOptions(
         [
-            { id: 1, name: "Pakistan" },
-            { id: 2, name: "United States" },
-            { id: 3, name: "United Kingdom" },
-            { id: 4, name: "India" },
-            { id: 5, name: "United Arab Emirates" },
-            { id: 6, name: "Canada" },
-            { id: 7, name: "Australia" },
-            { id: 8, name: "Germany" },
-            { id: 9, name: "France" },
-            { id: 10, name: "China" },
+            { id: "Pakistan", name: "Pakistan" },
+            { id: "United States", name: "United States" },
+            { id: "United Kingdom", name: "United Kingdom" },
+            { id: "India", name: "India" },
+            { id: "United Arab Emirates", name: "United Arab Emirates" },
+            { id: "Canada", name: "Canada" },
+            { id: "Australia", name: "Australia" },
+            { id: "Germany", name: "Germany" },
+            { id: "France", name: "France" },
+            { id: "China", name: "China" },
         ],
         "id",
         "name"
     );
     const cities = mapSelectOptions(
         [
-            { id: 1, name: "Lahore" },
-            { id: 2, name: "Multan" },
-            { id: 3, name: "Karachi" },
-            { id: 4, name: "Islamabad" },
-            { id: 5, name: "Shaher Sultan" },
-            { id: 6, name: "Rawalpindi" },
-            { id: 7, name: "Kohat" },
+            { id: "Lahore", name: "Lahore" },
+            { id: "Multan", name: "Multan" },
+            { id: "Karachi", name: "Karachi" },
+            { id: "Islamabad", name: "Islamabad" },
+            { id: "Shaher Sultan", name: "Shaher Sultan" },
+            { id: "Rawalpindi", name: "Rawalpindi" },
+            { id: "Kohat", name: "Kohat" },
         ],
         "id",
         "name"
@@ -201,16 +200,29 @@ export default function Locations() {
     );
     const timezoneOptions = mapSelectOptions(
         [
-            { id: 1, name: "Asia/Karachi (UTC+5)" },
-            { id: 2, name: "Asia/Dubai (UTC+4)" },
-            { id: 3, name: "Europe/London (UTC+0)" },
-            { id: 4, name: "America/New_York (UTC-5)" },
+            { id: "Asia/Karachi (UTC+5)", name: "Asia/Karachi (UTC+5)" },
+            { id: "Asia/Dubai (UTC+4)", name: "Asia/Dubai (UTC+4)" },
+            { id: "Europe/London (UTC+0)", name: "Europe/London (UTC+0)" },
+            { id: "America/New_York (UTC-5)", name: "America/New_York (UTC-5)" },
         ],
         "id",
         "name"
     );
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const filteredLocationData = useMemo(() => {
+        const q = search.trim().toLowerCase();
+        return locationData.filter((loc) => {
+            const matchesSearch =
+                !q ||
+                loc.officeName.toLowerCase().includes(q) ||
+                loc.country.toLowerCase().includes(q) ||
+                loc.city.toLowerCase().includes(q) ||
+                loc.timezone.toLowerCase().includes(q);
+            const matchesCountry = !countryFilter || loc.country === countryFilter;
+            const matchesCity = !cityFilter || loc.city === cityFilter;
+            return matchesSearch && matchesCountry && matchesCity;
+        });
+    }, [search, countryFilter, cityFilter, locationData]);
 
 
     return (
@@ -229,27 +241,26 @@ export default function Locations() {
                     <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by name..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onSearch={setSearch}
                         />
                     </div>
                     <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
                         <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
                                 name="location"
-                                value={location}
+                                value={countryFilter}
                                 placeholder="Country"
-                                onChange={setLocation}
+                                onChange={setCountryFilter}
                                 options={countries}
                                 controlHeight="2rem"
                             />
                         </div>
                         <div className="mb-1 w-full md:w-[9rem]">
                             <CustomSelect
-                                name="hod"
-                                value={hod}
+                                name="city_filter"
+                                value={cityFilter}
                                 placeholder="City"
-                                onChange={setHod}
+                                onChange={setCityFilter}
                                 options={cities}
                                 controlHeight="2rem"
                             />
@@ -274,8 +285,8 @@ export default function Locations() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {locationData && locationData.length > 0 ? (
-                                locationData.map((loc, idx) => (
+                            {filteredLocationData && filteredLocationData.length > 0 ? (
+                                filteredLocationData.map((loc, idx) => (
                                     <tr
                                         key={idx}
                                         className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition-colors`}
@@ -304,9 +315,24 @@ export default function Locations() {
                                         <RowActions
                                             row={loc}
                                             actions={[
-                                                { label: "View Location", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                                                {
+                                                    label: "View Location",
+                                                    icon: MdOutlineRemoveRedEye,
+                                                    onClick: (row) => {
+                                                        setSelectedLocation(row);
+                                                        handleOpenModal();
+                                                    },
+                                                },
                                                 { label: "Edit Location", icon: FiEdit3 },
-                                                { label: "Deactivate Location", icon: MdOutlineBlock, color: "red", onClick: openReasonModal },
+                                                {
+                                                    label: "Deactivate Location",
+                                                    icon: MdOutlineBlock,
+                                                    color: "red",
+                                                    onClick: (row) => {
+                                                        setSelectedLocation(row);
+                                                        openReasonModal();
+                                                    },
+                                                },
                                             ]}
                                         />
                                     </tr>
@@ -326,11 +352,13 @@ export default function Locations() {
                         <div className="border-b border-gray-400 pb-3 mb-4">
                             <div className="flex justify-between">
                                 <h2 className="text-lg font-semibold text-gray-800">Location Details</h2>
-                                <span className="inline-flex items-center px-2 py-1 text-xxs font-medium rounded-full bg-green-100 text-green-700">
-                                    Active
-                                </span>
+                                {selectedLocation && (
+                                    <StatusDesign statusId={selectedLocation.statusId} label={selectedLocation.status} />
+                                )}
                             </div>
-                            <p className="text-xxs text-gray-500">Created At 20 Dec, 2025 at 09:10 AM</p>
+                            <p className="text-xxs text-gray-500">
+                                Created At {selectedLocation?.createdAt || "-"}
+                            </p>
                         </div>
 
                         <div className="flex justify-end pt-4">
@@ -357,8 +385,8 @@ export default function Locations() {
                                     placeholder="Enter office name"
                                     label="Office Name"
                                     noMargin={true}
-                                    value={deptName}
-                                    onChange={(e) => setDeptName(e.target.value)}
+                                    value={officeName}
+                                    onChange={(e) => setOfficeName(e.target.value)}
                                 />
                                 <CustomSelect
                                     name="count"
@@ -379,16 +407,16 @@ export default function Locations() {
                                     label="City"
                                     value={city}
                                     placeholder="Select City"
-                                    onChange={setcity}
+                                    onChange={setCity}
                                     options={cities}
                                     controlHeight="2rem"
                                 />
                                 <CustomSelect
-                                    name="city"
+                                    name="timezone"
                                     label="Timezone"
-                                    value={city}
+                                    value={timezone}
                                     placeholder="Select Timezone"
-                                    onChange={setcity}
+                                    onChange={setTimezone}
                                     options={timezoneOptions}
                                     controlHeight="2rem"
                                 />
@@ -421,7 +449,7 @@ export default function Locations() {
                                 Cancel
                             </Button>
                             <Button variant="success">
-                                Add Department
+                                Add Location
                             </Button>
                         </div>
 
@@ -434,13 +462,13 @@ export default function Locations() {
                     infoSection={
                         <div className="border-gray-300 border-b py-1 mb-2">
                             <p className="text-xs text-gray-800 font-medium">
-                                <span className="font-semibold">Head Office</span>
+                                <span className="font-semibold">{selectedLocation?.officeName || "Head Office"}</span>
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>City:</span> Multan
+                                <span>City:</span> {selectedLocation?.city || "Multan"}
                             </p>
                             <p className="text-xxs text-gray-600">
-                                <span>Total Employees:</span> 78
+                                <span>Total Employees:</span> {selectedLocation?.employees ?? 78}
                             </p>
                         </div>}
                     onClose={closeReasonModal}

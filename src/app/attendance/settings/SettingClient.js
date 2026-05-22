@@ -1,13 +1,8 @@
 "use client";
 import Layout from "y@/app/components/Layout";
 import { useState } from "react";
-import { Switch } from "@headlessui/react";
-import { FaMapMarkerAlt, FaFingerprint, FaMobileAlt, FaQrcode, FaIdCard, FaUserCheck } from "react-icons/fa";
+import { FaFingerprint, FaMobileAlt, FaQrcode, FaIdCard, FaUserCheck } from "react-icons/fa";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
-import CustomSelect from "y@/app/components/CustomSelect";
-import Input from "y@/app/components/Input";
-import Button from "y@/app/components/Button";
-import ToggleSwitch from "y@/app/components/ToggleSwitch";
 import General from "./tabs/General";
 import Tabs from "y@/app/components/Tabs";
 import Rule from "./tabs/Rule";
@@ -153,11 +148,11 @@ function SettingClient() {
 
     const weekdays = [
         { key: "mon", label: "Monday" },
-        { key: "tue", label: "Tueday" },
-        { key: "wed", label: "Wedday" },
-        { key: "thu", label: "Thuday" },
+        { key: "tue", label: "Tuesday" },
+        { key: "wed", label: "Wednesday" },
+        { key: "thu", label: "Thursday" },
         { key: "fri", label: "Friday" },
-        { key: "sat", label: "Satday" },
+        { key: "sat", label: "Saturday" },
         { key: "sun", label: "Sunday" },
     ]
     const handleModeToggle = (mode) => {
@@ -213,16 +208,25 @@ function SettingClient() {
 
     const tabs = [
         { key: "general", label: "General Setting", content: <General settings={settings} onChange={handleChange} {...generalProps} /> },
-        { key: "rule", label: "Attendace Rule", content: <Rule settings={settings} onChange={handleChange} locations={locations} shifts={shifts} /> }
+        { key: "rule", label: "Attendance Rule", content: <Rule settings={settings} onChange={handleChange} locations={locations} shifts={shifts} /> }
     ];
+    const handleTabChange = (tabKey) => {
+        setSettings((prev) => ({
+            ...prev,
+            activeTab: tabKey,
+        }));
+    };
 
     return (
         <Layout>
-            <div className="flex justify-between text-lg p-1 mb-1">
-                <h2>Attendance Settings</h2>
-            </div>
-            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[80vh] p-5">
-                <Tabs tabs={tabs} defaultTab="general" onTabChange={settings.activeTab} align="left" />
+            <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
+                <div className="mb-2">
+                    <h2 className="text-base font-semibold text-gray-700">Attendance Settings</h2>
+                    <p className="text-xxs text-gray-500 mt-0.5">
+                        Configure attendance defaults, capture modes, geo-fence, and policy rules.
+                    </p>
+                </div>
+                <Tabs tabs={tabs} defaultTab="general" onTabChange={handleTabChange} align="left" isCol />
 
             </div>
         </Layout>

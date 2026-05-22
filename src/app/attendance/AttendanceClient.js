@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar, Doughnut, PolarArea, Line } from "react-chartjs-2";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
 import {
   AiOutlineUser,
   AiOutlineSchedule,
@@ -191,36 +190,45 @@ export default function AttendanceClient() {
 
   return (
     <Layout>
-      <div className="flex justify-between text-lg p-1 mb-2">
-        <h2>Attendance Dashboard</h2>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-2 mb-4">
-        {generalStats.map((stat, idx) => (
-          <div
-            key={idx}
-            className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 flex flex-col justify-between hover:shadow-md transition"
-          >
-            <div className="flex justify-between items-center">
-              <h3 className="text-xs font-medium text-gray-600">{stat.title}</h3>
-              {stat.icon}
-            </div>
-            <p className="text-sm font-semibold text-gray-800 mt-3">{stat.value}</p>
+      <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h2 className="text-base font-semibold text-gray-700">Attendance Dashboard</h2>
+            <p className="text-xxs text-gray-500 mt-0.5">
+              Real-time attendance visibility, requests monitoring, and exception insights.
+            </p>
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="min-h-screen w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-2 mb-4">
+          {generalStats.map((stat, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex flex-col justify-between transition hover:shadow-md hover:border-gray-300"
+            >
+              <div className="flex justify-between items-center">
+                <h3 className="text-xxs font-medium text-gray-600">{stat.title}</h3>
+                <span className="w-8 h-8 rounded-full bg-[#edf4ff] text-[#315d9c] flex items-center justify-center border border-[#d7e6ff]">
+                  {stat.icon}
+                </span>
+              </div>
+              <p className="text-base font-semibold text-gray-800 mt-3">{stat.value}</p>
+            </div>
+          ))}
+        </div>
+
+      <div className="w-full space-y-4">
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <ChartCard title="Daily Attendance Trends (Mon-Fri)">
+          <ChartCard title="Daily Attendance Trends (Mon-Fri)" className="!shadow-sm !border !border-gray-200 !h-[24rem]">
             <div className="w-full flex justify-center">
-              <div style={{ width: 400, height: 330 }}>
+              <div className="w-full h-[300px]">
 
                 <Line
                   data={dummyData.dailyAttendanceData}
                   options={{
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                       legend: { display: false },
                       tooltip: {
@@ -232,8 +240,18 @@ export default function AttendanceClient() {
                       },
                     },
                     scales: {
-                      x: { ticks: { font: { size: 11 } }, min: -0.5, max: 4.5 },
-                      y: { beginAtZero: true, max: 100, ticks: { stepSize: 10 } },
+                      x: {
+                        ticks: { font: { size: 11 }, color: "#6b7280" },
+                        min: -0.5,
+                        max: 4.5,
+                        grid: { display: false },
+                      },
+                      y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { stepSize: 10, color: "#6b7280" },
+                        grid: { color: "rgba(0,0,0,0.06)" },
+                      },
                     },
                     elements: {
                       point: {
@@ -250,10 +268,11 @@ export default function AttendanceClient() {
               </div>
             </div>
           </ChartCard>
-          <ChartCard title="Today's Attendance Summary">
+          <ChartCard title="Today's Attendance Summary" className="!shadow-sm !border !border-gray-200 !h-[24rem]">
             <div className="w-full flex flex-col items-center">
-              <div style={{ width: 220, height: 220 }}>
+              <div className="relative w-[220px] h-[220px]">
                 <Doughnut data={dummyData.attendanceSummaryData} options={{
+                  maintainAspectRatio: false,
                   cutout: "86%", // donut thickness
                   plugins: {
                     tooltip: {
@@ -268,14 +287,7 @@ export default function AttendanceClient() {
                   },
                 }} />
                 <div
-                  style={{
-                    position: "relative",
-                    top: "-130px",
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: "1.8rem",
-                    color: "#3c3d3c",
-                  }}
+                  className="absolute inset-0 flex items-center justify-center font-bold text-[1.8rem] text-gray-700"
                 >
                   79%
                 </div>
@@ -291,13 +303,13 @@ export default function AttendanceClient() {
                   <span>Absent: {absentCount}</span>
                 </div>
               </div>
-              <h5 className="mt-6 text-xxs text-gray-600">Track Emplyee Attendance Easily!</h5>
+              <h5 className="mt-5 text-xxs text-gray-600">Track Employee Attendance Easily!</h5>
             </div>
           </ChartCard>
 
 
           {/* Keep Recent Leave Requests as is */}
-          <ChartCard title=" Regularization Requests">
+          <ChartCard title="Regularization Requests" className="!shadow-sm !border !border-gray-200 !h-[24rem]">
             <div className="w-full flex justify-center">
               <div
                 style={{
@@ -314,8 +326,8 @@ export default function AttendanceClient() {
                   regularizationRequests.map((req, idx) => (
                     <div
                       key={req.id}
-                      className={`flex items-center p-2 ${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                        } rounded-md`}
+                      className={`flex items-center p-2.5 ${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                        } rounded-md border border-transparent hover:border-gray-200`}
                     >
                       {req.imageUrl ? (
                         <img
@@ -347,10 +359,18 @@ export default function AttendanceClient() {
 
                         <div className="flex flex-col items-end whitespace-nowrap flex-1 pl-4">
                           <div className="text-xxs text-gray-700 capitalize font-medium mb-1">
-                            {req.requestType} Leave
+                            {req.requestType}
                           </div>
                           <div className="text-xxs text-gray-400">
                             {format(new Date(req.requestDate), "dd MMM yyyy")}
+                          </div>
+                          <div
+                            className={`mt-1 text-[10px] px-2 py-0.5 rounded-full ${req.status === "Approved"
+                                ? "bg-[#effaf3] text-[#2f7d4f]"
+                                : "bg-[#fff8ed] text-[#9a5d1d]"
+                              }`}
+                          >
+                            {req.status}
                           </div>
                         </div>
                       </div>
@@ -365,12 +385,13 @@ export default function AttendanceClient() {
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
           <ChartCard
             title="Monthly Attendance Overview"
-            className="md:col-span-2"
+            className="md:col-span-2 !shadow-sm !border !border-gray-200 !h-[24rem]"
           >
             <Bar
               data={dummyData.monthlyAttendanceOverview}
               options={{
                 responsive: true,
+                maintainAspectRatio: false,
                 animation: {
                   duration: 1000,
                   easing: "easeOutQuart",
@@ -400,10 +421,7 @@ export default function AttendanceClient() {
                       color: "#666",
                       font: { size: 12 },
                     },
-                    grid: {
-                      color: "rgba(0,0,0,0.05)",
-                      borderDash: [4, 6],
-                    },
+                    grid: { color: "rgba(0,0,0,0.06)" },
                   },
                   x: {
                     ticks: {
@@ -417,25 +435,26 @@ export default function AttendanceClient() {
                   },
                 },
                 elements: {
-                  bar: {
-                    barThickness: 8,
-                    borderRadius: 8,
-                    borderSkipped: false,
-                  },
-                }
+                    bar: {
+                      barThickness: 10,
+                      borderRadius: 6,
+                      borderSkipped: false,
+                    },
+                  }
               }}
               height={110}
             />
           </ChartCard>
 
 
-          <ChartCard title="Attendance Exceptions Breakdown">
+          <ChartCard title="Attendance Exceptions Breakdown" className="!shadow-sm !border !border-gray-200 !h-[24rem]">
             <div className="w-full flex justify-center">
-              <div style={{ width: 300, height: 300 }}>
+              <div className="w-[300px] h-[300px]">
                 <Doughnut
                   data={dummyData.attendanceExceptions}
                   options={{
                     responsive: true,
+                    maintainAspectRatio: false,
                     cutout: "70%",
                     plugins: {
                       legend: { position: "bottom", labels: { font: { size: 11 } } },
@@ -455,6 +474,7 @@ export default function AttendanceClient() {
 
 
         </section>
+      </div>
       </div>
     </Layout>
   );

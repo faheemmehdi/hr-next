@@ -1,44 +1,27 @@
 "use client";
 import Layout from "y@/app/components/Layout";
 import Input from "y@/app/components/Input";
-import CheckboxDropdown from "y@/app/components/CheckboxDropdown";
-import { useState, useEffect, useRef } from "react";
+import { useMemo, useState } from "react";
 import SearchBar from "y@/app/components/SearchBar";
 import { mapSelectOptions } from "y@/app/utils/mapSelectOptions";
 import CustomSelect from "y@/app/components/CustomSelect";
 import { useRouter } from 'next/navigation';
-import { BiDotsVerticalRounded } from "react-icons/bi";
-import { FaEye, FaEdit, FaCog, FaTrash, FaUserTie, FaTags } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
 import {
-  FiUser, FiEdit2, FiX, FiEdit3
+  FiEdit3
 } from "react-icons/fi";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { LuDownload } from "react-icons/lu";
 import Button from "y@/app/components/Button";
-import MonthPicker from "y@/app/components/MonthPicker";
 import RowActions from "y@/app/components/RowActions";
 import Modal from "y@/app/components/ModalShell";
 import StatusDesign from "y@/app/components/StatusColors";
 export default function Projects() {
   const [date, setDate] = useState("");
   const [search, setSearch] = useState("");
-  const [location, setLocation] = useState("");
   const [status, setStatus] = useState("");
-  const [designationVal, setDesignationVal] = useState("");
-  const [monthVal, setMonthVal] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
-  const [openMenuId, setOpenMenuId] = useState(null);
-  const menuRef = useRef();
   const router = useRouter();
-
-  const [editingTag, setEditingTag] = useState(null);
-  const [tagEditVal, setTagEditVal] = useState({
-    name: "",
-    bgColor: "#ffffff",
-    textColor: "#000000",
-  });
 
 
 
@@ -169,66 +152,6 @@ export default function Projects() {
     },
   ];
 
-
-
-
-
-  const locations = mapSelectOptions(
-    [
-      { id: 1, name: "Lahore" },
-      { id: 2, name: "Multan" },
-      { id: 4, name: "Karachi" },
-      { id: 5, name: "Islamabad" },
-      { id: 6, name: "Shaher Sultan" },
-      { id: 7, name: "Rawalpindi" },
-      { id: 8, name: "Kohat" },
-    ],
-    "id",
-    "name"
-  );
-  const departments = mapSelectOptions(
-    [
-      { id: 1, name: "Human Resources" },
-      { id: 2, name: "Finance" },
-      { id: 3, name: "Marketing" },
-      { id: 4, name: "Sales" },
-      { id: 5, name: "Customer Support" },
-      { id: 6, name: "Operations" },
-      { id: 7, name: "IT & Infrastructure" },
-      { id: 8, name: "Research & Development" },
-      { id: 9, name: "Design" },
-      { id: 10, name: "Administration" },
-    ],
-    "id",
-    "name"
-  );
-
-  const employees = mapSelectOptions(
-    [
-      { id: 1, name: "Human Resources" },
-      { id: 2, name: "Finance" },
-      { id: 3, name: "Marketing" },
-      { id: 4, name: "Sales" },
-      { id: 5, name: "Customer Support" },
-      { id: 6, name: "Operations" },
-      { id: 7, name: "IT & Infrastructure" },
-      { id: 8, name: "Research & Development" },
-      { id: 9, name: "Design" },
-      { id: 10, name: "Administration" },
-    ],
-    "id",
-    "name"
-  );
-  const types = mapSelectOptions(
-    [
-      { id: 2, name: "Present" },
-      { id: 1, name: "Absent" },
-      { id: 3, name: "Late" },
-      { id: 3, name: "Leave" }
-    ],
-    "id",
-    "name"
-  );
   const statuses = mapSelectOptions(
     [
       { id: 1, name: "Pending" },
@@ -239,16 +162,35 @@ export default function Projects() {
     "id",
     "name"
   );
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  const filteredProjects = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return projectsData.filter((project) => {
+      const matchesSearch =
+        !q ||
+        project.projectName.toLowerCase().includes(q) ||
+        project.projectCode.toLowerCase().includes(q) ||
+        project.client.toLowerCase().includes(q) ||
+        project.projectManager.toLowerCase().includes(q);
+      const matchesStatus = !status || project.status === status;
+      const matchesDate = !date || project.startDate === date || project.endDate === date;
+      return matchesSearch && matchesStatus && matchesDate;
+    });
+  }, [projectsData, search, status, date]);
 
 
   return (
     <Layout>
       <div className="bg-white w-full rounded-lg shadow-md border border-gray-200 min-h-[90vh] p-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-base font-semibold text-gray-700">
-            Projects
-          </h2>
+          <div>
+            <h2 className="text-base font-semibold text-gray-700">
+              Projects
+            </h2>
+            <p className="text-xxs text-gray-500 mt-0.5">
+              Manage project lifecycle, ownership, and logged effort from one place.
+            </p>
+          </div>
           <Button type="button" variant="success" onClick={() => router.push('/time/projects/create/')}>
             Create Project
           </Button>
@@ -256,12 +198,11 @@ export default function Projects() {
 
 
 
-        <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5">
+        <div className="w-full flex justify-between flex-col md:flex-row items-center my-2 mt-5 p-3 rounded-lg border border-gray-200 bg-white shadow-sm">
           <div className="w-full md:w-1/5 flex items-center mb-1">
             <SearchBar
               placeholder="Search by name or code..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onSearch={setSearch}
             />
           </div>
           <div className="w-full flex flex-col md:flex-row justify-end items-center gap-2 mt-2 md:mt-0">
@@ -283,7 +224,7 @@ export default function Projects() {
                 name="date"
                 noMargin={true}
                 value={date}
-                onChange={(e) => onDateChange(e.target.value)}
+                onChange={(e) => setDate(e.target.value)}
               />
             </div>
 
@@ -311,9 +252,9 @@ export default function Projects() {
               </tr>
             </thead>
             <tbody className="text-xxs">
-              {projectsData && projectsData.length > 0 ? (
+              {filteredProjects && filteredProjects.length > 0 ? (
 
-                projectsData.map((row, idx) => (
+                filteredProjects.map((row, idx) => (
                   <tr
                     key={idx}
                     className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"
@@ -323,9 +264,13 @@ export default function Projects() {
                     <td className="px-4 py-3 truncate max-w-[150px]" title={row.projectName}>{row.projectName}</td>
                     <td className="px-4 py-3">{row.client}</td>
                     <td className="px-4 py-3">{row.projectManager}</td>
-                    <td className="px-4 py-3">{row.billable ? "Yes" : "No"}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-flex px-2 py-1 rounded-full text-[10px] font-semibold ${row.billable ? "bg-[#effaf3] text-[#2f7d4f]" : "bg-[#fff4e8] text-[#9a5d1d]"}`}>
+                        {row.billable ? "Yes" : "No"}
+                      </span>
+                    </td>
                     <td className="px-4 py-3">{row.startDate}</td>
-                    <td className="px-4 py-3">{row.endDate}</td>
+                    <td className="px-4 py-3">{row.endDate || "-"}</td>
                     <td className="px-4 py-3">{row.loggedHours}</td>
                     <td className="px-4 py-3">
                       <StatusDesign statusId={row.statusId} label={row.status} />
@@ -333,7 +278,14 @@ export default function Projects() {
                     <RowActions
                       row={row}
                       actions={[
-                        { label: "View Project", icon: MdOutlineRemoveRedEye, onClick: handleOpenModal },
+                        {
+                          label: "View Project",
+                          icon: MdOutlineRemoveRedEye,
+                          onClick: (rowData) => {
+                            setSelectedProject(rowData);
+                            handleOpenModal();
+                          },
+                        },
                         { label: "Edit Project", icon: FiEdit3 },
                       ]}
                     />
@@ -351,7 +303,19 @@ export default function Projects() {
         </div>
         {isOpen && (
           <Modal width="w-full max-w-[794px]">
-            <h2>Project Detail</h2>
+            <div className="border-b border-gray-300 pb-3 mb-4">
+              <h2 className="text-lg font-semibold text-gray-800">Project Detail</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-700">
+              <p><span className="font-semibold">Code:</span> {selectedProject?.projectCode || "-"}</p>
+              <p><span className="font-semibold">Name:</span> {selectedProject?.projectName || "-"}</p>
+              <p><span className="font-semibold">Client:</span> {selectedProject?.client || "-"}</p>
+              <p><span className="font-semibold">Manager:</span> {selectedProject?.projectManager || "-"}</p>
+              <p><span className="font-semibold">Start:</span> {selectedProject?.startDate || "-"}</p>
+              <p><span className="font-semibold">End:</span> {selectedProject?.endDate || "-"}</p>
+              <p><span className="font-semibold">Billable:</span> {selectedProject?.billable ? "Yes" : "No"}</p>
+              <p><span className="font-semibold">Logged Hours:</span> {selectedProject?.loggedHours || 0}</p>
+            </div>
             <div className="flex justify-end pt-4">
               <Button variant="cancel" onClick={handleCloseModal}>
                 Close

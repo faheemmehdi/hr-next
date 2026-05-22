@@ -1,10 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Layout from "y@/app/components/Layout";
 import Button from "y@/app/components/Button";
 import SearchBar from "y@/app/components/SearchBar";
-import CustomSelect from "y@/app/components/CustomSelect";
-import Input from "y@/app/components/Input";
 import DateRangePicker from "y@/app/components/DateRagePicker";
 
 const auditEntries = [
@@ -91,8 +89,39 @@ export default function AuditLog() {
             key: 'selection'
         }
     ]);
-    const [fromDate, setFromDate] = useState("");
-    const [toDate, setToDate] = useState("");
+
+    const parseEntryDate = (value) => {
+        // Convert "YYYY-MM-DD HH:mm" to a stable Date object for filtering.
+        const normalized = value?.replace(" ", "T");
+        const dt = normalized ? new Date(normalized) : null;
+        return dt && !Number.isNaN(dt.getTime()) ? dt : null;
+    };
+
+    const filteredEntries = useMemo(() => {
+        const q = search.trim().toLowerCase();
+        const start = range?.[0]?.startDate ? new Date(range[0].startDate) : null;
+        const end = range?.[0]?.endDate ? new Date(range[0].endDate) : null;
+
+        if (start) start.setHours(0, 0, 0, 0);
+        if (end) end.setHours(23, 59, 59, 999);
+
+        return auditEntries.filter((entry) => {
+            const matchesSearch =
+                !q ||
+                entry.event.toLowerCase().includes(q) ||
+                entry.entity.toLowerCase().includes(q) ||
+                entry.actor.toLowerCase().includes(q) ||
+                entry.ip.toLowerCase().includes(q);
+
+            const entryDate = parseEntryDate(entry.timestamp);
+            const matchesDateRange =
+                !start ||
+                !end ||
+                (entryDate && entryDate >= start && entryDate <= end);
+
+            return matchesSearch && matchesDateRange;
+        });
+    }, [search, range]);
 
 
 
@@ -119,8 +148,7 @@ export default function AuditLog() {
                     <div className="w-full md:w-1/5 flex items-center mb-1">
                         <SearchBar
                             placeholder="Search by event, actor or entity..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onSearch={setSearch}
                         />
                     </div>
                     <div className="w-full flex items-center justify-end flex-col md:flex-row mt-2 md:mt-0 gap-2">
@@ -144,10 +172,10 @@ export default function AuditLog() {
                             </tr>
                         </thead>
                         <tbody className="text-xxs">
-                            {auditEntries && auditEntries.length > 0 ? (
-                                auditEntries.map((row, idx) => (
+                            {filteredEntries && filteredEntries.length > 0 ? (
+                                filteredEntries.map((row, idx) => (
                                     <tr
-                                        key={idx}
+                                        key={`${row.event}-${row.actor}-${row.timestamp}-${idx}`}
                                         className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition-colors`}
                                     >
                                         <td className="px-4 py-3">{row.event}</td>
@@ -160,7 +188,7 @@ export default function AuditLog() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan={10} className="text-center py-4 text-gray-500 italic">
+                                    <td colSpan={5} className="text-center py-4 text-gray-500 italic">
                                         No audit found.
                                     </td>
                                 </tr>
